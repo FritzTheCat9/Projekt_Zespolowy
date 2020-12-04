@@ -1,0 +1,16 @@
+﻿
+
+<div class="list-group-item list-group-item-action flex-column align-items-start">
+    <img src="@Url.Content(@Model.Image)" style="height: 100px; width: 150px;" />
+
+    <div style="float:right; width:80%;">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">@Model.Name</h5>
+            <small>@Model.Price PLN</small>
+        </div>
+        <a class="btn btn-success" asp-action="ShoppingCartAddProduct" asp-route-ProductId="@Model.ProductID">Add To Cart</a>
+        <p class="mb-1">@Model.ProductDescription</p>
+        <small>Kategoria: @Model.Category.Name</small>
+    </div>
+    <div style="clear:both; font-size:1px;"></div>
+</div>

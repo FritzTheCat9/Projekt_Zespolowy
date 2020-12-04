@@ -1,0 +1,12 @@
+/* Relative to 100% of the height of the viewpoint*/
+body { height: 100vh; margin: 0; }
+
+/* sposob na stopke przyklejona do dolnej czesci ekranu */
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+footer {
+    margin-top: auto;
+}

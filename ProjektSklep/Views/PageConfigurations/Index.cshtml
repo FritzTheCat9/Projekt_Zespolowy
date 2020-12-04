@@ -1,0 +1,78 @@
+﻿@model IEnumerable<ProjektSklep.Models.PageConfiguration>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdminPanel.cshtml";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.PageConfigurationID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CustomerID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SendingNewsletter)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShowNetPrices)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductsPerPage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.InterfaceSkin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Language)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Currency)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PageConfigurationID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustomerID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SendingNewsletter)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ShowNetPrices)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ProductsPerPage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.InterfaceSkin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Language)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Currency)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.PageConfigurationID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.PageConfigurationID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.PageConfigurationID">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

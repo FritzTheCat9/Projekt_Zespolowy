@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Strona główna";
+}
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model ProjektSklep.Models.ViewModels.HomeViewModel;
+}
+
+<div class="list-group">
+    @foreach (Product p in Model.Products)
+    {
+        @await Html.PartialAsync("_PartialProduct", p)
+    }
+</div>
+
+@section Categories {
+    <nav id="nav-sidebar" class="bg-faded">
+        <div class="sidebar-header hidden-sm-down">
+            <h2>Kategorie</h2>
+            <hr />
+        </div>
+        <div class="sidebar-content hidden-sm-down">
+            <ul>
+                @foreach (Category c in Model.Categories)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-action="Index" asp-route-CategoryId="@c.CategoryID">@c.Name</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </nav>
+}
+
+
+

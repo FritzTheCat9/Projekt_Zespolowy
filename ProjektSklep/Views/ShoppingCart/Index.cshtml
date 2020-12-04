@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewData["Title"] = "ShoppingCart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model ProjektSklep.Models.ShoppingCart
+}
+
+<h1>Koszyk</h1>
+@if (Model.ProductList.Count != 0) {
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductList.ElementAt(0).Product)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductList.ElementAt(0).Product.Image)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductList.ElementAt(0).Count)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductList.ElementAt(0).Sum)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ProductList)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Product.Name)
+                    </td>
+                    <td>
+                        <img src="@Url.Content(item.Product.Image)" style="height: 100px; width: 150px;" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Count)
+                    </td>
+                    <td>
+                        @item.Sum
+                    </td>
+                    <td>
+                        <a class="btn btn-danger" asp-action="Index" asp-route-ProductID="@item.Product.ProductID">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <form asp-action="OrderCompleted">
+        <div class="col-md-4">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <h4>Sposób wysyłki: </h4>
+                <select asp-for="ShippingMethodID" class="form-control" asp-items="ViewBag.ShippingMethods"></select>
+            </div>
+            <div class="form-group">
+                <h4>Sposób płatności: </h4>
+                <select asp-for="PaymentMethodID" class="form-control" asp-items="ViewBag.PaymentMethods"></select>
+            </div>
+            <div class="form-group">
+                <h4>Kod rabatowy: </h4>
+                <input asp-for="DiscountCode" class="form-control" />
+                <span asp-validation-for="DiscountCode" class="text-danger"></span>
+            </div>
+            <h2>Razem do zapłaty: @Model.countCartPrice()</h2>
+            <div class="form-group">
+                <input type="submit" value="Zamów produkty" class="btn btn-primary" />
+            </div>
+        </div>
+    </form>
+} else {
+    <h4>Koszyk jest pusty, dodaj cos do niego :)</h4>
+}

@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ProjektSklep</title>
+    <link rel="stylesheet" type="text/css" href=@Url.Content("~/lib/bootstrap/dist/css/bootstrap.min.css") />
+    <link rel="stylesheet" type="text/css" href=@Url.Content("~/css/site.css") />
+</head>
+<body>
+    <div class="page-header">
+        <nav class="navbar navbar-light bg-light">
+            <div class="float_left">
+                <a asp-controller="Home" asp-action="Index">
+                    <img src="@Url.Content("~/Content/Images/Logo/shop-logo.png")" style="height: 100px; width: 100px;" />
+                </a>
+            </div>
+
+            <div class="container">
+                <div class="input-group md-form form-sm form-2 pl-0">
+                    <input class="form-control my-0 py-1 red-border" type="text" placeholder="Search" aria-label="Search">
+                    <div class="input-group-append">
+                        <button class="btn btn-secondary" type="button">
+                            <i class="fa fa-search">Szukaj</i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <nav class="navbar navbar-light bg-light">
+                    <a class="btn btn-secondary" asp-controller="ShoppingCart" asp-action="Index">Koszyk</a> &nbsp;
+                    <a class="btn btn-secondary" asp-controller="AdminPanel" asp-action="Index">Admin Panel</a> &nbsp;
+                    <button class="btn btn-secondary" type="button"> Ustawienia </button> &nbsp;
+                    <a class="btn btn-secondary" asp-controller="Customers" asp-action="Login"> Zaloguj się </a>
+                </nav>
+            </div>
+        </nav>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="nav-sidebar" class="bg-faded">
+                <div class="sidebar-header hidden-sm-down">
+                    <h2>Baza danych:</h2>
+                    <hr />
+                </div>
+                <div class="sidebar-content hidden-sm-down">
+                    <ul>
+                        @await Html.PartialAsync("_AdminPanel")
+                    </ul>
+
+                    <!--Kod do obslugi zalacznikow-->
+                    <!--<h2>File uploader</h2>
+                    <form method="post" enctype="multipart/form-data" asp-controller="FileUpload" asp-action="Index">
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <p>Wybierz 1 lub wiecej plikow:</p>
+                                <input type="file" name="files" multiple />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                <input type="submit" value="Upload" /><br />
+                                @ViewData["ExtensionWarning"]
+                            </div>
+                        </div>
+                    </form>-->
+
+                </div>
+            </nav>
+            <div class="container" style="margin: 0px 0px; margin-left: 10px;">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
+
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2020 - ProjektSklep - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

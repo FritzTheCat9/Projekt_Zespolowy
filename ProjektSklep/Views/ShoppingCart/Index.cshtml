@@ -66,9 +66,15 @@
                 <span asp-validation-for="DiscountCode" class="text-danger"></span>
             </div>
             <h2>Razem do zapłaty: @Model.countCartPrice()</h2>
-            <div class="form-group">
-                <input type="submit" value="Zamów produkty" class="btn btn-primary" />
-            </div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class="form-group">
+                    <input type="submit" value="Zamów produkty" class="btn btn-primary" />
+                </div>
+            } else
+            {
+                <h4>Zaloguj się by zamówić produkty :)</h4>
+            }
         </div>
     </form>
 } else {

@@ -109,7 +109,7 @@ namespace ProjektSklep.Areas.Identity.Pages.Account
                             PostCode = Input.PostCode,
                             Street = Input.Street,
                             HouseNumber = Input.HouseNumber,
-                            ApartmentNumber = Input.ApartmentNumber,
+                            ApartmentNumber = Input.ApartmentNumber
                         };
                         context.Addresses.Add(address);
                         context.SaveChanges();
@@ -136,6 +136,18 @@ namespace ProjektSklep.Areas.Identity.Pages.Account
                             PageConfigurationID = pageConfiguration.PageConfigurationID
                         };
                         context.Customers.Add(customer);
+                        context.SaveChanges();
+
+                        var pageConfiguration2 = context.PageConfigurations.Where(x => x.PageConfigurationID == pageConfiguration.PageConfigurationID).FirstOrDefault();
+                        if (pageConfiguration2 != null)
+                        {
+                            pageConfiguration2.CustomerID = customer.CustomerID;
+                        }
+                        var address2 = context.Addresses.Where(x => x.AddressID == address.AddressID).FirstOrDefault();
+                        if (address2 != null)
+                        {
+                            address2.CustomerID = customer.CustomerID;
+                        }
                         context.SaveChanges();
                     }
                     ////////// dodanie Customera do naszej bazy ////////// 

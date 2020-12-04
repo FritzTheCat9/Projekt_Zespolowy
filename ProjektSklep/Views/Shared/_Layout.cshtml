@@ -34,7 +34,7 @@
                 </a>
             </div>
 
-            <div class="container">
+            <div>
                 <div class="input-group md-form form-sm form-2 pl-0">
                     <input class="form-control my-0 py-1 red-border" type="text" placeholder="Search" aria-label="Search">
                     <div class="input-group-append">
@@ -45,20 +45,20 @@
                 </div>
             </div>
 
-            <partial name="_LoginPartial" />
-
             <div>
                 <nav class="navbar navbar-light bg-light">
+                    <partial name="_LoginPartial" />
                     <a class="btn btn-secondary" asp-controller="ShoppingCart" asp-action="Index">Koszyk</a> &nbsp;
                     @if (User.Identity.IsAuthenticated)
                     {
                         if (checkIsAdmin())
                         {
-                            <a class="btn btn-secondary" asp-controller="AdminPanel" asp-action="Index">Admin Panel</a>
+                            <span>
+                                <a class="btn btn-secondary" asp-controller="AdminPanel" asp-action="Index">Admin Panel</a> &nbsp;
+                            </span>
                         }
-                    }&nbsp;
+                    }
                     <button class="btn btn-secondary" type="button"> Ustawienia </button> &nbsp;
-                    <a class="btn btn-secondary" asp-controller="Customers" asp-action="Login"> Zaloguj się </a>
                 </nav>
             </div>
         </nav>

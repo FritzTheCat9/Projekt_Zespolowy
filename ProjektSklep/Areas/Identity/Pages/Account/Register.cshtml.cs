@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using ProjektSklep.Data;
+using ProjektSklep.Models;
 
 namespace ProjektSklep.Areas.Identity.Pages.Account
 {
@@ -60,6 +62,25 @@ namespace ProjektSklep.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            // Dane do Adresu
+            [Required]
+            public string Country { get; set; }
+            [Required]
+            public string Town { get; set; }
+            [Required]
+            public string PostCode { get; set; }
+            [Required]
+            public string Street { get; set; }
+            [Required]
+            public int HouseNumber { get; set; }
+            public int? ApartmentNumber { get; set; }
+
+            //imie i nazwisko do tabeli Customer 
+            [Required]
+            public string FirstName { get; set; }
+            [Required]
+            public string LastName { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -78,6 +99,45 @@ namespace ProjektSklep.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
+                    ////////// dodanie Customera do naszej bazy ////////// 
+                    using (var context = new ShopContext())
+                    {
+                        var address = new Address
+                        {
+                            Country = Input.Country,
+                            Town = Input.Town,
+                            PostCode = Input.PostCode,
+                            Street = Input.Street,
+                            HouseNumber = Input.HouseNumber,
+                            ApartmentNumber = Input.ApartmentNumber,
+                        };
+                        context.Addresses.Add(address);
+                        context.SaveChanges();
+                        var pageConfiguration = new PageConfiguration
+                        {
+                            SendingNewsletter=false, 
+                            ShowNetPrices=true, 
+                            ProductsPerPage=20, 
+                            InterfaceSkin=0, 
+                            Language=0, Currency=1
+                        };
+                        context.PageConfigurations.Add(pageConfiguration);
+                        context.SaveChanges();
+                        var customer = new Customer
+                        {
+                            Email = Input.Email,
+                            Login = Input.Email,
+                            Password = Input.Password,
+                            FirstName = Input.FirstName,
+                            LastName = Input.LastName,
+                            AddressID = address.AddressID,
+                            PageConfigurationID = pageConfiguration.PageConfigurationID
+                        };
+                        context.Customers.Add(customer);
+                        context.SaveChanges();
+                    }
+                    ////////// dodanie Customera do naszej bazy ////////// 
+
                     _logger.LogInformation("User created a new account with password.");
 
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);

@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using ProjektSklep.Data;
 
 namespace ProjektSklep.Data
 {
@@ -79,12 +81,30 @@ namespace ProjektSklep.Data
             }
             var customers = new Customer[]
             {
-                new Customer{ AddressID=1, PageConfigurationID=1, FirstName="Bartłomiej", LastName="Umiński", Login="bartek", Password="uminski", Email="bartlomiejuminski1999@gmai.com", AdminRights=true },
-                new Customer{ AddressID=2, PageConfigurationID=2, FirstName="Kacper", LastName="Siegieńczuk", Login="kacper", Password="siegienczuk", Email="kacpersiegienczuk@gmai.com", AdminRights=true },
-                new Customer{ AddressID=3, PageConfigurationID=3, FirstName="Michał", LastName="Kozikowski", Login="michal", Password="kozikowski", Email="michalkozikowski@gmai.com", AdminRights=true },
-                new Customer{ AddressID=4, PageConfigurationID=4, FirstName="Jakub", LastName="Kozłowski", Login="jakub", Password="kozlowski", Email="jakubkozlowski@gmai.com", AdminRights=true },
-                new Customer{ AddressID=5, PageConfigurationID=5, FirstName="Klient", LastName="Klientowski", Login="klient", Password="klient", Email="klientklientowski@gmai.com", AdminRights=false }
+                new Customer{ AddressID=1, PageConfigurationID=1, FirstName="Bartłomiej", LastName="Umiński", Login="bartlomiejuminski1999@gmai.com", Password="Uminski123!", Email="bartlomiejuminski1999@gmai.com", AdminRights=true },
+                new Customer{ AddressID=2, PageConfigurationID=2, FirstName="Kacper", LastName="Siegieńczuk", Login="kacpersiegienczuk@gmai.com", Password="Siegienczuk123!", Email="kacpersiegienczuk@gmai.com", AdminRights=true },
+                new Customer{ AddressID=3, PageConfigurationID=3, FirstName="Michał", LastName="Kozikowski", Login="michalkozikowski@gmai.com", Password="Kozikowski123!", Email="michalkozikowski@gmai.com", AdminRights=true },
+                new Customer{ AddressID=4, PageConfigurationID=4, FirstName="Jakub", LastName="Kozłowski", Login="jakubkozlowski@gmai.com", Password="Kozlowski123!", Email="jakubkozlowski@gmai.com", AdminRights=true },
+                new Customer{ AddressID=5, PageConfigurationID=5, FirstName="Klient", LastName="Klientowski", Login="klientklientowski@gmai.com", Password="Klient123!", Email="klientklientowski@gmai.com", AdminRights=false }
             };
+
+            /*using(var context2 = new ApplicationDbContext())
+            {
+                context2.Users.Add(new Microsoft.AspNetCore.Identity.IdentityUser
+                {
+                    UserName = "bartlomiejuminski1999@gmai.com",
+                    NormalizedUserName = StringNormalizationExtensions.Normalize("bartlomiejuminski1999@gmai.com"),
+                    Email = "bartlomiejuminski1999@gmai.com",
+                    NormalizedEmail = StringNormalizationExtensions.Normalize("bartlomiejuminski1999@gmai.com"),
+                    EmailConfirmed = true,
+                    PasswordHash = new Crypto.HashPassword("Uminski123!"),
+                    SecurityStamp = new SecurityStamp(),
+
+                });
+                UserManager<IdentityUser> _userManager = new UserManager<IdentityUser>();
+                var user = new IdentityUser { UserName = "bartlomiejuminski1999@gmai.com", Email = "bartlomiejuminski1999@gmai.com" };
+                var result = _userManager.CreateAsync(user, "Uminski123!");
+            }*/
 
             foreach (Customer customer in customers)
             {

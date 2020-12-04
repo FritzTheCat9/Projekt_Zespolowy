@@ -27,6 +27,9 @@ namespace ProjektSklep
                 {
                     var context = services.GetRequiredService<ShopContext>();
                     DbInitializer.Initialize(context);
+
+                    /*var context2 = services.GetRequiredService<ApplicationDbContext>();
+                    DbInitializer2.Initialize(context);*/
                 }
                 catch (Exception ex)
                 {

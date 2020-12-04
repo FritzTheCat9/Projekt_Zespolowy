@@ -119,7 +119,8 @@ namespace ProjektSklep.Areas.Identity.Pages.Account
                             ShowNetPrices=true, 
                             ProductsPerPage=20, 
                             InterfaceSkin=0, 
-                            Language=0, Currency=1
+                            Language=0, 
+                            Currency=1,
                         };
                         context.PageConfigurations.Add(pageConfiguration);
                         context.SaveChanges();
@@ -130,6 +131,7 @@ namespace ProjektSklep.Areas.Identity.Pages.Account
                             Password = Input.Password,
                             FirstName = Input.FirstName,
                             LastName = Input.LastName,
+                            AdminRights = false,
                             AddressID = address.AddressID,
                             PageConfigurationID = pageConfiguration.PageConfigurationID
                         };

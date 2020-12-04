@@ -9,6 +9,8 @@ using ProjektSklep.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ProjektSklep.Models.ViewModels;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace ProjektSklep.Controllers
 {
@@ -138,6 +140,21 @@ namespace ProjektSklep.Controllers
             return View(order);
         }*/
 
+        /*private bool checkIsAdmin()
+        {
+            using (var context = new ShopContext())
+            {
+                string LoggedUserEmail = User.Identity.Name;
+                if (LoggedUserEmail.Length == 0)
+                {
+                    return false;
+                }
+                var customer = context.Customers.Where(x => x.Email == LoggedUserEmail).FirstOrDefault();
+                return customer.AdminRights;
+            }
+            return false;
+        }*/
+
         [HttpPost("ShoppingCart/OrderCompleted")]
         public IActionResult OrderCompleted([Bind("PaymentMethodID,ShippingMethodID,DiscountCode")] ShoppingCart ShoppingCart)
         {
@@ -151,12 +168,20 @@ namespace ProjektSklep.Controllers
                 {
                     using (var context = new ShopContext())
                     {
+                        string LoggedUserEmail = User.Identity.Name;
+                        var customer = context.Customers.Where(x => x.Email == LoggedUserEmail).FirstOrDefault();
+                        int id = 1;
+                        if(customer != null)
+                        {
+                            id = customer.CustomerID;
+                        }
+
                         var order = new Order
                         {
                             OrderStatus = State.Preparing,
                             PaymentMethodID = ShoppingCart.PaymentMethodID,
                             ShippingMethodID = ShoppingCart.ShippingMethodID,
-                            CustomerID = 1                                                      // zmienić customera na tego zalogowanego
+                            CustomerID = id                                                     // id zalogowanego customera
                         };
                         context.Orders.Add(order);
                         context.SaveChanges();              // dodanie OrderID przez EFCORE

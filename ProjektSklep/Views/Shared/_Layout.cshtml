@@ -8,6 +8,24 @@
     <link rel="stylesheet" type="text/css" href=@Url.Content("~/css/site.css") />
 </head>
 <body>
+    @functions{
+        @using ProjektSklep.Data;
+        private bool checkIsAdmin()
+        {
+            @using (var context = new ShopContext())
+            {
+                string LoggedUserEmail = User.Identity.Name;
+                if (LoggedUserEmail.Length == 0)
+                {
+                    return false;
+                }
+                var customer = context.Customers.Where(x => x.Email == LoggedUserEmail).FirstOrDefault();
+                return customer.AdminRights;
+            }
+            return false;
+        }
+    }
+
     <div class="page-header">
         <nav class="navbar navbar-light bg-light">
             <div class="float_left">
@@ -32,7 +50,13 @@
             <div>
                 <nav class="navbar navbar-light bg-light">
                     <a class="btn btn-secondary" asp-controller="ShoppingCart" asp-action="Index">Koszyk</a> &nbsp;
-                    <a class="btn btn-secondary" asp-controller="AdminPanel" asp-action="Index">Admin Panel</a> &nbsp;
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        if (checkIsAdmin())
+                        {
+                            <a class="btn btn-secondary" asp-controller="AdminPanel" asp-action="Index">Admin Panel</a>
+                        }
+                    }&nbsp;
                     <button class="btn btn-secondary" type="button"> Ustawienia </button> &nbsp;
                     <a class="btn btn-secondary" asp-controller="Customers" asp-action="Login"> Zaloguj się </a>
                 </nav>

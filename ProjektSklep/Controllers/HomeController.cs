@@ -29,15 +29,15 @@ namespace ProjektSklep.Controllers
 
         public async Task<IActionResult> AddUsers()
         {
-            var user = new IdentityUser { UserName = "bartlomiejuminski1999@gmai.com", Email = "bartlomiejuminski1999@gmai.com", EmailConfirmed = true };
+            var user = new IdentityUser { UserName = "bartlomiejuminski1999@gmail.com", Email = "bartlomiejuminski1999@gmail.com", EmailConfirmed = true };
             var result = await _userManager.CreateAsync(user, "Uminski123!");
-            var user2 = new IdentityUser { UserName = "kacpersiegienczuk@gmai.com", Email = "kacpersiegienczuk@gmai.com", EmailConfirmed = true };
+            var user2 = new IdentityUser { UserName = "kacpersiegienczuk@gmail.com", Email = "kacpersiegienczuk@gmail.com", EmailConfirmed = true };
             var result2 = await _userManager.CreateAsync(user2, "Siegienczuk123!");
-            var user3 = new IdentityUser { UserName = "michalkozikowski@gmai.com", Email = "michalkozikowski@gmai.com", EmailConfirmed = true };
+            var user3 = new IdentityUser { UserName = "michalkozikowski@gmail.com", Email = "michalkozikowski@gmail.com", EmailConfirmed = true };
             var result3 = await _userManager.CreateAsync(user3, "Kozikowski123!");
-            var user4 = new IdentityUser { UserName = "jakubkozlowski@gmai.com", Email = "jakubkozlowski@gmai.com", EmailConfirmed = true };
+            var user4 = new IdentityUser { UserName = "jakubkozlowski@gmail.com", Email = "jakubkozlowski@gmail.com", EmailConfirmed = true };
             var result4 = await _userManager.CreateAsync(user4, "Kozlowski123!");
-            var user5 = new IdentityUser { UserName = "klientklientowski@gmai.com", Email = "klientklientowski@gmai.com", EmailConfirmed = true };
+            var user5 = new IdentityUser { UserName = "klientklientowski@gmail.com", Email = "klientklientowski@gmail.com", EmailConfirmed = true };
             var result5 = await _userManager.CreateAsync(user5, "Klient123!");
 
             return Index();

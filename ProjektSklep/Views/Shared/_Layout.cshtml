@@ -20,7 +20,7 @@
                     return false;
                 }
                 var customer = context.Customers.Where(x => x.Email == LoggedUserEmail).FirstOrDefault();
-                if(customer != null)
+                if (customer != null)
                 {
                     return customer.AdminRights;
                 }

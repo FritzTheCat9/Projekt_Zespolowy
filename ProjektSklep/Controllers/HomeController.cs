@@ -20,6 +20,9 @@ namespace ProjektSklep.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<IdentityUser> _userManager;
 
+        //dodanie stringa potrzebnego do wyszukiwania
+        public string SearchTerm { get; set; }
+
         public HomeController(ILogger<HomeController> logger, ShopContext context, UserManager<IdentityUser> userManager)
         {
             _logger = logger;
@@ -56,6 +59,38 @@ namespace ProjektSklep.Controllers
 
             return View(homeViewModel);
         }
+
+        //Tutaj Kozik dodaje wyszukiwanie
+        /*
+        [HttpGet]
+        public async Task<IActionResult> Index(string productSearch)
+        {
+            ViewData["GetProductsSearch"] = productSearch;
+
+            var productQuery = from x in _context.Products select x;
+            if (!String.IsNullOrEmpty(productSearch))
+            {
+                productQuery = productQuery.Where(x => x.Name.Contains(productSearch));
+            }
+            return View(await productQuery.ToListAsync());
+        }*/
+        //nie mam pojecia po co są te includy tbh
+        [HttpGet("Home/Index/{productSearch}")] //nwm co tu zrobilem??
+        public IActionResult Index(string? productSearch)
+        {
+            var homeViewModel = new HomeViewModel();
+            if (!String.IsNullOrEmpty(productSearch))
+            {
+                homeViewModel.Products = _context.Products.Include(p => p.Category).Include(p => p.Expert).Where(p => p.Name.Contains(productSearch));
+                homeViewModel.Categories = _context.Categories.Include(c => c.Parent);
+                return View(homeViewModel);
+            }
+
+            homeViewModel.Products = _context.Products.Include(p => p.Category).Include(p => p.Expert);
+            homeViewModel.Categories = _context.Categories.Include(c => c.Parent);
+            return View(homeViewModel);
+        }
+
 
         // Pobranie produktów danej kategorii
         [HttpGet("Home/Index/{CategoryID:int}")]

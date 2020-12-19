@@ -28,6 +28,8 @@ namespace ProjektSklep
             return View(await shopContext.ToListAsync());
         }
 
+        
+
         // GET: Products/Details/5
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Details(int? id)

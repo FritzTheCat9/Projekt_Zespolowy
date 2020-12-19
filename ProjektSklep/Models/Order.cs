@@ -22,7 +22,7 @@ namespace ProjektSklep.Models
         public int OrderID { get; set; }
         [Required]
         [ForeignKey("Customer")]
-        public int CustomerID { get; set; }
+        public string CustomerID { get; set; }
         [Required]
         [ForeignKey("ShippingMethod")]
         public int ShippingMethodID { get; set; }

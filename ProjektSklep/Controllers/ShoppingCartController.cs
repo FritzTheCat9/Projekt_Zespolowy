@@ -170,18 +170,13 @@ namespace ProjektSklep.Controllers
                     {
                         string LoggedUserEmail = User.Identity.Name;
                         var customer = context.Customers.Where(x => x.Email == LoggedUserEmail).FirstOrDefault();
-                        int id = 1;
-                        if(customer != null)
-                        {
-                            id = customer.CustomerID;
-                        }
 
                         var order = new Order
                         {
                             OrderStatus = State.Preparing,
                             PaymentMethodID = ShoppingCart.PaymentMethodID,
                             ShippingMethodID = ShoppingCart.ShippingMethodID,
-                            CustomerID = id                                                     // id zalogowanego customera
+                            CustomerID = customer.Id                                                     // id zalogowanego customera
                         };
                         context.Orders.Add(order);
                         context.SaveChanges();              // dodanie OrderID przez EFCORE

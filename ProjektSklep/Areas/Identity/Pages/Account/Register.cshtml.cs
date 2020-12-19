@@ -21,14 +21,14 @@ namespace ProjektSklep.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<Customer> _signInManager;
+        private readonly UserManager<Customer> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<Customer> userManager,
+            SignInManager<Customer> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
@@ -95,12 +95,30 @@ namespace ProjektSklep.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                var user = new Customer { UserName = Input.Email, Email = Input.Email, FirstName = Input.FirstName, LastName = Input.LastName };
+
+                Address address = null;
+                PageConfiguration pageConfiguration = null;
+                using (var context = new ShopContext())
+                {
+                    address = new Address { CustomerID = user.Id, Country = Input.Country, Town = Input.Town, PostCode = Input.PostCode, Street = Input.Street, HouseNumber = Input.HouseNumber, ApartmentNumber = Input.ApartmentNumber };
+                    pageConfiguration = new PageConfiguration { CustomerID = user.Id, SendingNewsletter = false, ShowNetPrices = true, ProductsPerPage = 20, InterfaceSkin = 0, Language = 0, Currency = 1 };
+                    context.Addresses.Add(address);
+                    context.PageConfigurations.Add(pageConfiguration);
+                    context.SaveChanges();
+                }
+
+                user.AddressID = address.AddressID;
+                user.PageConfigurationID = pageConfiguration.PageConfigurationID;
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
+
                 if (result.Succeeded)
                 {
+                    _userManager.AddToRoleAsync(user, "NormalUser").Wait();
+
                     ////////// dodanie Customera do naszej bazy ////////// 
-                    using (var context = new ShopContext())
+                    /*using (var context = new ShopContext())
                     {
                         var address = new Address
                         {
@@ -127,11 +145,8 @@ namespace ProjektSklep.Areas.Identity.Pages.Account
                         var customer = new Customer
                         {
                             Email = Input.Email,
-                            Login = Input.Email,
-                            Password = Input.Password,
                             FirstName = Input.FirstName,
                             LastName = Input.LastName,
-                            AdminRights = false,
                             AddressID = address.AddressID,
                             PageConfigurationID = pageConfiguration.PageConfigurationID
                         };
@@ -141,15 +156,15 @@ namespace ProjektSklep.Areas.Identity.Pages.Account
                         var pageConfiguration2 = context.PageConfigurations.Where(x => x.PageConfigurationID == pageConfiguration.PageConfigurationID).FirstOrDefault();
                         if (pageConfiguration2 != null)
                         {
-                            pageConfiguration2.CustomerID = customer.CustomerID;
+                            pageConfiguration2.CustomerID = customer.Id;
                         }
                         var address2 = context.Addresses.Where(x => x.AddressID == address.AddressID).FirstOrDefault();
                         if (address2 != null)
                         {
-                            address2.CustomerID = customer.CustomerID;
+                            address2.CustomerID = customer.Id;
                         }
                         context.SaveChanges();
-                    }
+                    }*/
                     ////////// dodanie Customera do naszej bazy ////////// 
 
                     _logger.LogInformation("User created a new account with password.");

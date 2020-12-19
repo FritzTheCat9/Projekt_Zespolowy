@@ -5,12 +5,114 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using ProjektSklep.Data;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace ProjektSklep.Data
 {
     public static class DbInitializer
     {
-        public static void Initialize(ShopContext context)
+        public static void AddCustomers(UserManager<Customer> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            SeedRoles(roleManager);
+            SeedUsers(userManager);
+        }
+
+        private static void SeedUsers(UserManager<Customer> userManager)
+        {
+            if (userManager.FindByNameAsync("bartlomiejuminski1999@gmail.com").Result == null)
+            {
+                Customer customer = new Customer();
+                customer.UserName = "bartlomiejuminski1999@gmail.com";
+                customer.Email = "bartlomiejuminski1999@gmail.com";
+                customer.EmailConfirmed = true;
+                customer.PhoneNumberConfirmed = false;
+                customer.TwoFactorEnabled = false;
+                customer.LockoutEnabled = false;
+                customer.AccessFailedCount = 0;
+                customer.AddressID = 1;
+                customer.PageConfigurationID = 1;
+                customer.FirstName = "Bartłomiej";
+                customer.LastName = "Umiński";
+
+                Address address = null;
+                PageConfiguration pageConfiguration = null;
+                using (var context = new ShopContext())
+                {
+                    address = new Address { CustomerID = customer.Id, Country = "Polska", Town = "Białystok", PostCode = "12-123", Street = "Wesoła", HouseNumber = 123, ApartmentNumber = 1 };
+                    pageConfiguration = new PageConfiguration { CustomerID = customer.Id, SendingNewsletter = false, ShowNetPrices = true, ProductsPerPage = 20, InterfaceSkin = 0, Language = 0, Currency = 1 };
+                    context.Addresses.Add(address);
+                    context.PageConfigurations.Add(pageConfiguration);
+                    context.SaveChanges();
+                }
+
+                customer.AddressID = address.AddressID;
+                customer.PageConfigurationID = pageConfiguration.PageConfigurationID;
+
+                IdentityResult result = userManager.CreateAsync(customer, "Uminski123!").Result;
+
+                if (result.Succeeded)
+                {
+                    userManager.AddToRoleAsync(customer, "Administrator").Wait();
+                }
+            }
+
+            if (userManager.FindByNameAsync("klientklientowski@gmail.com").Result == null)
+            {
+                Customer customer = new Customer();
+                customer.UserName = "klientklientowski@gmail.com";
+                customer.Email = "klientklientowski@gmail.com";
+                customer.EmailConfirmed = true;
+                customer.PhoneNumberConfirmed = false;
+                customer.TwoFactorEnabled = false;
+                customer.LockoutEnabled = false;
+                customer.AccessFailedCount = 0;
+                customer.AddressID = 2;
+                customer.PageConfigurationID = 2;
+                customer.FirstName = "Klient";
+                customer.LastName = "Klientowski";
+
+                Address address = null;
+                PageConfiguration pageConfiguration = null;
+                using (var context = new ShopContext())
+                {
+                    address = new Address { CustomerID = customer.Id, Country = "Polska", Town = "Warszawa", PostCode = "23-456", Street = "Piękna", HouseNumber = 12, ApartmentNumber = 47 };
+                    pageConfiguration = new PageConfiguration { CustomerID = customer.Id, SendingNewsletter = true, ShowNetPrices = false, ProductsPerPage = 30, InterfaceSkin = 1, Language = 1, Currency = 0 };
+                    context.Addresses.Add(address);
+                    context.PageConfigurations.Add(pageConfiguration);
+                    context.SaveChanges();
+                }
+
+                customer.AddressID = address.AddressID;
+                customer.PageConfigurationID = pageConfiguration.PageConfigurationID;
+
+                IdentityResult result = userManager.CreateAsync(customer, "Klient123!").Result;
+
+                if (result.Succeeded)
+                {
+                    userManager.AddToRoleAsync(customer, "NormalUser").Wait();
+                }
+            }
+        }
+
+        private static void SeedRoles(RoleManager<IdentityRole> roleManager)
+        {
+            if (!roleManager.RoleExistsAsync("NormalUser").Result)
+            {
+                IdentityRole role = new IdentityRole();
+                role.Name = "NormalUser";
+                IdentityResult roleResult = roleManager.CreateAsync(role).Result;
+            }
+
+
+            if (!roleManager.RoleExistsAsync("Administrator").Result)
+            {
+                IdentityRole role = new IdentityRole();
+                role.Name = "Administrator";
+                IdentityResult roleResult = roleManager.CreateAsync(role).Result;
+            }
+        }
+
+        public static void Initialize(ShopContext context, UserManager<Customer> userManager)
         {
             context.Database.EnsureCreated();
 
@@ -27,7 +129,6 @@ namespace ProjektSklep.Data
                 new DiscountCode{ DiscoundCode="123XYZ", Percent=20 },
                 new DiscountCode{ DiscoundCode="789KLM", Percent=70 }
             };
-
             foreach (DiscountCode discountCode in discountCodes)
             {
                 context.DiscountCodes.Add(discountCode);
@@ -35,7 +136,7 @@ namespace ProjektSklep.Data
             context.SaveChanges();
 
             /* Addresses */
-            if (context.Addresses.Any())
+            /*if (context.Addresses.Any())
             {
                 return;
             }
@@ -47,15 +148,14 @@ namespace ProjektSklep.Data
                 new Address{ CustomerID=4, Country="Polska", Town="Kraków", PostCode="78-234", Street="Diamentowa", HouseNumber=26, },
                 new Address{ CustomerID=5, Country="Polska", Town="Łomża", PostCode="34-785", Street="Wiejska", HouseNumber=6, ApartmentNumber=67 }
             };
-
             foreach (Address address in addresses)
             {
                 context.Addresses.Add(address);
             }
             context.SaveChanges();
 
-            /* PageConfigurations */
-            if (context.PageConfigurations.Any())
+           /* PageConfigurations */
+            /*if (context.PageConfigurations.Any())
             {
                 return;
             }
@@ -67,50 +167,30 @@ namespace ProjektSklep.Data
                 new PageConfiguration{ CustomerID=4, SendingNewsletter=true, ShowNetPrices=false, ProductsPerPage=10, InterfaceSkin=1, Language=0, Currency=2 },
                 new PageConfiguration{ CustomerID=5, SendingNewsletter=true, ShowNetPrices=true, ProductsPerPage=50, InterfaceSkin=0, Language=1, Currency=0 }
             };
-
             foreach (PageConfiguration pageConfiguration in pageConfigurations)
             {
                 context.PageConfigurations.Add(pageConfiguration);
             }
-            context.SaveChanges();
+            context.SaveChanges();*/
 
             /* Customers */
-            if (context.Customers.Any())
+            /*if (context.Customers.Any())
             {
                 return;
             }
             var customers = new Customer[]
             {
-                new Customer{ AddressID=1, PageConfigurationID=1, FirstName="Bartłomiej", LastName="Umiński", Login="bartlomiejuminski1999@gmail.com", Password="Uminski123!", Email="bartlomiejuminski1999@gmai.com", AdminRights=true },
-                new Customer{ AddressID=2, PageConfigurationID=2, FirstName="Kacper", LastName="Siegieńczuk", Login="kacpersiegienczuk@gmail.com", Password="Siegienczuk123!", Email="kacpersiegienczuk@gmai.com", AdminRights=true },
-                new Customer{ AddressID=3, PageConfigurationID=3, FirstName="Michał", LastName="Kozikowski", Login="michalkozikowski@gmail.com", Password="Kozikowski123!", Email="michalkozikowski@gmai.com", AdminRights=true },
-                new Customer{ AddressID=4, PageConfigurationID=4, FirstName="Jakub", LastName="Kozłowski", Login="jakubkozlowski@gmail.com", Password="Kozlowski123!", Email="jakubkozlowski@gmai.com", AdminRights=true },
-                new Customer{ AddressID=5, PageConfigurationID=5, FirstName="Klient", LastName="Klientowski", Login="klientklientowski@gmail.com", Password="Klient123!", Email="klientklientowski@gmai.com", AdminRights=false }
+                new Customer{ AddressID=1, PageConfigurationID=1, FirstName="Bartłomiej", LastName="Umiński", Email="bartlomiejuminski1999@gmail.com"},
+                new Customer{ AddressID=2, PageConfigurationID=2, FirstName="Kacper", LastName="Siegieńczuk", Email="kacpersiegienczuk@gmail.com"},
+                new Customer{ AddressID=3, PageConfigurationID=3, FirstName="Michał", LastName="Kozikowski", Email="michalkozikowski@gmail.com"},
+                new Customer{ AddressID=4, PageConfigurationID=4, FirstName="Jakub", LastName="Kozłowski", Email="jakubkozlowski@gmail.com"},
+                new Customer{ AddressID=5, PageConfigurationID=5, FirstName="Klient", LastName="Klientowski", Email="klientklientowski@gmail.com"}
             };
-
-            /*using(var context2 = new ApplicationDbContext())
-            {
-                context2.Users.Add(new Microsoft.AspNetCore.Identity.IdentityUser
-                {
-                    UserName = "bartlomiejuminski1999@gmai.com",
-                    NormalizedUserName = StringNormalizationExtensions.Normalize("bartlomiejuminski1999@gmai.com"),
-                    Email = "bartlomiejuminski1999@gmai.com",
-                    NormalizedEmail = StringNormalizationExtensions.Normalize("bartlomiejuminski1999@gmai.com"),
-                    EmailConfirmed = true,
-                    PasswordHash = new Crypto.HashPassword("Uminski123!"),
-                    SecurityStamp = new SecurityStamp(),
-
-                });
-                UserManager<IdentityUser> _userManager = new UserManager<IdentityUser>();
-                var user = new IdentityUser { UserName = "bartlomiejuminski1999@gmai.com", Email = "bartlomiejuminski1999@gmai.com" };
-                var result = _userManager.CreateAsync(user, "Uminski123!");
-            }*/
-
             foreach (Customer customer in customers)
             {
                 context.Customers.Add(customer);
             }
-            context.SaveChanges();
+            context.SaveChanges();*/
 
             /* ShippingMethods */
             if (context.ShippingMethods.Any())
@@ -124,7 +204,6 @@ namespace ProjektSklep.Data
                 new ShippingMethod{ Name="Poczta" },
                 new ShippingMethod{ Name="Paczkomat Inpost" }
             };
-
             foreach (ShippingMethod shippingMethod in shippingMethods)
             {
                 context.ShippingMethods.Add(shippingMethod);
@@ -143,7 +222,6 @@ namespace ProjektSklep.Data
                 new PaymentMethod{ Name="Szybki Przelew" },
                 new PaymentMethod{ Name="Karta" }
             };
-
             foreach (PaymentMethod paymentMethod in paymentMethods)
             {
                 context.PaymentMethods.Add(paymentMethod);
@@ -155,15 +233,17 @@ namespace ProjektSklep.Data
             {
                 return;
             }
-            var orders = new Order[]
+            var orders = new Order[2];
+            if (userManager.FindByNameAsync("bartlomiejuminski1999@gmail.com").Result != null)
             {
-                new Order{ CustomerID=1, ShippingMethodID=1, PaymentMethodID=3, OrderStatus=State.Preparing },
-                new Order{ CustomerID=2, ShippingMethodID=2, PaymentMethodID=4, OrderStatus=State.OnTheWay },
-                new Order{ CustomerID=3, ShippingMethodID=2, PaymentMethodID=2, OrderStatus=State.Delivered },
-                new Order{ CustomerID=4, ShippingMethodID=3, PaymentMethodID=1, OrderStatus=State.Delivered },
-                new Order{ CustomerID=5, ShippingMethodID=4, PaymentMethodID=4, OrderStatus=State.OnTheWay }
-            };
-
+                var user = userManager.FindByNameAsync("bartlomiejuminski1999@gmail.com").Result;
+                orders[0] = new Order { CustomerID = user.Id, ShippingMethodID = 1, PaymentMethodID = 3, OrderStatus = State.Preparing };
+            }
+            if (userManager.FindByNameAsync("klientklientowski@gmail.com").Result != null)
+            {
+                var user = userManager.FindByNameAsync("klientklientowski@gmail.com").Result;
+                orders[1] = new Order { CustomerID = user.Id, ShippingMethodID = 2, PaymentMethodID = 4, OrderStatus = State.OnTheWay };
+            }
             foreach (Order order in orders)
             {
                 context.Orders.Add(order);
@@ -181,7 +261,6 @@ namespace ProjektSklep.Data
                 new Expert{ FirstName="Ekspert2", LastName="Ekspertowicz2", Email="ekspercik2@gmail.com"},
                 new Expert{ FirstName="Ekspert3", LastName="Ekspertowicz3", Email="ekspercik3@gmail.com"}
             };
-
             foreach (Expert expert in experts)
             {
                 context.Experts.Add(expert);
@@ -200,7 +279,6 @@ namespace ProjektSklep.Data
                 new Category{ ParentCategoryID=1, Name="Laptopy", Visibility=true },
                 new Category{ ParentCategoryID=1, Name="Komputery", Visibility=false}
             };
-
             foreach (Category category in categories)
             {
                 context.Categories.Add(category);
@@ -219,7 +297,6 @@ namespace ProjektSklep.Data
                 new Product{ CategoryID=2, ExpertID=1, Name="Laptop HUAWEI", ProductDescription="Dobry laptop", Image="~/Content/Images/Products/Laptop HUAWEI.png", DateAdded=new DateTime(), Promotion=true, VAT=23, Price=5000, Amount=34, Visibility=true, SoldProducts=7 },
                 new Product{ CategoryID=2, ExpertID=1, Name="Laptop APPLE", ProductDescription="Dobry laptop", Image="~/Content/Images/Products/Laptop APPLE.jpg", DateAdded=new DateTime(), Promotion=false, VAT=23, Price=4000, Amount=56, Visibility=true, SoldProducts=8 },
             };
-
             foreach (Product product in products)
             {
                 context.Products.Add(product);
@@ -238,7 +315,6 @@ namespace ProjektSklep.Data
                 new Attachment{ ProductID=3, Path="sciezka do pliku", Description="Instrukcja obsługi laptopa" },
                 new Attachment{ ProductID=4, Path="sciezka do pliku", Description="Instrukcja obsługi laptopa" }
             };
-
             foreach (Attachment attachment in attachments)
             {
                 context.Attachments.Add(attachment);
@@ -253,12 +329,8 @@ namespace ProjektSklep.Data
             var productOrders = new ProductOrder[]
             {
                 new ProductOrder{ OrderID=1, ProductID=1 },
-                new ProductOrder{ OrderID=2, ProductID=2 },
-                new ProductOrder{ OrderID=3, ProductID=2 },
-                new ProductOrder{ OrderID=4, ProductID=3 },
-                new ProductOrder{ OrderID=5, ProductID=4 }
+                new ProductOrder{ OrderID=2, ProductID=2 }
             };
-
             foreach (ProductOrder productOrder in productOrders)
             {
                 context.ProductOrders.Add(productOrder);

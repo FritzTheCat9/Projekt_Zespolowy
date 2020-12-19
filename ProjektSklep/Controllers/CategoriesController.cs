@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace ProjektSklep
         }
 
         // GET: Categories
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Index()
         {
             var shopContext = _context.Categories.Include(c => c.Parent);
@@ -27,6 +29,7 @@ namespace ProjektSklep
         }
 
         // GET: Categories/Details/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -46,6 +49,7 @@ namespace ProjektSklep
         }
 
         // GET: Categories/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             ViewData["ParentCategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID");
@@ -55,6 +59,7 @@ namespace ProjektSklep
         // POST: Categories/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CategoryID,ParentCategoryID,Name,Visibility")] Category category)
@@ -70,6 +75,7 @@ namespace ProjektSklep
         }
 
         // GET: Categories/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -89,6 +95,7 @@ namespace ProjektSklep
         // POST: Categories/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("CategoryID,ParentCategoryID,Name,Visibility")] Category category)
@@ -123,6 +130,7 @@ namespace ProjektSklep
         }
 
         // GET: Categories/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -142,6 +150,7 @@ namespace ProjektSklep
         }
 
         // POST: Categories/Delete/5
+        [Authorize(Roles = "Administrator")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -152,6 +161,7 @@ namespace ProjektSklep
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Administrator")]
         private bool CategoryExists(int id)
         {
             return _context.Categories.Any(e => e.CategoryID == id);

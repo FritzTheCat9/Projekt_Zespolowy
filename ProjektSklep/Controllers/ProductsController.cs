@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace ProjektSklep
         }
 
         // GET: Products
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Index()
         {
             var shopContext = _context.Products.Include(p => p.Category).Include(p => p.Expert);
@@ -27,6 +29,7 @@ namespace ProjektSklep
         }
 
         // GET: Products/Details/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -47,6 +50,7 @@ namespace ProjektSklep
         }
 
         // GET: Products/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             ViewData["CategoryID"] = new SelectList(_context.Categories, "CategoryID", "CategoryID");
@@ -57,6 +61,7 @@ namespace ProjektSklep
         // POST: Products/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ProductID,CategoryID,ExpertID,Name,ProductDescription,Image,DateAdded,Promotion,VAT,Price,Amount,Visibility,SoldProducts")] Product product)
@@ -73,6 +78,7 @@ namespace ProjektSklep
         }
 
         // GET: Products/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -93,6 +99,7 @@ namespace ProjektSklep
         // POST: Products/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ProductID,CategoryID,ExpertID,Name,ProductDescription,Image,DateAdded,Promotion,VAT,Price,Amount,Visibility,SoldProducts")] Product product)
@@ -128,6 +135,7 @@ namespace ProjektSklep
         }
 
         // GET: Products/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -148,6 +156,7 @@ namespace ProjektSklep
         }
 
         // POST: Products/Delete/5
+        [Authorize(Roles = "Administrator")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -158,6 +167,7 @@ namespace ProjektSklep
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Administrator")]
         private bool ProductExists(int id)
         {
             return _context.Products.Any(e => e.ProductID == id);

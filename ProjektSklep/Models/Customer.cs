@@ -4,15 +4,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace ProjektSklep.Models
 {
     [DisplayColumn("CustomerID")]
-    public class Customer
+    public class Customer : IdentityUser
     {
         /* POLA */
-        [Key]
-        public int CustomerID { get; set; }
+        /*[Key]
+        public int CustomerID { get; set; }*/
         [Required]
         [ForeignKey("Address")]
         public int AddressID { get; set; }
@@ -23,14 +24,14 @@ namespace ProjektSklep.Models
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
-        [Required]
+        /*[Required]
         public string Login { get; set; }
         [Required]
         public string Password { get; set; }
         [Required]
         public string Email { get; set; }
         [Required]
-        public bool AdminRights { get; set; }
+        public bool AdminRights { get; set; }*/
 
         /* POLA - ENTITY FRAMEWORK */
         //[ForeignKey("AddressID")]

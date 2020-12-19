@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace ProjektSklep
         }
 
         // GET: Orders
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Index()
         {
             var shopContext = _context.Orders.Include(o => o.Customer).Include(o => o.PaymentMethod).Include(o => o.ShippingMethod);
@@ -27,6 +29,7 @@ namespace ProjektSklep
         }
 
         // GET: Orders/Details/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -48,9 +51,10 @@ namespace ProjektSklep
         }
 
         // GET: Orders/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "CustomerID", "Email");
+            ViewData["CustomerID"] = new SelectList(_context.Customers, "Id", "Email");
             ViewData["PaymentMethodID"] = new SelectList(_context.PaymentMethods, "PaymentMethodID", "Name");
             ViewData["ShippingMethodID"] = new SelectList(_context.ShippingMethods, "ShippingMethodID", "Name");
             ViewData["OrderStatus"] = new SelectList(Enum.GetValues(typeof(State)).Cast<State>());
@@ -60,6 +64,7 @@ namespace ProjektSklep
         // POST: Orders/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("OrderID,CustomerID,ShippingMethodID,PaymentMethodID,OrderStatus")] Order order)
@@ -70,13 +75,14 @@ namespace ProjektSklep
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "CustomerID", "CustomerID", order.CustomerID);
+            ViewData["CustomerID"] = new SelectList(_context.Customers, "Id", "CustomerID", order.CustomerID);
             ViewData["PaymentMethodID"] = new SelectList(_context.PaymentMethods, "PaymentMethodID", "PaymentMethodID", order.PaymentMethodID);
             ViewData["ShippingMethodID"] = new SelectList(_context.ShippingMethods, "ShippingMethodID", "ShippingMethodID", order.ShippingMethodID);
             return View(order);
         }
 
         // GET: Orders/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -89,7 +95,7 @@ namespace ProjektSklep
             {
                 return NotFound();
             }
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "CustomerID", "Email", order.CustomerID);
+            ViewData["CustomerID"] = new SelectList(_context.Customers, "Id", "Email", order.CustomerID);
             ViewData["PaymentMethodID"] = new SelectList(_context.PaymentMethods, "PaymentMethodID", "Name", order.PaymentMethodID);
             ViewData["ShippingMethodID"] = new SelectList(_context.ShippingMethods, "ShippingMethodID", "Name", order.ShippingMethodID);
             ViewData["OrderStatus"] = new SelectList(Enum.GetValues(typeof(State)).Cast<State>());
@@ -99,6 +105,7 @@ namespace ProjektSklep
         // POST: Orders/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("OrderID,CustomerID,ShippingMethodID,PaymentMethodID,OrderStatus")] Order order)
@@ -128,13 +135,14 @@ namespace ProjektSklep
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "CustomerID", "CustomerID", order.CustomerID);
+            ViewData["CustomerID"] = new SelectList(_context.Customers, "Id", "CustomerID", order.CustomerID);
             ViewData["PaymentMethodID"] = new SelectList(_context.PaymentMethods, "PaymentMethodID", "PaymentMethodID", order.PaymentMethodID);
             ViewData["ShippingMethodID"] = new SelectList(_context.ShippingMethods, "ShippingMethodID", "ShippingMethodID", order.ShippingMethodID);
             return View(order);
         }
 
         // GET: Orders/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -156,6 +164,7 @@ namespace ProjektSklep
         }
 
         // POST: Orders/Delete/5
+        [Authorize(Roles = "Administrator")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -166,6 +175,7 @@ namespace ProjektSklep
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Administrator")]
         private bool OrderExists(int id)
         {
             return _context.Orders.Any(e => e.OrderID == id);

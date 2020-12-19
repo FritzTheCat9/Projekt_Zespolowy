@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using ProjektSklep.Data;
+using ProjektSklep.Models;
 using System;
 
 namespace ProjektSklep
@@ -26,10 +28,10 @@ namespace ProjektSklep
                 try
                 {
                     var context = services.GetRequiredService<ShopContext>();
-                    DbInitializer.Initialize(context);
-
-                    /*var context2 = services.GetRequiredService<ApplicationDbContext>();
-                    DbInitializer2.Initialize(context);*/
+                    var userManager = services.GetRequiredService<UserManager<Customer>>();
+                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                    DbInitializer.AddCustomers(userManager, roleManager);
+                    DbInitializer.Initialize(context, userManager);
                 }
                 catch (Exception ex)
                 {

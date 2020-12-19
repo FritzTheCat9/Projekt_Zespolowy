@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,7 @@ namespace ProjektSklep
         }
 
         // GET: Customers
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Index()
         {
             var shopContext = _context.Customers.Include(c => c.Address).Include(c => c.PageConfiguration);
@@ -37,7 +39,8 @@ namespace ProjektSklep
         }
 
         // GET: Customers/Details/5
-        public async Task<IActionResult> Details(int? id)
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null)
             {
@@ -47,7 +50,7 @@ namespace ProjektSklep
             var customer = await _context.Customers
                 .Include(c => c.Address)
                 .Include(c => c.PageConfiguration)
-                .FirstOrDefaultAsync(m => m.CustomerID == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (customer == null)
             {
                 return NotFound();
@@ -55,8 +58,9 @@ namespace ProjektSklep
 
             return View(customer);
         }
-
+        /*
         // GET: Customers/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             ViewData["AddressID"] = new SelectList(_context.Addresses, "AddressID", "AddressID");
@@ -67,6 +71,7 @@ namespace ProjektSklep
         // POST: Customers/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("CustomerID,AddressID,PageConfigurationID,FirstName,LastName,Login,Password,Email,AdminRights")] Customer customer)
@@ -83,7 +88,8 @@ namespace ProjektSklep
         }
 
         // GET: Customers/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
             {
@@ -103,11 +109,12 @@ namespace ProjektSklep
         // POST: Customers/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CustomerID,AddressID,PageConfigurationID,FirstName,LastName,Login,Password,Email,AdminRights")] Customer customer)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,AddressID,PageConfigurationID,FirstName,LastName")] Customer customer)
         {
-            if (id != customer.CustomerID)
+            if (id != customer.Id)
             {
                 return NotFound();
             }
@@ -121,7 +128,7 @@ namespace ProjektSklep
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CustomerExists(customer.CustomerID))
+                    if (!CustomerExists(customer.Id))
                     {
                         return NotFound();
                     }
@@ -138,7 +145,8 @@ namespace ProjektSklep
         }
 
         // GET: Customers/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
             {
@@ -148,7 +156,7 @@ namespace ProjektSklep
             var customer = await _context.Customers
                 .Include(c => c.Address)
                 .Include(c => c.PageConfiguration)
-                .FirstOrDefaultAsync(m => m.CustomerID == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (customer == null)
             {
                 return NotFound();
@@ -158,9 +166,10 @@ namespace ProjektSklep
         }
 
         // POST: Customers/Delete/5
+        [Authorize(Roles = "Administrator")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             var customer = await _context.Customers.FindAsync(id);
             _context.Customers.Remove(customer);
@@ -168,9 +177,10 @@ namespace ProjektSklep
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CustomerExists(int id)
+        [Authorize(Roles = "Administrator")]
+        private bool CustomerExists(string id)
         {
-            return _context.Customers.Any(e => e.CustomerID == id);
-        }
+            return _context.Customers.Any(e => e.Id == id);
+        }*/
     }
 }

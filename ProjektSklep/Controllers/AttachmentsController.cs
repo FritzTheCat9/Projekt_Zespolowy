@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +21,7 @@ namespace ProjektSklep
         }
 
         // GET: Attachments
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Index()
         {
             var shopContext = _context.Attachments.Include(a => a.Product);
@@ -27,6 +29,7 @@ namespace ProjektSklep
         }
 
         // GET: Attachments/Details/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -46,6 +49,7 @@ namespace ProjektSklep
         }
 
         // GET: Attachments/Create
+        [Authorize(Roles = "Administrator")]
         public IActionResult Create()
         {
             ViewData["ProductID"] = new SelectList(_context.Products, "ProductID", "ProductID");
@@ -55,6 +59,7 @@ namespace ProjektSklep
         // POST: Attachments/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("AttachmentID,ProductID,Path,Description")] Attachment attachment)
@@ -70,6 +75,7 @@ namespace ProjektSklep
         }
 
         // GET: Attachments/Edit/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -89,6 +95,7 @@ namespace ProjektSklep
         // POST: Attachments/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("AttachmentID,ProductID,Path,Description")] Attachment attachment)
@@ -123,6 +130,7 @@ namespace ProjektSklep
         }
 
         // GET: Attachments/Delete/5
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -144,6 +152,7 @@ namespace ProjektSklep
         // POST: Attachments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var attachment = await _context.Attachments.FindAsync(id);
@@ -152,6 +161,7 @@ namespace ProjektSklep
             return RedirectToAction(nameof(Index));
         }
 
+        [Authorize(Roles = "Administrator")]
         private bool AttachmentExists(int id)
         {
             return _context.Attachments.Any(e => e.AttachmentID == id);

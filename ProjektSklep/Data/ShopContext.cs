@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ProjektSklep.Models;
 
 namespace ProjektSklep.Data
 {
-    public class ShopContext : DbContext
+    public class ShopContext : IdentityDbContext<Customer>
     {
         public ShopContext()
         {
@@ -35,6 +36,8 @@ namespace ProjektSklep.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<DiscountCode>().ToTable("DiscountCode");
             modelBuilder.Entity<Address>().ToTable("Address");
             modelBuilder.Entity<Customer>().ToTable("Customer");

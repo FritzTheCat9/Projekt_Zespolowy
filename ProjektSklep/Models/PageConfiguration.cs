@@ -14,7 +14,7 @@ namespace ProjektSklep.Models
         [Key]
         public int PageConfigurationID { get; set; }
         [Required]
-        public int CustomerID { get; set; }
+        public string CustomerID { get; set; }
         [Required]
         public bool SendingNewsletter { get; set; }
         [Required]

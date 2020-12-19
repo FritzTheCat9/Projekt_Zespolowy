@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using ProjektSklep.Data;
+using ProjektSklep.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -30,12 +31,14 @@ namespace ProjektSklep
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ShopContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DBConnection")));
+            services.AddTransient<ShopContext>();
+            services.AddIdentity<Customer, IdentityRole>(options =>
+            {
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            }).AddEntityFrameworkStores<ShopContext>()
+            .AddDefaultTokenProviders()
+            .AddDefaultUI();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }

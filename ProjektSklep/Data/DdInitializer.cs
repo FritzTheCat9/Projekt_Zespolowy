@@ -237,12 +237,12 @@ namespace ProjektSklep.Data
             if (userManager.FindByNameAsync("bartlomiejuminski1999@gmail.com").Result != null)
             {
                 var user = userManager.FindByNameAsync("bartlomiejuminski1999@gmail.com").Result;
-                orders[0] = new Order { CustomerID = user.Id, ShippingMethodID = 1, PaymentMethodID = 3, OrderStatus = State.Preparing };
+                orders[0] = new Order { CustomerID = user.Id, ShippingMethodID = 1, PaymentMethodID = 3, OrderStatus = State.Preparing, Price = 4300 };
             }
             if (userManager.FindByNameAsync("klientklientowski@gmail.com").Result != null)
             {
                 var user = userManager.FindByNameAsync("klientklientowski@gmail.com").Result;
-                orders[1] = new Order { CustomerID = user.Id, ShippingMethodID = 2, PaymentMethodID = 4, OrderStatus = State.OnTheWay };
+                orders[1] = new Order { CustomerID = user.Id, ShippingMethodID = 2, PaymentMethodID = 4, OrderStatus = State.OnTheWay, Price = 2999 };
             }
             foreach (Order order in orders)
             {

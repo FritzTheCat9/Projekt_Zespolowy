@@ -380,6 +380,9 @@ namespace ProjektSklep.Migrations
                     b.Property<int>("PaymentMethodID")
                         .HasColumnType("int");
 
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<int>("ShippingMethodID")
                         .HasColumnType("int");
 

@@ -176,7 +176,8 @@ namespace ProjektSklep.Controllers
                             OrderStatus = State.Preparing,
                             PaymentMethodID = ShoppingCart.PaymentMethodID,
                             ShippingMethodID = ShoppingCart.ShippingMethodID,
-                            CustomerID = customer.Id                                                     // id zalogowanego customera
+                            CustomerID = customer.Id,                                                     // id zalogowanego customera
+                            Price = ShoppingCart.CartPrice
                         };
                         context.Orders.Add(order);
                         context.SaveChanges();              // dodanie OrderID przez EFCORE
@@ -206,6 +207,14 @@ namespace ProjektSklep.Controllers
                             ViewData["DiscountCode"] = discountCode.Percent;
                             decimal newPrice = ShoppingCart.CartPrice - (ShoppingCart.CartPrice * discountCode.Percent / 100);
                             ShoppingCart.CartPrice = newPrice;
+
+                            // zmiana ceny na cene po rabacie
+                            var newOrder = context.Orders.Where(x => x.OrderID == order.OrderID).FirstOrDefault();
+                            if(newOrder != null)
+                            {
+                                newOrder.Price = newPrice;
+                                context.SaveChanges();
+                            }
                         }
                         else
                         {

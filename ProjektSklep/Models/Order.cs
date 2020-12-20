@@ -37,6 +37,10 @@ namespace ProjektSklep.Models
         [EnumDataType(typeof(State))]
         [Display(Name = "Stan")]
         public State OrderStatus { get; set; }
+        [Required]
+        [Column(TypeName = "decimal(18,2)")]
+        [Display(Name = "Cena")]
+        public decimal Price { get; set; }
 
         /* POLA - ENTITY FRAMEWORK */
         //[ForeignKey("CustomerID")]

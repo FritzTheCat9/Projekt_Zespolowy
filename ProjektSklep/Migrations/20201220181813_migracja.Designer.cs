@@ -10,7 +10,7 @@ using ProjektSklep.Data;
 namespace ProjektSklep.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    [Migration("20201219135319_migracja")]
+    [Migration("20201220181813_migracja")]
     partial class migracja
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -381,6 +381,9 @@ namespace ProjektSklep.Migrations
 
                     b.Property<int>("PaymentMethodID")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ShippingMethodID")
                         .HasColumnType("int");

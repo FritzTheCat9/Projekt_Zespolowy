@@ -57,7 +57,9 @@ namespace ProjektSklep.Controllers
             return View(await productQuery.ToListAsync());
         }*/
         //nie mam pojecia po co są te includy tbh
-        [HttpGet("Home/Index/{productSearch}")] //nwm co tu zrobilem??
+        //[HttpGet("Home/Index/{productSearch}")] //nwm co tu zrobilem??
+        //[HttpGet]
+        [HttpPost]
         public IActionResult Index(string? productSearch)
         {
             var homeViewModel = new HomeViewModel();

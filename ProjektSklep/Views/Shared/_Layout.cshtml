@@ -30,12 +30,22 @@
                         </div>
                     </div>
                 </form>-->
-                
-                <form method="get" asp-controller="Home" >
+                            <!--<form method="get" asp-controller="Home" asp-action="Index">
                     <p>
-                        <input type="search" placeholder="Czego szukasz?" value="@ViewData["GetProductsSearch"]" name="productSearch" asp-route-productSearch="productSearch"/>
-                        <input type="submit" value="Search" class="btn btn-primary" asp-action="Index" />
+                        <input type="search" placeholder="Czego szukasz?"-->
+                            @*value="@ViewData["GetProductsSearch"]"*@ <!--name="productSearch"--> @*asp-route-productSearch="productSearch"*@
+                            <!--/>
+                <input type="submit" value="Search" class="btn btn-primary"-->
+                            @*asp-controller="Home"  asp-action="Index" asp-route-productSearch="Laptop"*@
+                            <!--/>
 
+                    </p>
+                </form>-->
+
+                <form asp-controller="Home" asp-action="Index">
+                    <p>
+                        <input type="text" name="productSearch">
+                        <input type="submit" value="Szukaj" />
                     </p>
                 </form>
             </div>

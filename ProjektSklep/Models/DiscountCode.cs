@@ -10,10 +10,13 @@ namespace ProjektSklep.Models
     {
         /* POLA */
         [Key]
+        [Display(Name = "Id")]
         public int DiscountCodeID { get; set; }
         [Required]
+        [Display(Name = "Kod rabatowy")]
         public string DiscoundCode { get; set; }
         [Required]
+        [Display(Name = "Procent")]
         public int Percent { get; set; }
     }
 }

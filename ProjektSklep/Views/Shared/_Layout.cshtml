@@ -30,7 +30,8 @@
                         </div>
                     </div>
                 </form>-->
-                            <!--<form method="get" asp-controller="Home" asp-action="Index">
+                            <!--2
+                                <form method="get" asp-controller="Home" asp-action="Index">
                     <p>
                         <input type="search" placeholder="Czego szukasz?"-->
                             @*value="@ViewData["GetProductsSearch"]"*@ <!--name="productSearch"--> @*asp-route-productSearch="productSearch"*@
@@ -43,10 +44,12 @@
                 </form>-->
 
                 <form asp-controller="Home" asp-action="Index">
-                    <p>
-                        <input type="text" name="productSearch">
-                        <input type="submit" value="Szukaj" />
-                    </p>
+                    <div class="input-group md-form form-sm form-2 pl-0">
+                        <input class="form-control my-0 py-1 red-border" type="text" name="productSearch"/>
+                        <div class="input-group-append">
+                            <input type="submit" value="Szukaj" class="btn btn-secondary"/>
+                        </div>
+                    </div>  
                 </form>
             </div>
 

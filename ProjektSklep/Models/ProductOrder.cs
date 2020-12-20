@@ -12,18 +12,23 @@ namespace ProjektSklep.Models
     {
         /* POLA */
         [Key]
+        [Display(Name = "ProductZamowienieId")]
         public int ProductOrderID { get; set; }
         [Required]
         [ForeignKey("Product")]
+        [Display(Name = "ProduktId")]
         public int ProductID { get; set; }
         [Required]
         [ForeignKey("Order")]
+        [Display(Name = "ZamowienieId")]
         public int OrderID { get; set; }
 
         /* POLA - ENTITY FRAMEWORK */
         //[ForeignKey("OrderID")]
+        [Display(Name = "ZamowienieId")]
         public Order Order { get; set; }
         //[ForeignKey("ProductID")]
+        [Display(Name = "ProduktId")]
         public Product Product { get; set; }
     }
 }

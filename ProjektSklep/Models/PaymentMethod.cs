@@ -12,8 +12,10 @@ namespace ProjektSklep.Models
     {
         /* POLA */
         [Key]
+        [Display(Name = "PlatnoscId")]
         public int PaymentMethodID { get; set; }
         [Required]
+        [Display(Name = "Nazwa")]
         public string Name { get; set; }
 
         /* POLA - ENTITY FRAMEWORK */

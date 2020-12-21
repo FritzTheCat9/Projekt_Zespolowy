@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjektSklep.Data;
 using ProjektSklep.Models;
+using ProjektSklep.Models.ViewModels;
 
 namespace ProjektSklep
 {
@@ -36,18 +37,49 @@ namespace ProjektSklep
             {
                 return NotFound();
             }
-
-            var order = await _context.Orders
-                .Include(o => o.Customer)
-                .Include(o => o.PaymentMethod)
-                .Include(o => o.ShippingMethod)
-                .FirstOrDefaultAsync(m => m.OrderID == id);
-            if (order == null)
+            else
             {
-                return NotFound();
+                var order = await _context.Orders
+                    .Include(o => o.Customer)
+                    .Include(o => o.PaymentMethod)
+                    .Include(o => o.ShippingMethod)
+                    //.Include(o => o.OrderStatus)
+                    //.Include(o => o.Price)
+                    .FirstOrDefaultAsync(m => m.OrderID == id);
+                if (order == null)
+                {
+                    return NotFound();
+                }
+
+                OrderViewModel o = new OrderViewModel(order.OrderID, order.Customer, order.PaymentMethod, order.ShippingMethod, order.OrderStatus, order.Price);
+                //List<int> ordersProductIDs = new List<int>();
+                //IEnumerable<ProductOrder> pairs =
+                //from Order in _context.ProductOrders
+                //where Order.OrderID == order.OrderID
+                //select Product;
+
+                var productOrders = _context.ProductOrders.Include(o => o.Product);
+                foreach (var p in productOrders)
+                {
+                    if (p.OrderID == order.OrderID)
+                    {
+                        o.addProduct(p.Product);
+                    }
+                }
+
+
+
+                //var ordersProductIDs = _context.ProductOrders.Include(p => p.Product).Where(p => p.OrderID == order.OrderID);
+                //foreach (Product p in ordersProductIDs.Product)
+                //{
+
+                //}
+               // o.Order = ordersProductIDs
+
+                return View(o);
             }
 
-            return View(order);
+            
         }
 
         // GET: Orders/Create

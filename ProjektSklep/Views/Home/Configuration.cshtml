@@ -1,0 +1,142 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<Customer> SignInManager
+@inject UserManager<Customer> UserManager
+
+@model ProjektSklep.Models.ViewModels.HomeViewModel;
+
+<!-- Ten model chyba sie tutaj nie przyda, ale troche nie orientuje sie
+     co robie, wiec go tu wsadzilem -->
+@{
+    ViewData["Title"] = "Configuration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Konfiguracja</h1>
+<br />
+<br />
+
+<!-- Motyw strony -->
+<div class="card">
+    <div class="card-header">
+        <h4>Motyw</h4>
+    </div>
+    <div class="card-body">
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <input class="form-check-input" type="checkbox" value="" id="darkThemeCheck" />
+        <label class="form-check-label" for="darkThemeCheck">Ciemny motyw</label>
+    </div>
+</div>
+<br />
+
+<!-- Wybor jezyka -->
+<div class="card">
+    <div class="card-header">
+        <h4>Język</h4>
+    </div>
+    <div class="card-body">
+        <div class="form-check">
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <input class="form-check-input" type="radio" value="" id="radioPolish" checked />
+            <label class="form-check-label" for="radioPolish">Polski</label>
+        </div>
+        <div class="form-check">
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <input class="form-check-input" type="radio" value="" id="radioEnglish" />
+            <label class="form-check-label" for="radioEnglish">English</label>
+        </div>
+    </div>
+</div>
+<br />
+<!-- Obslugiwane waluty -->
+<div class="card">
+    <div class="card-header">
+        <h4>Obsługiwana waluta</h4>
+    </div>
+    <div class="card-body">
+        <select class="form-control">
+            <option>PLN (zł)</option>
+            <option>EUR (€)</option>
+            <option>USD ($)</option>
+            <option>GBP (£)</option>
+            <option>JPY (¥)</option>
+        </select>
+    </div>
+</div>
+<br />
+<!-- Ceny netto lub brutto -->
+<div class="card">
+    <div class="card-header">
+        <h4>Rodzaj wyświetlanych cen</h4>
+    </div>
+    <div class="card-body">
+        <div class="form-check">
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <input class="form-check-input" type="radio" value="" id="netPrice" />
+            <label class="form-check-label" for="netPrice">Ceny netto</label>
+        </div>
+        <div class="form-check">
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <input class="form-check-input" type="radio" value="" id="grossPrice" checked />
+            <label class="form-check-label" for="grossPrice">Ceny brutto</label>
+        </div>
+    </div>
+</div>
+<br />
+<!-- Ilosc produktow wyswietlanych na strone -->
+<div class="card">
+    <div class="card-header">
+        <h4>Ilość produktów wyświetlanych na jednej stronie</h4>
+    </div>
+    <div class="card-body">
+        <div class="form-check">
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <input class="form-check-input" type="radio" value="" id="products5" />
+            <label class="form-check-label" for="products5">5 produktów</label>
+        </div>
+        <div class="form-check">
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <input class="form-check-input" type="radio" value="" id="products10" />
+            <label class="form-check-label" for="products10">10 produktów</label>
+        </div>
+        <div class="form-check">
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <input class="form-check-input" type="radio" value="" id="products15" checked />
+            <label class="form-check-label" for="products15">15 produktów</label>
+        </div>
+        <div class="form-check">
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <input class="form-check-input" type="radio" value="" id="products20" />
+            <label class="form-check-label" for="products20">20 produktów</label>
+        </div>
+    </div>
+</div>
+<br />
+<!-- Opcje dostepne po zalogowaniu -->
+@if (SignInManager.IsSignedIn(User))
+{
+    <!-- Newsletter -->
+    <div class="card">
+        <div class="card-header">
+            <h4>Czy chcesz otrzymywać nasz newsletter?</h4>
+        </div>
+        <div class="card-body">
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <input class="form-check-input" type="checkbox" value="" id="newsletterCheck" />
+            <label class="form-check-label" for="darkThemeCheck">Chcę otrzymywać newsletter na moją pocztę.</label>
+        </div>
+    </div>
+    <br />
+    <!-- Lista zamowien -->
+    <div class="card">
+        <div class="card-header">
+            <h4>Zamówienia użytkownika - @User.Identity.Name</h4>
+        </div>
+        <div class="card-body">
+            <p>
+                Tu powinny się wyświetlić zamówienia danego klienta, ale nie mam pojęcia
+                jak to zrobić :/
+            </p>
+        </div>
+    </div>
+}
+

@@ -96,6 +96,16 @@ namespace ProjektSklep.Controllers
             return View(homeViewModel);
         }
 
+        // Metoda zwiazana z wyswietleniem strony z konfiguracja
+        [HttpGet("Home/Configuration")]
+        public IActionResult Configuration()
+        {
+            var homeViewModel = new HomeViewModel();
+            homeViewModel.Products = _context.Products.Include(p => p.Category).Include(p => p.Expert).Include(p => p.Attachments);
+            homeViewModel.Categories = _context.Categories.Include(c => c.Parent);
+            return View(homeViewModel);
+        }
+
         [HttpGet("Home/Promotion")]
         public IActionResult Promotion()
         {

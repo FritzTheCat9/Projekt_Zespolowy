@@ -75,7 +75,6 @@ namespace ProjektSklep.Controllers
             return View(homeViewModel);
         }
 
-
         // Pobranie produktów danej kategorii
         [HttpGet("Home/Index/{CategoryID:int}")]
         public IActionResult Index(int? CategoryID)
@@ -97,7 +96,37 @@ namespace ProjektSklep.Controllers
             return View(homeViewModel);
         }
 
-        // Pobranie produktów danej kategorii
+        [HttpGet("Home/Promotion")]
+        public IActionResult Promotion()
+        {
+            var homeViewModel = new HomeViewModel();
+            homeViewModel.Products = _context.Products.Include(p => p.Category).Include(p => p.Expert).Include(p => p.Attachments)
+                .Where(p => p.Promotion == true);
+            homeViewModel.Categories = _context.Categories.Include(c => c.Parent);
+            return View(homeViewModel);
+        }
+
+        [HttpGet("Home/NewProducts")]
+        public IActionResult NewProducts()
+        {
+            var homeViewModel = new HomeViewModel();
+            homeViewModel.Products = _context.Products.Include(p => p.Category).Include(p => p.Expert).Include(p => p.Attachments)
+                .Where(p => p.DateAdded <= DateTime.Now && p.DateAdded >= DateTime.Now.AddDays(-30));
+            homeViewModel.Categories = _context.Categories.Include(c => c.Parent);
+            return View(homeViewModel);
+        }
+
+        [HttpGet("Home/Bestsellers")]
+        public IActionResult Bestsellers()
+        {
+            var homeViewModel = new HomeViewModel();
+            homeViewModel.Products = _context.Products.Include(p => p.Category).Include(p => p.Expert).Include(p => p.Attachments)
+                .Where(p => p.SoldProducts > 100);
+            homeViewModel.Categories = _context.Categories.Include(c => c.Parent);
+            return View(homeViewModel);
+        }
+
+        // Dodanie produktu do koszyka
         [HttpGet("Home/ShoppingCartAddProduct/{ProductID:int}")]
         public IActionResult ShoppingCartAddProduct(int? ProductID)
         {

@@ -73,7 +73,11 @@
     </div>
     <div class="container-fluid">
         <div class="row">
-            @RenderSection("Categories", required: false)
+            <nav id="nav-sidebar" class="bg-faded">
+                @RenderSection("Categories", required: false)
+                @RenderSection("Menu", required: false)
+            </nav>
+            
             <div class="container">
                 <main role="main" class="pb-3">
                     @RenderBody()

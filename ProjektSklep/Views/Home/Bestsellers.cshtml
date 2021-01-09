@@ -1,10 +1,12 @@
-﻿@{
-    ViewData["Title"] = "Strona główna";
-}
+﻿
 @{
+    ViewData["Title"] = "Bestsellers";
     Layout = "~/Views/Shared/_Layout.cshtml";
     @model ProjektSklep.Models.ViewModels.HomeViewModel;
 }
+
+<h1>Bestsellery</h1>
+<h5>(sprzedano ponad 100 sztuk)</h5>
 
 <div class="list-group">
     @foreach (Product p in Model.Products)
@@ -41,4 +43,3 @@
         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Bestsellers">Bestsellery</a>
     </div>
 }
-

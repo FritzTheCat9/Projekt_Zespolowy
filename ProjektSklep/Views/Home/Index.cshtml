@@ -22,9 +22,12 @@
         <ul>
             @foreach (Category c in Model.Categories)
             {
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-action="Index" asp-route-CategoryId="@c.CategoryID">@c.Name</a>
-                </li>
+                if (c.Visibility == true)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-action="Index" asp-route-CategoryId="@c.CategoryID">@c.Name</a>
+                    </li>
+                }
             }
         </ul>
     </div>

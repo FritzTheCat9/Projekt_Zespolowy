@@ -74,10 +74,21 @@ namespace ProjektSklep.Controllers
             homeViewModel.Categories = _context.Categories.Include(c => c.Parent);
             return View(homeViewModel);
         }
-        
+
+        [HttpGet("Home/Product/{ProductID:int}")]
         public IActionResult Product(int ProductID)
         {
-            return View();
+            var p = new Product();
+            //if (ProductID != null)
+            //{ 
+                p = _context.Products.Include(c => c.Category).Include(e => e.Expert).Where(p => p.ProductID == ProductID).FirstOrDefault();
+            //}      
+            //p.Visibility = false;
+            //tutaj chyba trzeba dodać walidację na wypadek gdyby coś się zepsuło;
+            //na razie zakładam że klient klika link do produktu i go zawsze poprawnie przenosi do widoku
+            ViewData["Categories"] = _context.Categories.Include(c => c.Parent);
+            return View(p);
+ 
         }
 
         // Pobranie produktów danej kategorii
@@ -160,7 +171,7 @@ namespace ProjektSklep.Controllers
                 Response.Cookies.Append("ShoppingCart", $"{cookie}-{ProductID}");
             }
 
-            return Redirect("~/Home/Index");       // zmienic na poprzednią ścieżke
+            return RedirectToAction("Product", "Home", new { @id = ProductID });       // zmienic na poprzednią ścieżke
         }
 
         public IActionResult Privacy()

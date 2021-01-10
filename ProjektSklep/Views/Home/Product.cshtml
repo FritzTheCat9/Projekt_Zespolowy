@@ -4,4 +4,125 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     @model ProjektSklep.Models.Product;
+    IEnumerable<Category> categories = ViewData["Categories"] as IEnumerable<Category>;
+    string expertMessage = "Jeśli masz jakieś pytanie, możesz napisać do opiekuna produktu." as string;
+}
+
+<hr />
+<!--Section: Block Content-->
+<section class="mb-5">
+
+    <div class="row">
+        <div class="col-md-6 mb-4 mb-md-0">
+            <div id="mdb-lightbox-ui"> </div>         
+            <div class="mdb-lightbox">
+
+                <div class="row product-gallery mx-1">
+
+                    <div class="col-12 mb-0">
+                        <figure class="view overlay rounded z-depth-1 main-img">
+                            <a href="@Url.Content(@Model.Image)"
+                               data-size="710x823">
+                                <img src="@Url.Content(@Model.Image)"
+                                     class="img-fluid z-depth-1">
+                            </a>
+                        </figure>    
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div class="col-md-6">
+
+                <h5>@Model.Name</h5>
+                <p class="mb-2 text-muted text-uppercase small">@Model.Category.Name</p>
+                <p><span class="mr-1"><strong>@Model.Price PLN</strong></span></p>
+                <p class="pt-1">
+                    @Model.ProductDescription
+                </p>
+                <div class="table-responsive">
+                    <table class="table table-sm table-borderless mb-0">
+                        <tbody>
+                            <tr>
+                                <th class="pl-0 w-25" scope="row"><strong>Data dodania:</strong></th>
+                                <td>@Model.DateAdded</td>
+                            </tr>
+                            <tr>
+                                <th class="pl-0 w-25" scope="row"><strong>Sprzedano:</strong></th>
+                                <td>@Model.SoldProducts</td>
+                            </tr>
+                            <tr>
+                                <th class="pl-0 w-25" scope="row"><strong>Dostępna ilość:</strong></th>
+                                <td>@Model.Amount</td>
+                            </tr>
+                            <tr>
+                                <th class="pl-0 w-25" scope="row">
+                                    <text style="color:red;">
+                                        &#128712;
+                                    </text>
+                                    <a href="#" class="nav-link text-dark" data-toggle="tooltip" data-placement="bottom" title="@expertMessage">
+                                        <strong>Ekspert:</strong>
+                                    </a>
+                                </th>
+                                <td><br />@Model.Expert.FirstName @Model.Expert.LastName <br /> @Model.Expert.Email</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <hr>
+                <div class="table-responsive mb-2">
+                    <table class="table table-sm table-borderless">
+                        <tbody>
+                            <tr>
+                                <td class="pl-0 pb-0 w-25"><strong>Ilość: </strong> </td>                             
+                            </tr>
+                            <tr>
+                                <td class="pl-0">
+                                    <div class="def-number-input number-input safari_only mb-0">
+                                        <input class="quantity" min="0" name="quantity" value="1" type="number"> ‎&#8192;
+                                        <a class="btn btn-success" asp-controller="Home" asp-action="ShoppingCartAddProduct" asp-route-ProductId="@Model.ProductID"> Dodaj do koszyka &#128722; </a>
+                                    </div>
+                                    
+                                </td>                               
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+</section>
+<hr />
+<h5>Szczegóły produktu: (kiedyś się zrobi)</h5>
+<!--Section: Block Content-->
+
+@section Categories {
+    <div class="sidebar-header hidden-sm-down">
+        <h2>Kategorie</h2>
+        <hr />
+    </div>
+    <div class="sidebar-content hidden-sm-down">
+        <ul>
+            @foreach (Category c in categories)
+            {
+                if (c.Visibility == true)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-action="Index" asp-route-CategoryId="@c.CategoryID">@c.Name</a>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+}
+
+@section Menu {
+    <div class="sidebar-header hidden-sm-down">
+        <h2>Menu</h2>
+        <hr />
+    </div>
+    <div class="sidebar-content hidden-sm-down">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Promotion">Promocje</a>
+        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="NewProducts">Nowe produkty</a>
+        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Bestsellers">Bestsellery</a>
+    </div>
 }

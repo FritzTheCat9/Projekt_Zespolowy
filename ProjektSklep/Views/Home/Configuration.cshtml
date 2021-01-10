@@ -29,23 +29,25 @@
 <br />
 
 <!-- Wybor jezyka -->
-<div class="card">
-    <div class="card-header">
-        <h4>Język</h4>
-    </div>
-    <div class="card-body">
-        <div class="form-check">
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <input class="form-check-input" type="radio" value="" id="radioPolish" checked />
-            <label class="form-check-label" for="radioPolish">Polski</label>
+<form>
+    <div class="card">
+        <div class="card-header">
+            <h4>Język</h4>
         </div>
-        <div class="form-check">
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <input class="form-check-input" type="radio" value="" id="radioEnglish" />
-            <label class="form-check-label" for="radioEnglish">English</label>
+        <div class="card-body">
+            <div class="form-check">
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <input class="form-check-input" name="language" type="radio" value="" id="radioPolish" checked />
+                <label class="form-check-label" for="radioPolish">Polski</label>
+            </div>
+            <div class="form-check">
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <input class="form-check-input" name="language" type="radio" value="" id="radioEnglish" />
+                <label class="form-check-label" for="radioEnglish">English</label>
+            </div>
         </div>
     </div>
-</div>
+</form>
 <br />
 <!-- Obslugiwane waluty -->
 <div class="card">
@@ -71,12 +73,12 @@
     <div class="card-body">
         <div class="form-check">
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <input class="form-check-input" type="radio" value="" id="netPrice" />
+            <input class="form-check-input" name="priceType" type="radio" value="" id="netPrice" />
             <label class="form-check-label" for="netPrice">Ceny netto</label>
         </div>
         <div class="form-check">
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <input class="form-check-input" type="radio" value="" id="grossPrice" checked />
+            <input class="form-check-input" name="priceType" type="radio" value="" id="grossPrice" checked />
             <label class="form-check-label" for="grossPrice">Ceny brutto</label>
         </div>
     </div>
@@ -90,22 +92,22 @@
     <div class="card-body">
         <div class="form-check">
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <input class="form-check-input" type="radio" value="" id="products5" />
+            <input class="form-check-input" name="numberOfProducts" type="radio" value="" id="products5" />
             <label class="form-check-label" for="products5">5 produktów</label>
         </div>
         <div class="form-check">
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <input class="form-check-input" type="radio" value="" id="products10" />
+            <input class="form-check-input" name="numberOfProducts" type="radio" value="" id="products10" />
             <label class="form-check-label" for="products10">10 produktów</label>
         </div>
         <div class="form-check">
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <input class="form-check-input" type="radio" value="" id="products15" checked />
+            <input class="form-check-input" name="numberOfProducts" type="radio" value="" id="products15" checked />
             <label class="form-check-label" for="products15">15 produktów</label>
         </div>
         <div class="form-check">
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <input class="form-check-input" type="radio" value="" id="products20" />
+            <input class="form-check-input" name="numberOfProducts" type="radio" value="" id="products20" />
             <label class="form-check-label" for="products20">20 produktów</label>
         </div>
     </div>

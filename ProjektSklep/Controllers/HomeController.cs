@@ -74,6 +74,11 @@ namespace ProjektSklep.Controllers
             homeViewModel.Categories = _context.Categories.Include(c => c.Parent);
             return View(homeViewModel);
         }
+        
+        public IActionResult Product(int ProductID)
+        {
+            return View();
+        }
 
         // Pobranie produktów danej kategorii
         [HttpGet("Home/Index/{CategoryID:int}")]

@@ -4,18 +4,24 @@
 
 @if (Model.Visibility == true && Model.Category.Visibility == true)
 {
+   
     <div class="list-group-item list-group-item-action flex-column align-items-start">
-        <img src="@Url.Content(@Model.Image)" style="height: 100px; width: 150px;" />
+        <a asp-controller="Home" asp-action="Product">
+            <img src="@Url.Content(@Model.Image)" style="height: 100px; width: 150px;" />
+        </a> 
 
         <div style="float:right; width:80%;">
             <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">@Model.Name</h5>
+                <a class="nav-link text-dark" asp-controller="Home" asp-action="Product">
+                    <h5 class="mb-1">@Model.Name</h5>
+                </a>
                 <small>@Model.Price PLN</small>
             </div>
-            <a class="btn btn-success" asp-action="ShoppingCartAddProduct" asp-route-ProductId="@Model.ProductID">Add To Cart</a>
+            <a class="btn btn-success" asp-action="ShoppingCartAddProduct" asp-route-ProductId="@Model.ProductID"> &#128722; </a>
             <p class="mb-1">@Model.ProductDescription</p>
             <small>Kategoria: @Model.Category.Name</small>
         </div>
         <div style="clear:both; font-size:1px;"></div>
     </div>
+    
 }

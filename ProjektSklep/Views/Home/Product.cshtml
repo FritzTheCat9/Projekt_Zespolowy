@@ -78,8 +78,11 @@
                             <tr>
                                 <td class="pl-0">
                                     <div class="def-number-input number-input safari_only mb-0">
-                                        <input class="quantity" min="0" name="quantity" value="1" type="number"> ‎&#8192;
-                                        <a class="btn btn-success" asp-controller="Home" asp-action="ShoppingCartAddProduct" asp-route-ProductId="@Model.ProductID"> Dodaj do koszyka &#128722; </a>
+                                        <!--<input class="quantity" min="0" name="quantity" value="1" type="number"> ‎&#8192;-->
+                                        <form method="post">
+                                            <input type="number" id="Quantity" name="Quantity" min="0" value="1" /> &#8192;
+                                            <a class="btn btn-success" asp-controller="Home" asp-action="ShoppingCartAddProduct" asp-route-ProductId="@Model.ProductID"> Dodaj do koszyka &#128722; </a>
+                                        </form>
                                     </div>
                                     
                                 </td>                               

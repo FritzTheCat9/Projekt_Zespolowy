@@ -174,6 +174,30 @@ namespace ProjektSklep.Controllers
             return RedirectToAction("Product", "Home", new { @id = ProductID });       // zmienic na poprzednią ścieżke
         }
 
+        // Dodanie produktu do koszyka ale 2 parametry
+        [HttpGet("Home/ShoppingCartAddProduct/{ProductID:int}/{Quantity:int}")]
+        public IActionResult ShoppingCartAddProduct(int? ProductID, int Quantity )
+        {
+            if (ProductID == null)
+            {
+                return NotFound();
+            }
+
+            var cookie = Request.Cookies["ShoppingCart"];
+            if (cookie == null)
+            {
+                Response.Cookies.Append("ShoppingCart", ProductID.ToString());
+                Response.Cookies.Append("ShoppingCartAmount", Quantity.ToString());     //obsluga ilosci
+            }
+            else
+            {
+                Response.Cookies.Append("ShoppingCart", $"{cookie}-{ProductID}");
+                Response.Cookies.Append("ShoppingCartAmount", $"{cookie}-{Quantity}");  //obsluga ilosci
+            }
+
+            return RedirectToAction("Product", "Home", new { @id = ProductID });       // zmienic na poprzednią ścieżke
+        }
+
         public IActionResult Privacy()
         {
             return View();

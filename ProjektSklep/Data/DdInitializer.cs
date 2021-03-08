@@ -237,12 +237,12 @@ namespace ProjektSklep.Data
             if (userManager.FindByNameAsync("bartlomiejuminski1999@gmail.com").Result != null)
             {
                 var user = userManager.FindByNameAsync("bartlomiejuminski1999@gmail.com").Result;
-                orders[0] = new Order { CustomerID = user.Id, ShippingMethodID = 1, PaymentMethodID = 3, OrderStatus = State.Preparing, Price = 4300 };
+                orders[0] = new Order { CustomerID = user.Id, ShippingMethodID = 1, PaymentMethodID = 3, OrderStatus = State.Preparing, Price = 23996 };
             }
             if (userManager.FindByNameAsync("klientklientowski@gmail.com").Result != null)
             {
                 var user = userManager.FindByNameAsync("klientklientowski@gmail.com").Result;
-                orders[1] = new Order { CustomerID = user.Id, ShippingMethodID = 2, PaymentMethodID = 4, OrderStatus = State.OnTheWay, Price = 2999 };
+                orders[1] = new Order { CustomerID = user.Id, ShippingMethodID = 2, PaymentMethodID = 4, OrderStatus = State.OnTheWay, Price = 12000 };
             }
             foreach (Order order in orders)
             {
@@ -328,8 +328,9 @@ namespace ProjektSklep.Data
             }
             var productOrders = new ProductOrder[]
             {
-                new ProductOrder{ OrderID=1, ProductID=1 },
-                new ProductOrder{ OrderID=2, ProductID=2 }
+                new ProductOrder{ OrderID=1, ProductID=1, Quantity=3 },
+                new ProductOrder{ OrderID=2, ProductID=2, Quantity=2 },
+                new ProductOrder{ OrderID=2, ProductID=3, Quantity=4 }
             };
             foreach (ProductOrder productOrder in productOrders)
             {

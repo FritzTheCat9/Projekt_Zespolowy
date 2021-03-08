@@ -64,7 +64,7 @@ namespace ProjektSklep
         [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProductOrderID,ProductID,OrderID")] ProductOrder productOrder)
+        public async Task<IActionResult> Create([Bind("ProductOrderID,ProductID,OrderID,Quantity")] ProductOrder productOrder)
         {
             if (ModelState.IsValid)
             {
@@ -102,7 +102,7 @@ namespace ProjektSklep
         [Authorize(Roles = "Administrator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProductOrderID,ProductID,OrderID")] ProductOrder productOrder)
+        public async Task<IActionResult> Edit(int id, [Bind("ProductOrderID,ProductID,OrderID,Quantity")] ProductOrder productOrder)
         {
             if (id != productOrder.ProductOrderID)
             {

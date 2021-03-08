@@ -43,8 +43,6 @@ namespace ProjektSklep
                     .Include(o => o.Customer)
                     .Include(o => o.PaymentMethod)
                     .Include(o => o.ShippingMethod)
-                    //.Include(o => o.OrderStatus)
-                    //.Include(o => o.Price)
                     .FirstOrDefaultAsync(m => m.OrderID == id);
                 if (order == null)
                 {
@@ -67,6 +65,13 @@ namespace ProjektSklep
                     }
                 }
 
+                foreach (var p in productOrders)
+                {
+                    if (p.OrderID == order.OrderID)
+                    {
+                        o.addProductIdQuantity(p.Product, p.Quantity);
+                    }
+                }
 
 
                 //var ordersProductIDs = _context.ProductOrders.Include(p => p.Product).Where(p => p.OrderID == order.OrderID);
@@ -74,7 +79,7 @@ namespace ProjektSklep
                 //{
 
                 //}
-               // o.Order = ordersProductIDs
+                // o.Order = ordersProductIDs
 
                 return View(o);
             }

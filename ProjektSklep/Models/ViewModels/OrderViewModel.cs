@@ -11,9 +11,10 @@ namespace ProjektSklep.Models.ViewModels
         public Customer Customer { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
         public ShippingMethod ShippingMethod { get; set; }
-        public List<Product> Order { get; set; }
+        public List<Product> ProductList { get; set; }
         public State OrderStatus { get; set; }
         public decimal Price { get; set; }
+        public Dictionary<Product, int> ProductIdQuantity { get; set; }
 
         public OrderViewModel(int id, Customer customer, PaymentMethod paymentMethod, ShippingMethod shippingMethod, State orderStatus, decimal price)
         {
@@ -23,13 +24,18 @@ namespace ProjektSklep.Models.ViewModels
             this.ShippingMethod = shippingMethod;
             this.OrderStatus = orderStatus;
             this.Price = price;
-            Order = new List<Product>();
+            ProductList = new List<Product>();
+            ProductIdQuantity = new Dictionary<Product, int>();
         }
 
         public void addProduct(Product p)
         {
-            Order.Add(p);
+            ProductList.Add(p);
         }
 
+        public void addProductIdQuantity(Product p, int quantity)
+        {
+            ProductIdQuantity.Add(p, quantity);
+        }
     }
 }

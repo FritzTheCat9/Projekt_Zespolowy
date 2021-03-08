@@ -22,6 +22,9 @@ namespace ProjektSklep.Models
         [ForeignKey("Order")]
         [Display(Name = "ZamowienieId")]
         public int OrderID { get; set; }
+        [Required]
+        [Display(Name = "Ilość")]
+        public int Quantity { get; set; }
 
         /* POLA - ENTITY FRAMEWORK */
         //[ForeignKey("OrderID")]

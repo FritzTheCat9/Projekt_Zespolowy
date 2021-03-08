@@ -515,6 +515,9 @@ namespace ProjektSklep.Migrations
                     b.Property<int>("ProductID")
                         .HasColumnType("int");
 
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
                     b.HasKey("ProductOrderID");
 
                     b.HasIndex("OrderID");

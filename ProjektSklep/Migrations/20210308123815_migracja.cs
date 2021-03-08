@@ -381,7 +381,8 @@ namespace ProjektSklep.Migrations
                     ProductOrderID = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductID = table.Column<int>(nullable: false),
-                    OrderID = table.Column<int>(nullable: false)
+                    OrderID = table.Column<int>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {

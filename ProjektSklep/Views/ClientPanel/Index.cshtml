@@ -1,0 +1,72 @@
+﻿@model IEnumerable<ProjektSklep.Models.Order>
+
+@{
+    ViewData["Title"] = "Strona klienta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Witamy w panelu klienta</h1>
+
+@section ClientPanel {
+    <div class="sidebar-header hidden-sm-down">
+        <h2>Panel Klienta</h2>
+        <hr />
+    </div>
+    <div class="sidebar-content hidden-sm-down">
+        <a class="nav-link text-dark" asp-area="" asp-controller="ClientPanel" asp-action="Index">Zamówienia</a>
+    </div>
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OrderStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ShippingMethod)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PaymentMethod)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrderStatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Customer.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ShippingMethod.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PaymentMethod.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.OrderID">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

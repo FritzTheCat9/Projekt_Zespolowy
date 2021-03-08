@@ -68,6 +68,7 @@
                             </span>
                         }
                     }
+                    <a class="btn btn-secondary" asp-controller="ClientPanel" asp-action="Index">Panel Klienta</a> &nbsp;
                     <a class="btn btn-secondary" asp-controller="Home" asp-action="Configuration">Ustawienia</a> &nbsp;
                 </nav>
             </div>
@@ -78,6 +79,7 @@
             <nav id="nav-sidebar" class="bg-faded">
                 @RenderSection("Categories", required: false)
                 @RenderSection("Menu", required: false)
+                @RenderSection("ClientPanel", required: false)
             </nav>
             
             <div class="container">

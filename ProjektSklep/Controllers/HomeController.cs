@@ -184,16 +184,23 @@ namespace ProjektSklep.Controllers
             }
 
             var cookie = Request.Cookies["ShoppingCart"];
+            string itemsToAdd = $"";
+            //var cookieAmount = Request.Cookies["ShoppingCartAmount"];
             if (cookie == null)
             {
                 Response.Cookies.Append("ShoppingCart", ProductID.ToString());
-                Response.Cookies.Append("ShoppingCartAmount", Quantity.ToString());     //obsluga ilosci
+                //Response.Cookies.Append("ShoppingCartAmount", Quantity.ToString());     //obsluga ilosci
+                //Response.Cookies.Append("ShoppingCart", $"{ProductID}-{Quantity}");
             }
             else
             {
-                Response.Cookies.Append("ShoppingCart", $"{cookie}-{ProductID}");
+                for (int i=0; i<Quantity-1; i++)
+                {
+                    itemsToAdd += $"-{ProductID}";
+                }
+                Response.Cookies.Append("ShoppingCart", $"{cookie}-{ProductID}{itemsToAdd}");
                 //Response.Cookies.Append("ShoppingCartAmount", $"{cookie}-{Quantity}");  //obsluga ilosci
-                Response.Cookies.Append("ShoppingCartAmount", Quantity.ToString());
+                //Response.Cookies.Append("ShoppingCartAmount", Quantity.ToString());
             }
 
             return RedirectToAction("Product", "Home", new { @id = ProductID });       // zmienic na poprzednią ścieżke

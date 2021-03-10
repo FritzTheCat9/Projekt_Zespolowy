@@ -69,9 +69,9 @@ namespace ProjektSklep.Controllers
                         if (elem != null)
                         {
                             var product = _shoppingCart.ProductList.Find(x => x.Product.ProductID == id);
-                            var cookieAmount = Request.Cookies["ShoppingCartAmount"];
-                            int quantity;
-                            Int32.TryParse(cookieAmount, out quantity);
+                            //var cookieAmount = Request.Cookies["ShoppingCartAmount"];
+                            //int quantity;
+                            //Int32.TryParse(cookieAmount, out quantity);
                             //int quantity = 1;                                           //ilosc do dodania do koszyka
                             //var cookieAmount = Request.Cookies["ShoppingCartAmount"];   //pobranie ciasteczka
                             //if (cookieAmount != null)
@@ -90,14 +90,14 @@ namespace ProjektSklep.Controllers
 
                             if (product != null)
                             {
-                                //product.Count++;
-                                product.Count += quantity;                              //dodanie odpowiedniej ilosci
+                                product.Count++;
+                                //product.Count += quantity;                              //dodanie odpowiedniej ilosci
                                 product.Sum += elem.Price;
                             }
                             else
                             {
-                                //_shoppingCart.ProductList.Add(new ShoppingCartElement { Product = elem, Count = 1, Sum = elem.Price });
-                                _shoppingCart.ProductList.Add(new ShoppingCartElement { Product = elem, Count = quantity, Sum = elem.Price });
+                                _shoppingCart.ProductList.Add(new ShoppingCartElement { Product = elem, Count = 1, Sum = elem.Price });
+                                //_shoppingCart.ProductList.Add(new ShoppingCartElement { Product = elem, Count = quantity, Sum = elem.Price });
                             }
                         }
                     }

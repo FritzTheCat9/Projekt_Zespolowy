@@ -69,19 +69,25 @@ namespace ProjektSklep.Controllers
                         if (elem != null)
                         {
                             var product = _shoppingCart.ProductList.Find(x => x.Product.ProductID == id);
-                            int quantity = 1;                                           //ilosc do dodania do koszyka
-                            var cookieAmount = Request.Cookies["ShoppingCartAmount"];   //pobranie ciasteczka
-                            if (cookieAmount != null)
-                            {
-                                string[] cookieAmountElements = cookieAmount.Split('-');    //oddzielenie slow ze stringa
-                                foreach (var e in cookieAmountElements)
-                                {
-                                    if (e != "" && int.Parse(e) > 0 && int.Parse(e) < 11)   //czy element jest liczbą od 1 do 10
-                                        quantity = int.Parse(e);                            //przekonwertowanie quantity na liczbe
-
-                                }
-                            }
+                            var cookieAmount = Request.Cookies["ShoppingCartAmount"];
+                            int quantity;
+                            Int32.TryParse(cookieAmount, out quantity);
+                            //int quantity = 1;                                           //ilosc do dodania do koszyka
+                            //var cookieAmount = Request.Cookies["ShoppingCartAmount"];   //pobranie ciasteczka
+                            //if (cookieAmount != null)
+                            //{
+                            //    string[] cookieAmountElements = cookieAmount.Split('-');    //oddzielenie slow ze stringa
+                            //    foreach (var e in cookieAmountElements)
+                            //    {
+                            //        int result;
+                            //        Int32.TryParse(e, out result);
+                            //        if (result > 0 && result < 11)                      //czy element jest liczbą od 1 do 10
+                            //            quantity = result;                            //przekonwertowanie quantity na liczbe
+                            //
+                            //    }
+                            //}
                             
+
                             if (product != null)
                             {
                                 //product.Count++;

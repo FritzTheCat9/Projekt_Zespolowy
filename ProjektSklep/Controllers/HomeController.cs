@@ -175,8 +175,8 @@ namespace ProjektSklep.Controllers
         }
 
         // Dodanie produktu do koszyka ale 2 parametry
-        [HttpGet("Home/ShoppingCartAddProduct/{ProductID:int}/{Quantity:int}")]
-        public IActionResult ShoppingCartAddProduct(int? ProductID, int Quantity )
+        //[HttpGet("Home/ShoppingCartAddProduct/{ProductID:int}/{Quantity:int}")]
+        public IActionResult ShoppingCartAddProduct(int? ProductID, int Quantity)
         {
             if (ProductID == null)
             {
@@ -192,7 +192,8 @@ namespace ProjektSklep.Controllers
             else
             {
                 Response.Cookies.Append("ShoppingCart", $"{cookie}-{ProductID}");
-                Response.Cookies.Append("ShoppingCartAmount", $"{cookie}-{Quantity}");  //obsluga ilosci
+                //Response.Cookies.Append("ShoppingCartAmount", $"{cookie}-{Quantity}");  //obsluga ilosci
+                Response.Cookies.Append("ShoppingCartAmount", Quantity.ToString());
             }
 
             return RedirectToAction("Product", "Home", new { @id = ProductID });       // zmienic na poprzednią ścieżke

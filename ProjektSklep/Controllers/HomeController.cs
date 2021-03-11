@@ -170,7 +170,16 @@ namespace ProjektSklep.Controllers
             string itemsToAdd = $"";
             if (cookie == null)
             {
-                Response.Cookies.Append("ShoppingCart", ProductID.ToString());
+                
+                for (int i = 0; i < Quantity; i++)
+                {
+                    if (i>0)
+                    {
+                        itemsToAdd += $"-";
+                    }
+                    itemsToAdd += $"{ProductID}";
+                }
+                Response.Cookies.Append("ShoppingCart", $"{itemsToAdd}");
 
             }
             else

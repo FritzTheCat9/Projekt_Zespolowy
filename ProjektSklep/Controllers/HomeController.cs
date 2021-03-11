@@ -42,23 +42,6 @@ namespace ProjektSklep.Controllers
             return View(homeViewModel);
         }
 
-        //Tutaj Kozik dodaje wyszukiwanie
-        /*
-        [HttpGet]
-        public async Task<IActionResult> Index(string productSearch)
-        {
-            ViewData["GetProductsSearch"] = productSearch;
-
-            var productQuery = from x in _context.Products select x;
-            if (!String.IsNullOrEmpty(productSearch))
-            {
-                productQuery = productQuery.Where(x => x.Name.Contains(productSearch));
-            }
-            return View(await productQuery.ToListAsync());
-        }*/
-        //nie mam pojecia po co są te includy tbh
-        //[HttpGet("Home/Index/{productSearch}")] //nwm co tu zrobilem??
-        //[HttpGet]
         [HttpPost]
         public IActionResult Index(string? productSearch)
         {

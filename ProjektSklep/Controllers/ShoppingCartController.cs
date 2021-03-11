@@ -157,15 +157,15 @@ namespace ProjektSklep.Controllers
         }*/
 
         [HttpPost("ShoppingCart/OrderCompleted")]
-        public IActionResult OrderCompleted([Bind("PaymentMethodID,ShippingMethodID,DiscountCode")] ShoppingCart ShoppingCart)
+        public async Task<IActionResult> OrderCompleted([Bind("PaymentMethodID,ShippingMethodID,DiscountCode")] ShoppingCart shoppingCart)
         {
             var cart = CreateCart();
-            ShoppingCart.ProductList = cart.ProductList;
-            ShoppingCart.CartPrice = cart.countCartPrice();
+            shoppingCart.ProductList = cart.ProductList;
+            shoppingCart.CartPrice = cart.countCartPrice();
 
             if (ModelState.IsValid)
             {
-                if(ShoppingCart.ProductList.Count != 0)
+                if(shoppingCart.ProductList.Count != 0)
                 {
                     using (var context = new ShopContext())
                     {
@@ -175,29 +175,45 @@ namespace ProjektSklep.Controllers
                         var order = new Order
                         {
                             OrderStatus = State.Preparing,
-                            PaymentMethodID = ShoppingCart.PaymentMethodID,
-                            ShippingMethodID = ShoppingCart.ShippingMethodID,
+                            PaymentMethodID = shoppingCart.PaymentMethodID,
+                            ShippingMethodID = shoppingCart.ShippingMethodID,
                             CustomerID = customer.Id,                                                     // id zalogowanego customera
-                            Price = ShoppingCart.CartPrice
+                            Price = shoppingCart.CartPrice
                         };
                         context.Orders.Add(order);
                         context.SaveChanges();              // dodanie OrderID przez EFCORE
 
-                        foreach (var product in ShoppingCart.ProductList)
-                        {
+                        foreach (var product in shoppingCart.ProductList)
+                        {                          
+                            try
+                            {
+                                product.Product.Amount -= product.Count;
+                                product.Product.SoldProducts += product.Count;
+
+                                //TODO: UJEMNE STOCKI: DODAĆ WIDOK, ŻE NIEDASIEZAMOWIĆ
+
+                                _context.Update(product.Product);
+                                await _context.SaveChangesAsync();
+                            }
+                            catch (DbUpdateConcurrencyException)
+                            {
+                                throw;
+                            }
+                           
                             for (int i = 0; i < product.Count; i++)
                             {
                                 var productOrder = new ProductOrder { OrderID = order.OrderID, ProductID = product.Product.ProductID };
+
                                 context.ProductOrders.Add(productOrder);
                             }
                         }
                         context.SaveChanges();
 
-                        var shippingMethod = context.ShippingMethods.Where(x => x.ShippingMethodID == ShoppingCart.ShippingMethodID).FirstOrDefault();
-                        var paymentMethod = context.PaymentMethods.Where(x => x.PaymentMethodID == ShoppingCart.PaymentMethodID).FirstOrDefault();
-                        var discountCode = context.DiscountCodes.Where(x => x.DiscoundCode == ShoppingCart.DiscountCode).FirstOrDefault();
+                        var shippingMethod = context.ShippingMethods.Where(x => x.ShippingMethodID == shoppingCart.ShippingMethodID).FirstOrDefault();
+                        var paymentMethod = context.PaymentMethods.Where(x => x.PaymentMethodID == shoppingCart.PaymentMethodID).FirstOrDefault();
+                        var discountCode = context.DiscountCodes.Where(x => x.DiscoundCode == shoppingCart.DiscountCode).FirstOrDefault();
 
-                        ViewData["CenaBezRabatu"] = ShoppingCart.CartPrice;
+                        ViewData["CenaBezRabatu"] = shoppingCart.CartPrice;
 
                         if (shippingMethod != null)
                             ViewData["ShippingMethod"] = shippingMethod.Name;
@@ -206,8 +222,8 @@ namespace ProjektSklep.Controllers
                         if (discountCode != null)
                         {
                             ViewData["DiscountCode"] = discountCode.Percent;
-                            decimal newPrice = ShoppingCart.CartPrice - (ShoppingCart.CartPrice * discountCode.Percent / 100);
-                            ShoppingCart.CartPrice = newPrice;
+                            decimal newPrice = shoppingCart.CartPrice - (shoppingCart.CartPrice * discountCode.Percent / 100);
+                            shoppingCart.CartPrice = newPrice;
 
                             // zmiana ceny na cene po rabacie
                             var newOrder = context.Orders.Where(x => x.OrderID == order.OrderID).FirstOrDefault();
@@ -225,7 +241,7 @@ namespace ProjektSklep.Controllers
                 }
             }
             
-            return View(ShoppingCart);
+            return View(shoppingCart);
         }
 
         /*[HttpGet("ShoppingCart/OrderCompleted")]

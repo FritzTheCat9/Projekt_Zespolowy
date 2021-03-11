@@ -175,11 +175,11 @@ namespace ProjektSklep.Controllers
             }
             else
             {
-                for (int i=0; i<Quantity-1; i++)
+                for (int i=0; i<Quantity; i++)
                 {
                     itemsToAdd += $"-{ProductID}";
                 }
-                Response.Cookies.Append("ShoppingCart", $"{cookie}-{ProductID}{itemsToAdd}");
+                Response.Cookies.Append("ShoppingCart", $"{cookie}{itemsToAdd}");
             }
 
             return RedirectToAction("Product", "Home", new { @id = ProductID });       // zmienic na poprzednią ścieżke

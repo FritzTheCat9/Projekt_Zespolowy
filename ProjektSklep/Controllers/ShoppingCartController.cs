@@ -183,6 +183,8 @@ namespace ProjektSklep.Controllers
                         context.Orders.Add(order);
                         context.SaveChanges();              // dodanie OrderID przez EFCORE
 
+                        List<Product> addedProducts = new List<Product>();          // zeby dodawac zamowiony produkt do bazy tylko raz (jak jest wieksza jego ilość)
+
                         foreach (var product in shoppingCart.ProductList)
                         {                          
                             try
@@ -200,10 +202,16 @@ namespace ProjektSklep.Controllers
                                 throw;
                             }
                            
-                            for (int i = 0; i < product.Count; i++)
+                            /*for (int i = 0; i < product.Count; i++)
                             {
                                 var productOrder = new ProductOrder { OrderID = order.OrderID, ProductID = product.Product.ProductID };
 
+                                context.ProductOrders.Add(productOrder);
+                            }*/
+
+                            if(!addedProducts.Contains(product.Product))
+                            {
+                                var productOrder = new ProductOrder { OrderID = order.OrderID, ProductID = product.Product.ProductID, Quantity = product.Count };
                                 context.ProductOrders.Add(productOrder);
                             }
                         }

@@ -246,6 +246,10 @@ namespace ProjektSklep.Controllers
                             ViewData["DiscountCode"] = 0;
                         }
                     }
+
+                    // czyszczenie ciasteczka
+                    var cookie = Request.Cookies["ShoppingCart"];
+                    Response.Cookies.Delete("ShoppingCart");
                 }
             }
             

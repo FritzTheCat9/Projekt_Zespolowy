@@ -35,6 +35,15 @@ namespace ProjektSklep.Models.ViewModels
 
         public void addProductIdQuantity(Product p, int quantity)
         {
+            /*bool keyExists = ProductIdQuantity.ContainsKey(p);
+            if (keyExists)
+            {
+                ProductIdQuantity[p] = ProductIdQuantity[p] + quantity;
+            }
+            else
+            {
+                ProductIdQuantity.Add(p, quantity);
+            }*/
             ProductIdQuantity.Add(p, quantity);
         }
     }

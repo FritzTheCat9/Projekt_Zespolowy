@@ -129,8 +129,10 @@ namespace ProjektSklep.Controllers
         public IActionResult Bestsellers()
         {
             var homeViewModel = new HomeViewModel();
+            //homeViewModel.Products = _context.Products.Include(p => p.Category).Include(p => p.Expert).Include(p => p.Attachments)
+            //    .Where(p => p.SoldProducts > 100);
             homeViewModel.Products = _context.Products.Include(p => p.Category).Include(p => p.Expert).Include(p => p.Attachments)
-                .Where(p => p.SoldProducts > 100);
+                .OrderByDescending(p => p.SoldProducts).Take(10);
             homeViewModel.Categories = _context.Categories.Include(c => c.Parent);
             return View(homeViewModel);
         }

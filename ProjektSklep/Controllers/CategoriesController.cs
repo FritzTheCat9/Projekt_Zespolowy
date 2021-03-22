@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Borders;
+using iText.Layout.Element;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -18,6 +22,46 @@ namespace ProjektSklep
         public CategoriesController(ShopContext context)
         {
             _context = context;
+        }
+
+        [Authorize(Roles = "Administrator")]
+        [HttpGet("Categories/GeneratePriceList/{CategoryID:int}")]
+        public IActionResult GeneratePriceList(int CategoryID)
+        {
+            var category = _context.Categories
+                    .Include(c => c.Products)
+                    .FirstOrDefault(c => c.CategoryID == CategoryID);
+
+            var exportFolder = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+            var exportFile = System.IO.Path.Combine(exportFolder, $"{category.Name}.pdf");
+
+            using (var writer = new PdfWriter(exportFile))
+            {
+                using (var pdf = new PdfDocument(writer))
+                {
+                    var doc = new Document(pdf);
+                    doc.Add(new Paragraph($"Price list for the category: {category.Name}"));
+
+                    Table table = new Table(4, false);
+
+                    table.AddCell(new Paragraph("Product Id"));
+                    table.AddCell(new Paragraph("Name"));
+                    table.AddCell(new Paragraph("Price"));
+                    table.AddCell(new Paragraph("VAT"));
+
+                    foreach (var p in category.Products)
+                    {
+                        table.AddCell(new Paragraph($"{p.ProductID}"));
+                        table.AddCell(new Paragraph($"{p.Name}"));
+                        table.AddCell(new Paragraph($"{p.Price}"));
+                        table.AddCell(new Paragraph($"{p.VAT}"));
+                    }
+
+                    doc.Add(table);
+                }
+            }
+
+            return RedirectToAction("Index");
         }
 
         // GET: Categories

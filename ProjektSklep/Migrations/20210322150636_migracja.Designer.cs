@@ -10,7 +10,7 @@ using ProjektSklep.Data;
 namespace ProjektSklep.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    [Migration("20210308123815_migracja")]
+    [Migration("20210322150636_migracja")]
     partial class migracja
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

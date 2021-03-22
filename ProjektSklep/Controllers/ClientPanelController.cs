@@ -35,6 +35,7 @@ namespace ProjektSklep.Controllers
 
             return View(order.ToList());
         }
+
         [HttpGet("ClientPanel/Details/{OrderID:int}")]
         public IActionResult Details(int OrderID)
         {
@@ -64,6 +65,56 @@ namespace ProjektSklep.Controllers
             }
 
             return View(o);
+        }
+
+        [HttpGet("ClientPanel/Reorder/{OrderId:int}")]
+        public IActionResult Reorder(int OrderId)
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var order = _context.Orders
+                    .Include(o => o.Customer)
+                    .Include(o => o.PaymentMethod)
+                    .Include(o => o.ShippingMethod)
+                    .FirstOrDefault(m => m.OrderID == OrderId);
+
+            var productOrders = _context.ProductOrders.Include(o => o.Product);
+            List<Product> productList = new List<Product>();
+            foreach (var p in productOrders)
+            {
+                if (p.OrderID == order.OrderID)
+                {
+                    for (int i = 0; i < p.Quantity; i++)
+                    {
+                        productList.Add(p.Product);
+                    }
+                }
+            }
+
+            // czyszczenie ciasteczka
+            //var cookie = Request.Cookies["ShoppingCart"];
+            /*Response.Cookies.Delete("ShoppingCart");*/
+
+            var cookie = Request.Cookies["ShoppingCart"];
+
+            string itemsToAdd = $"";
+            if (cookie == null)
+            {
+                foreach (var product in productList)
+                {
+                    itemsToAdd += $"-{product.ProductID}";
+                }
+                Response.Cookies.Append("ShoppingCart", $"{itemsToAdd}");
+            }
+            else
+            {
+                foreach (var product in productList)
+                {
+                    itemsToAdd += $"-{product.ProductID}";
+                }
+                Response.Cookies.Append("ShoppingCart", $"{cookie}{itemsToAdd}");
+            }
+
+            return View();
         }
     }
 }

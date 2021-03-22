@@ -174,7 +174,7 @@ namespace ProjektSklep.Controllers
 
                         var order = new Order
                         {
-                            OrderStatus = State.Preparing,
+                            OrderStatus = State.New,
                             PaymentMethodID = shoppingCart.PaymentMethodID,
                             ShippingMethodID = shoppingCart.ShippingMethodID,
                             CustomerID = customer.Id,                                                     // id zalogowanego customera

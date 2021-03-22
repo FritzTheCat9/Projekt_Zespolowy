@@ -9,9 +9,10 @@ namespace ProjektSklep.Models
 {
     public enum State
     {
-        Preparing = 0,
-        OnTheWay = 1,
-        Delivered = 2
+        New = 0,
+        InProgress = 1,
+        Realized = 2,
+        Canceled = 3
     }
 
     [DisplayColumn("OrderID")]

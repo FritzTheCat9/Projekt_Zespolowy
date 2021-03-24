@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
+using System.IO;
+using System.Text;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using System.Linq;
@@ -250,9 +252,27 @@ namespace ProjektSklep.Controllers
                     // czyszczenie ciasteczka
                     var cookie = Request.Cookies["ShoppingCart"];
                     Response.Cookies.Delete("ShoppingCart");
+
+                    // zwiekszanie licznika odwiedzin - odczyt
+                    string path = "Content/Resources/visit_counter.txt";
+                    FileStream fs = System.IO.File.OpenRead(path);
+                    byte[] b = new byte[64];
+                    UTF8Encoding temp = new UTF8Encoding(true);
+                    int result = 0;
+                    while (fs.Read(b, 0, b.Length) > 0)
+                    {
+                        Int32.TryParse(temp.GetString(b), out result);
+                    }
+                    fs.Close();
+                    result++;
+                    // zwiekszanie licznika odwiedzin - zapis
+                    fs = System.IO.File.Create(path);
+                    b = new UTF8Encoding(true).GetBytes(result.ToString());
+                    fs.Write(b, 0, b.Length);
+                    fs.Close();
+                    Statistics.GetInstance().SetVisitors(result);
                 }
             }
-            
             return View(shoppingCart);
         }
 

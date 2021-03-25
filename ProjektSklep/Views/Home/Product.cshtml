@@ -31,67 +31,68 @@
                 </div>
             </div>
         </div>
-            <div class="col-md-6">
+        <div class="col-md-6">
 
-                <h5>@Model.Name</h5>
-                <p class="mb-2 text-muted text-uppercase small">@Model.Category.Name</p>
-                <p><span class="mr-1"><strong>@Model.Price PLN</strong></span></p>
-                <p class="pt-1">
-                    @Model.ProductDescription
-                </p>
-                <div class="table-responsive">
-                    <table class="table table-sm table-borderless mb-0">
-                        <tbody>
-                            <tr>
-                                <th class="pl-0 w-25" scope="row"><strong>Data dodania:</strong></th>
-                                <td>@Model.DateAdded</td>
-                            </tr>
-                            <tr>
-                                <th class="pl-0 w-25" scope="row"><strong>Sprzedano:</strong></th>
-                                <td>@Model.SoldProducts</td>
-                            </tr>
-                            <tr>
-                                <th class="pl-0 w-25" scope="row"><strong>Dostępna ilość:</strong></th>
-                                <td>@Model.Amount</td>
-                            </tr>
-                            <tr>
-                                <th class="pl-0 w-25" scope="row">
-                                    <text style="color:red;">
-                                        &#128712;
-                                    </text>
-                                    <a href="#" class="nav-link text-dark" data-toggle="tooltip" data-placement="bottom" title="@expertMessage">
-                                        <strong>Ekspert:</strong>
-                                    </a>
-                                </th>
-                                <td><br />@Model.Expert.FirstName @Model.Expert.LastName <br /> @Model.Expert.Email</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <hr>
-                <div class="table-responsive mb-2">
-                    <table class="table table-sm table-borderless">
-                        <tbody>
-                            <tr>
-                                <td class="pl-0 pb-0 w-25"><strong>Ilość: </strong> </td>                             
-                            </tr>
-                            <tr>
-                                <td class="pl-0">
-                                    <div class="def-number-input number-input safari_only mb-0">
-                                        <form asp-controller="Home" asp-action="ShoppingCartAddProduct">
-                                            <input type="hidden" asp-for="ProductID" />
-                                            <div class="form-group">
-                                                <input type="number" id="Quantity" name="Quantity" min="0" value="1" /> &#8192;
-                                                <input type="submit" value="Dodaj do koszyka" class="btn btn-primary" />
-                                            </div>
-                                        </form>
-                                    </div>
-                                </td>                               
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <h5>@Model.Name</h5>
+            <p class="mb-2 text-muted text-uppercase small">@Model.Category.Name</p>
+            <p class="mb-2 text-muted text-uppercase small">ID: @Model.ProductID</p>
+            <p><span class="mr-1"><strong>@Model.Price PLN</strong></span></p>
+            <p class="pt-1">
+                @Model.ProductDescription
+            </p>
+            <div class="table-responsive">
+                <table class="table table-sm table-borderless mb-0">
+                    <tbody>
+                        <tr>
+                            <th class="pl-0 w-25" scope="row"><strong>Data dodania:</strong></th>
+                            <td>@Model.DateAdded</td>
+                        </tr>
+                        <tr>
+                            <th class="pl-0 w-25" scope="row"><strong>Sprzedano:</strong></th>
+                            <td>@Model.SoldProducts</td>
+                        </tr>
+                        <tr>
+                            <th class="pl-0 w-25" scope="row"><strong>Dostępna ilość:</strong></th>
+                            <td>@Model.Amount</td>
+                        </tr>
+                        <tr>
+                            <th class="pl-0 w-25" scope="row">
+                                <text style="color:red;">
+                                    &#128712;
+                                </text>
+                                <a href="#" class="nav-link text-dark" data-toggle="tooltip" data-placement="bottom" title="@expertMessage">
+                                    <strong>Ekspert:</strong>
+                                </a>
+                            </th>
+                            <td><br />@Model.Expert.FirstName @Model.Expert.LastName <br /> @Model.Expert.Email</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+            <hr>
+            <div class="table-responsive mb-2">
+                <table class="table table-sm table-borderless">
+                    <tbody>
+                        <tr>
+                            <td class="pl-0 pb-0 w-25"><strong>Ilość: </strong> </td>
+                        </tr>
+                        <tr>
+                            <td class="pl-0">
+                                <div class="def-number-input number-input safari_only mb-0">
+                                    <form asp-controller="Home" asp-action="ShoppingCartAddProduct">
+                                        <input type="hidden" asp-for="ProductID" />
+                                        <div class="form-group">
+                                            <input type="number" id="Quantity" name="Quantity" min="0" value="1" /> &#8192;
+                                            <input type="submit" value="Dodaj do koszyka" class="btn btn-primary" />
+                                        </div>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         </div>
 
 </section>

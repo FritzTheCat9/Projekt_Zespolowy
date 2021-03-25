@@ -58,6 +58,11 @@ namespace ProjektSklep.Controllers
             return View(homeViewModel);
         }
 
+        public IActionResult ContactForm()
+        {
+            return View();
+        }
+
         [HttpGet("Home/Product/{ProductID:int}")]
         public IActionResult Product(int ProductID)
         {

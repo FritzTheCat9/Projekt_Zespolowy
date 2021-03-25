@@ -95,7 +95,19 @@
                         &copy; 2020 - ProjektSklep - <a asp-area="" asp-controller="Home" asp-action="ContactForm">Kontakt</a>
                     </div>
                     <div class="col-md-auto">
-                        Licznik odwiedzin: <b>0</b>
+                        @{ 
+                            string path = "Content/Resources/visit_counter.txt";
+                            System.IO.FileStream fs = System.IO.File.OpenRead(path);
+                            byte[] b = new byte[64];
+                            System.Text.UTF8Encoding temp = new System.Text.UTF8Encoding(true);
+                            int result = 0;
+                            while (fs.Read(b, 0, b.Length) > 0)
+                            {
+                                Int32.TryParse(temp.GetString(b), out result);
+                            }
+                            fs.Close();
+                        }
+                        Licznik odwiedzin: <b>@result</b>
                     </div>
                 </div>
             </div>

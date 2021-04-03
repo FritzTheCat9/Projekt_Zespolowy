@@ -1,0 +1,51 @@
+﻿
+@{
+    ViewData["Title"] = "RecycleBin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model ProjektSklep.Models.RecycleBin
+}
+
+<h1>Kosz</h1>
+<h2>Poniżej znajdują się usunięte przedmioty z Twojego koszyka.</h2>
+@if (Model.ShoppingCartElementList.Count != 0)
+{
+    <table class="table" style="margin-top:20px">
+        <thead>
+            <tr>
+                <th style="text-align: center; vertical-align: middle;">
+                    Nazwa
+                </th>
+                <th></th>
+                <th style="text-align: center; vertical-align: middle;">
+                    Cena
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.ShoppingCartElementList)
+            {
+                <tr>
+                    <td style="text-align: center; vertical-align: middle;">
+                        @Html.DisplayFor(modelItem => item.Product.Name)
+                    </td>
+                    <td style="text-align: center; vertical-align: middle;">
+                        <img src="@Url.Content(item.Product.Image)" style="height: 100px; width: 150px;" />
+                    </td>
+                    <td style="text-align: center; vertical-align: middle;">
+                        @item.Sum
+                    </td>
+                    <td style="text-align: center; vertical-align: middle;">
+                        <a class="btn btn-success" asp-action="RestoreProduct" asp-route-ProductID="@item.Product.ProductID">Do koszyka</a>
+                        <a class="btn btn-info" asp-action="RedirectToProduct" asp-route-ProductID="@item.Product.ProductID">Zobacz produkt</a>
+                        <a class="btn btn-danger" asp-action="Index" asp-route-ProductID="@item.Product.ProductID">Usuń z kosza</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h4>Nie ma aktualnie żadnych przedmiotów w koszu.</h4>
+}

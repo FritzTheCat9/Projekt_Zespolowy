@@ -1,0 +1,49 @@
+﻿
+@{
+    ViewData["Title"] = "RecycleBin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @model ProjektSklep.Models.ViewModels.HomeViewModel;
+}
+
+<h1>Kosz</h1>
+<h5>(Poniżej znajdują się produkty usunięte z koszyka.)</h5>
+
+<div class="list-group">
+    @foreach (Product p in Model.Products)
+    {
+        @await Html.PartialAsync("_PartialProduct", p)
+    }
+</div>
+
+@section Categories {
+    <div class="sidebar-header hidden-sm-down">
+        <h2>Kategorie</h2>
+        <hr />
+    </div>
+    <div class="sidebar-content hidden-sm-down">
+        <ul>
+            @foreach (Category c in Model.Categories)
+            {
+                if (c.Visibility == true)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" asp-action="Index" asp-route-CategoryId="@c.CategoryID">@c.Name</a>
+                    </li>
+                }
+            }
+        </ul>
+    </div>
+}
+
+@section Menu {
+    <div class="sidebar-header hidden-sm-down">
+        <h2>Menu</h2>
+        <hr />
+    </div>
+    <div class="sidebar-content hidden-sm-down">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Promotion">Promocje</a>
+        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="NewProducts">Nowe produkty</a>
+        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Bestsellers">Bestsellery</a>
+        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="RecycleBin">Kosz</a>
+    </div>
+}

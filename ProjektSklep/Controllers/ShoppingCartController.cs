@@ -113,13 +113,23 @@ namespace ProjektSklep.Controllers
                 if (toRemove.Count > 1)
                 {
                     toRemove.Count--;
-                    toRemove.Sum -= toRemove.Product.Price;
+                    toRemove.Sum -= toRemove.Product.Price;               
                 }
                 else if (toRemove.Count == 1)
                 {
                     toRemove.Count--;
                     toRemove.Sum -= toRemove.Product.Price;
                     _shoppingCart.ProductList.Remove(toRemove);
+                }
+                // Dodanie produktu do kosza.
+                var cookie = Request.Cookies["RecycleBin"];
+                if (cookie == null)
+                {
+                    Response.Cookies.Append("RecycleBin", toRemove.Product.ProductID.ToString());
+                }
+                else
+                {
+                    Response.Cookies.Append("RecycleBin", $"{cookie}-{toRemove.Product.ProductID}");
                 }
             }
 

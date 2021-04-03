@@ -142,6 +142,14 @@ namespace ProjektSklep.Controllers
             return View(homeViewModel);
         }
 
+        [HttpGet("Home/RecycleBin")]
+        public IActionResult RecycleBin()
+        {
+            var homeViewModel = new HomeViewModel();
+            
+            return View();
+        }
+
         // Dodanie produktu do koszyka
         [HttpGet("Home/ShoppingCartAddProduct/{ProductID:int}")]
         public IActionResult ShoppingCartAddProduct(int? ProductID)

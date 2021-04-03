@@ -4,6 +4,7 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     @model ProjektSklep.Models.ViewModels.HomeViewModel;
+    //@model PaginatedList<ProjektSklep.Models.ViewModels.HomeViewModel>;
 }
 
 <div class="list-group">
@@ -12,6 +13,12 @@
         @await Html.PartialAsync("_PartialProduct", p)
     }
 </div>
+
+<div class="d-flex justify-content-center" style="margin-top:5px">
+    <button type="button" class="btn btn-primary" style="margin-right:5px">Poprzednia</button>
+    <button type="button" class="btn btn-primary" style="margin-left:5px">Następna</button>
+</div>
+
 
 @section Categories {
     <div class="sidebar-header hidden-sm-down">

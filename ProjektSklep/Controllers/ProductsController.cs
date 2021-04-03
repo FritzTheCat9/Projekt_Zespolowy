@@ -27,8 +27,17 @@ namespace ProjektSklep
             var shopContext = _context.Products.Include(p => p.Category).Include(p => p.Expert);
             return View(await shopContext.ToListAsync());
         }
+        // Metoda potrzebna do stronicowania, ktore nie dziala.
+        //public async Task<IActionResult> Index()
+        //{
+        //    int pageNumber = 1;
+        //    int pageSize = 4;
 
-        
+        //    var shopContext = _context.Products.Include(p => p.Category).Include(p => p.Expert);
+        //    // pageNumber ?? 1
+        //    return View(await PaginatedList<Product>.CreateAsync(shopContext.AsNoTracking(), pageNumber, pageSize));
+        //}
+
 
         // GET: Products/Details/5
         [Authorize(Roles = "Administrator")]

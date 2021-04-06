@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -158,6 +161,29 @@ namespace ProjektSklep
                 {
                     _context.Update(order);
                     await _context.SaveChangesAsync();
+
+                    // Wysłanie emaila o stanie zamówienia
+                    var order1 = await _context.Orders
+                       .Include(o => o.Customer)
+                       .Include(o => o.PaymentMethod)
+                       .Include(o => o.ShippingMethod)
+                       .FirstOrDefaultAsync(o => o.OrderID == id);
+
+                    using (MailMessage mail = new MailMessage())
+                    {
+                        mail.From = new MailAddress("klientklientowski123@gmail.com");
+                        mail.To.Add(order1.Customer.Email);
+                        mail.Subject = $"Zmieniono stan zamówienia na {order1.OrderStatus}";
+                        mail.Body = $"Zmieniono stan zamówienia na {order1.OrderStatus}";
+                        mail.IsBodyHtml = true;
+
+                        using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                        {
+                            smtp.Credentials = new NetworkCredential("klientklientowski123@gmail.com", "Klient123!");
+                            smtp.EnableSsl = true;
+                            smtp.Send(mail);
+                        }
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -217,5 +243,36 @@ namespace ProjektSklep
         {
             return _context.Orders.Any(e => e.OrderID == id);
         }
+
+        /*[HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> SendEmailAboutOrder(int id)
+        {
+            if (ModelState.IsValid)
+            {
+                var order = await _context.Orders
+                    .Include(o => o.Customer)
+                    .Include(o => o.PaymentMethod)
+                    .Include(o => o.ShippingMethod)
+                    .FirstOrDefaultAsync(o => o.OrderID == id);
+
+                using (MailMessage mail = new MailMessage())
+                {
+                    mail.From = new MailAddress("klientklientowski123@gmail.com");
+                    mail.To.Add(order.Customer.Email);
+                    mail.Subject = $"Zmieniono stan zamówienia na {order.OrderStatus}";
+                    mail.Body = $"Zmieniono stan zamówienia na {order.OrderStatus}";
+                    mail.IsBodyHtml = true;
+
+                    using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                    {
+                        smtp.Credentials = new NetworkCredential("klientklientowski123@gmail.com", "Klient123!");
+                        smtp.EnableSsl = true;
+                        smtp.Send(mail);
+                    }
+                }
+            }
+            return RedirectToAction("Index");
+        }*/
     }
 }

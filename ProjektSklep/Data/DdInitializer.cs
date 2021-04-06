@@ -56,11 +56,11 @@ namespace ProjektSklep.Data
                 }
             }
 
-            if (userManager.FindByNameAsync("klientklientowski@gmail.com").Result == null)
+            if (userManager.FindByNameAsync("klientklientowski123@gmail.com").Result == null)
             {
                 Customer customer = new Customer();
-                customer.UserName = "klientklientowski@gmail.com";
-                customer.Email = "klientklientowski@gmail.com";
+                customer.UserName = "klientklientowski123@gmail.com";
+                customer.Email = "klientklientowski123@gmail.com";
                 customer.EmailConfirmed = true;
                 customer.PhoneNumberConfirmed = false;
                 customer.TwoFactorEnabled = false;
@@ -239,9 +239,9 @@ namespace ProjektSklep.Data
                 var user = userManager.FindByNameAsync("bartlomiejuminski1999@gmail.com").Result;
                 orders[0] = new Order { CustomerID = user.Id, ShippingMethodID = 1, PaymentMethodID = 3, OrderStatus = State.InProgress, Price = 23996 };
             }
-            if (userManager.FindByNameAsync("klientklientowski@gmail.com").Result != null)
+            if (userManager.FindByNameAsync("klientklientowski123@gmail.com").Result != null)
             {
-                var user = userManager.FindByNameAsync("klientklientowski@gmail.com").Result;
+                var user = userManager.FindByNameAsync("klientklientowski123@gmail.com").Result;
                 orders[1] = new Order { CustomerID = user.Id, ShippingMethodID = 2, PaymentMethodID = 4, OrderStatus = State.Realized, Price = 12000 };
             }
             foreach (Order order in orders)

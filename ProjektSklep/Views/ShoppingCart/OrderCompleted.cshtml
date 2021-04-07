@@ -5,7 +5,53 @@
     @model ProjektSklep.Models.ShoppingCart
 }
 
-@if (Model.ProductList.Count == 0)
+@if (Model.MissingProductList.Count != 0)
+{
+    <h1>BRAKI NA STANIE</h1>
+    <h3>
+        Niestety, ale na stanie nie ma aktualnie wystarczająco produktów, które chcesz kupić, spróbuj usunąć je z koszyka i spróbować jeszcze raz.
+        Poniżej lista produktów, których ilość w magazynie jest niewystarczająca:
+    </h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="text-align: center; vertical-align: middle;">
+                    Nazwa produktu
+                </th>
+                <th>
+                    
+                </th>
+                <th style="text-align: center; vertical-align: middle;">
+                    Ilość w koszyku
+                </th>
+                <th style="text-align: center; vertical-align: middle;">
+                    Ilość w magazynie
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.MissingProductList)
+            {
+                <tr>
+                    <td style="text-align: center; vertical-align: middle;">
+                        @Html.DisplayFor(modelItem => item.Product.Name)
+                    </td>
+                    <td style="text-align: center; vertical-align: middle;">
+                        <img src="@Url.Content(item.Product.Image)" style="height: 100px; width: 150px;" />
+                    </td>
+                    <td style="text-align: center; vertical-align: middle;">
+                        @Html.DisplayFor(modelItem => item.Count)
+                    </td>
+                    <td style="text-align: center; vertical-align: middle; color: red">
+                        @Html.DisplayFor(modelItem => item.Product.Amount)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else if (Model.ProductList.Count == 0)
 {
     <h2>Koszyk pusty, nie można wykonać zamówienia</h2>
 }

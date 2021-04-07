@@ -108,12 +108,12 @@ namespace ProjektSklep.Controllers
             _shoppingCart = CreateCart();
             var toRemove = _shoppingCart.ProductList.Find(x => x.Product.ProductID == ProductID);
 
-            if(toRemove != null)
+            if (toRemove != null)
             {
                 if (toRemove.Count > 1)
                 {
                     toRemove.Count--;
-                    toRemove.Sum -= toRemove.Product.Price;               
+                    toRemove.Sum -= toRemove.Product.Price;
                 }
                 else if (toRemove.Count == 1)
                 {
@@ -177,7 +177,7 @@ namespace ProjektSklep.Controllers
 
             if (ModelState.IsValid)
             {
-                if(shoppingCart.ProductList.Count != 0)
+                if (shoppingCart.ProductList.Count != 0)
                 {
                     using (var context = new ShopContext())
                     {
@@ -197,90 +197,110 @@ namespace ProjektSklep.Controllers
 
                         List<Product> addedProducts = new List<Product>();          // zeby dodawac zamowiony produkt do bazy tylko raz (jak jest wieksza jego ilość)
 
+                        // Jezeli nie ma produktu na stanie.
+                        List<ShoppingCartElement> missingProducts = new List<ShoppingCartElement>();
+                        shoppingCart.MissingProductList = missingProducts;
                         foreach (var product in shoppingCart.ProductList)
-                        {                          
-                            try
+                        {
+                            if (product.Product.Amount - product.Count <= 0)
                             {
-                                product.Product.Amount -= product.Count;
-                                product.Product.SoldProducts += product.Count;
-
-                                //TODO: UJEMNE STOCKI: DODAĆ WIDOK, ŻE NIEDASIEZAMOWIĆ
-
-                                _context.Update(product.Product);
-                                await _context.SaveChangesAsync();
-                            }
-                            catch (DbUpdateConcurrencyException)
-                            {
-                                throw;
-                            }
-                           
-                            /*for (int i = 0; i < product.Count; i++)
-                            {
-                                var productOrder = new ProductOrder { OrderID = order.OrderID, ProductID = product.Product.ProductID };
-
-                                context.ProductOrders.Add(productOrder);
-                            }*/
-
-                            if(!addedProducts.Contains(product.Product))
-                            {
-                                var productOrder = new ProductOrder { OrderID = order.OrderID, ProductID = product.Product.ProductID, Quantity = product.Count };
-                                context.ProductOrders.Add(productOrder);
+                                missingProducts.Add(product);
                             }
                         }
-                        context.SaveChanges();
 
-                        var shippingMethod = context.ShippingMethods.Where(x => x.ShippingMethodID == shoppingCart.ShippingMethodID).FirstOrDefault();
-                        var paymentMethod = context.PaymentMethods.Where(x => x.PaymentMethodID == shoppingCart.PaymentMethodID).FirstOrDefault();
-                        var discountCode = context.DiscountCodes.Where(x => x.DiscoundCode == shoppingCart.DiscountCode).FirstOrDefault();
-
-                        ViewData["CenaBezRabatu"] = shoppingCart.CartPrice;
-
-                        if (shippingMethod != null)
-                            ViewData["ShippingMethod"] = shippingMethod.Name;
-                        if (paymentMethod != null)
-                            ViewData["PaymentMethod"] = paymentMethod.Name;
-                        if (discountCode != null)
+                        if (missingProducts.Count != 0)
                         {
-                            ViewData["DiscountCode"] = discountCode.Percent;
-                            decimal newPrice = shoppingCart.CartPrice - (shoppingCart.CartPrice * discountCode.Percent / 100);
-                            shoppingCart.CartPrice = newPrice;
-
-                            // zmiana ceny na cene po rabacie
-                            var newOrder = context.Orders.Where(x => x.OrderID == order.OrderID).FirstOrDefault();
-                            if(newOrder != null)
-                            {
-                                newOrder.Price = newPrice;
-                                context.SaveChanges();
-                            }
+                            return View(shoppingCart);
                         }
                         else
                         {
-                            ViewData["DiscountCode"] = 0;
+                            // Jezeli wszystkie produkty sa na stanie.
+                            foreach (var product in shoppingCart.ProductList)
+                            {
+
+                                try
+                                {
+                                    product.Product.Amount -= product.Count;
+                                    product.Product.SoldProducts += product.Count;
+
+                                    //TODO: UJEMNE STOCKI: DODAĆ WIDOK, ŻE NIEDASIEZAMOWIĆ
+
+                                    _context.Update(product.Product);
+                                    await _context.SaveChangesAsync();
+                                }
+                                catch (DbUpdateConcurrencyException)
+                                {
+                                    throw;
+                                }
+
+                                /*for (int i = 0; i < product.Count; i++)
+                                {
+                                    var productOrder = new ProductOrder { OrderID = order.OrderID, ProductID = product.Product.ProductID };
+
+                                    context.ProductOrders.Add(productOrder);
+                                }*/
+
+                                if (!addedProducts.Contains(product.Product))
+                                {
+                                    var productOrder = new ProductOrder { OrderID = order.OrderID, ProductID = product.Product.ProductID, Quantity = product.Count };
+                                    context.ProductOrders.Add(productOrder);
+                                }
+                            }
+                            context.SaveChanges();
+
+                            var shippingMethod = context.ShippingMethods.Where(x => x.ShippingMethodID == shoppingCart.ShippingMethodID).FirstOrDefault();
+                            var paymentMethod = context.PaymentMethods.Where(x => x.PaymentMethodID == shoppingCart.PaymentMethodID).FirstOrDefault();
+                            var discountCode = context.DiscountCodes.Where(x => x.DiscoundCode == shoppingCart.DiscountCode).FirstOrDefault();
+
+                            ViewData["CenaBezRabatu"] = shoppingCart.CartPrice;
+
+                            if (shippingMethod != null)
+                                ViewData["ShippingMethod"] = shippingMethod.Name;
+                            if (paymentMethod != null)
+                                ViewData["PaymentMethod"] = paymentMethod.Name;
+                            if (discountCode != null)
+                            {
+                                ViewData["DiscountCode"] = discountCode.Percent;
+                                decimal newPrice = shoppingCart.CartPrice - (shoppingCart.CartPrice * discountCode.Percent / 100);
+                                shoppingCart.CartPrice = newPrice;
+
+                                // zmiana ceny na cene po rabacie
+                                var newOrder = context.Orders.Where(x => x.OrderID == order.OrderID).FirstOrDefault();
+                                if (newOrder != null)
+                                {
+                                    newOrder.Price = newPrice;
+                                    context.SaveChanges();
+                                }
+                            }
+                            else
+                            {
+                                ViewData["DiscountCode"] = 0;
+                            }
+
+                            // czyszczenie ciasteczka
+                            var cookie = Request.Cookies["ShoppingCart"];
+                            Response.Cookies.Delete("ShoppingCart");
+
+                            // zwiekszanie licznika odwiedzin - odczyt
+                            string path = "Content/Resources/visit_counter.txt";
+                            FileStream fs = System.IO.File.OpenRead(path);
+                            byte[] b = new byte[64];
+                            UTF8Encoding temp = new UTF8Encoding(true);
+                            int result = 0;
+                            while (fs.Read(b, 0, b.Length) > 0)
+                            {
+                                Int32.TryParse(temp.GetString(b), out result);
+                            }
+                            fs.Close();
+                            result++;
+                            // zwiekszanie licznika odwiedzin - zapis
+                            fs = System.IO.File.Create(path);
+                            b = new UTF8Encoding(true).GetBytes(result.ToString());
+                            fs.Write(b, 0, b.Length);
+                            fs.Close();
+                            Statistics.GetInstance().SetVisitors(result);
                         }
                     }
-
-                    // czyszczenie ciasteczka
-                    var cookie = Request.Cookies["ShoppingCart"];
-                    Response.Cookies.Delete("ShoppingCart");
-
-                    // zwiekszanie licznika odwiedzin - odczyt
-                    string path = "Content/Resources/visit_counter.txt";
-                    FileStream fs = System.IO.File.OpenRead(path);
-                    byte[] b = new byte[64];
-                    UTF8Encoding temp = new UTF8Encoding(true);
-                    int result = 0;
-                    while (fs.Read(b, 0, b.Length) > 0)
-                    {
-                        Int32.TryParse(temp.GetString(b), out result);
-                    }
-                    fs.Close();
-                    result++;
-                    // zwiekszanie licznika odwiedzin - zapis
-                    fs = System.IO.File.Create(path);
-                    b = new UTF8Encoding(true).GetBytes(result.ToString());
-                    fs.Write(b, 0, b.Length);
-                    fs.Close();
-                    Statistics.GetInstance().SetVisitors(result);
                 }
             }
             return View(shoppingCart);

@@ -13,6 +13,7 @@ namespace ProjektSklep.Models
         public string DiscountCode { get; set; }
         public List<ShoppingCartElement> ProductList { get; set; }
         public decimal CartPrice { get; set; }
+        public List<ShoppingCartElement> MissingProductList { get; set; }
 
         public decimal countCartPrice()
         {

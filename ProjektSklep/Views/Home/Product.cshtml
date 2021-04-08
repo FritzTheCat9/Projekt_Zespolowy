@@ -97,7 +97,37 @@
 
 </section>
 <hr />
-<h5>Szczegóły produktu: (kiedyś się zrobi)</h5>
+<h5>Szczegóły produktu: (kiedyś się zrobi)</h5> <br /><br />
+<div>
+    Kod html produktu do umieszczenia na zewnętrznym serwisie aukcyjnym <br />
+    <textarea rows="10" cols="70">
+    <div class="mb-5 border border-secondary rounded" style="width: 800px; height: 350px;">       
+        <div class="row">
+            <div class="col-md-6 mb-4 mb-md-0">
+                <div class="mdb-lightbox">
+                    <div class="row product-gallery mx-1">
+                        <div class="col-12 mb-0">
+                            <figure class="view overlay rounded z-depth-1 main-img">
+                                <img src="@Url.Content(@Model.Image)" class="img-fluid z-depth-1" width="450" height="300">
+                            </figure>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <br /><br />
+                <h5>@Model.Name</h5>
+                <p class="mb-2 text-muted text-uppercase small">@Model.Category.Name</p>
+                <p class="mb-2 text-muted text-uppercase small">ID: @Model.ProductID</p>
+                <p><span class="mr-1"><strong>@Model.Price PLN</strong></span></p>
+                <p><span class="mr-1">@Model.ProductDescription</span> </p>
+            </div>
+        </div>
+    </div>
+    </textarea>
+</div>
+
+
 <!--Section: Block Content-->
 
 @section Categories {

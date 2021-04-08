@@ -184,25 +184,14 @@ namespace ProjektSklep.Controllers
                         string LoggedUserEmail = User.Identity.Name;
                         var customer = context.Customers.Where(x => x.Email == LoggedUserEmail).FirstOrDefault();
 
-                        var order = new Order
-                        {
-                            OrderStatus = State.New,
-                            PaymentMethodID = shoppingCart.PaymentMethodID,
-                            ShippingMethodID = shoppingCart.ShippingMethodID,
-                            CustomerID = customer.Id,                                                     // id zalogowanego customera
-                            Price = shoppingCart.CartPrice
-                        };
-                        context.Orders.Add(order);
-                        context.SaveChanges();              // dodanie OrderID przez EFCORE
-
-                        List<Product> addedProducts = new List<Product>();          // zeby dodawac zamowiony produkt do bazy tylko raz (jak jest wieksza jego ilość)
+                        
 
                         // Jezeli nie ma produktu na stanie.
                         List<ShoppingCartElement> missingProducts = new List<ShoppingCartElement>();
                         shoppingCart.MissingProductList = missingProducts;
                         foreach (var product in shoppingCart.ProductList)
                         {
-                            if (product.Product.Amount - product.Count <= 0)
+                            if (product.Product.Amount - product.Count < 0)
                             {
                                 missingProducts.Add(product);
                             }
@@ -214,6 +203,19 @@ namespace ProjektSklep.Controllers
                         }
                         else
                         {
+                            var order = new Order
+                            {
+                                OrderStatus = State.New,
+                                PaymentMethodID = shoppingCart.PaymentMethodID,
+                                ShippingMethodID = shoppingCart.ShippingMethodID,
+                                CustomerID = customer.Id,                                                     // id zalogowanego customera
+                                Price = shoppingCart.CartPrice
+                            };
+                            context.Orders.Add(order);
+                            context.SaveChanges();              // dodanie OrderID przez EFCORE
+
+                            List<Product> addedProducts = new List<Product>();          // zeby dodawac zamowiony produkt do bazy tylko raz (jak jest wieksza jego ilość)
+
                             // Jezeli wszystkie produkty sa na stanie.
                             foreach (var product in shoppingCart.ProductList)
                             {

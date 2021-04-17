@@ -168,8 +168,9 @@ namespace ProjektSklep.Controllers
             return false;
         }*/
 
+        // Dodanie zamowienia z walidacja, ktora sprawdza czy jest wystarczajaco duzo produktow na stanie.
         [HttpPost("ShoppingCart/OrderCompleted")]
-        public async Task<IActionResult> OrderCompleted([Bind("PaymentMethodID,ShippingMethodID,DiscountCode")] ShoppingCart shoppingCart)
+        public async Task<IActionResult> OrderCompleted([Bind("PaymentMethodID,ShippingMethodID,DiscountCode")] ShoppingCart shoppingCart, bool makeOrderDespiteDeficit = false)
         {
             var cart = CreateCart();
             shoppingCart.ProductList = cart.ProductList;
@@ -197,12 +198,15 @@ namespace ProjektSklep.Controllers
                             }
                         }
 
-                        if (missingProducts.Count != 0)
+                        if (missingProducts.Count != 0 && makeOrderDespiteDeficit == false)
                         {
                             return View(shoppingCart);
                         }
                         else
                         {
+                            // Jezeli klient chce zrealizowac zamowienie, mimo brakow na stanie
+                            shoppingCart.MissingProductList.Clear();
+
                             var order = new Order
                             {
                                 OrderStatus = State.New,
@@ -225,7 +229,7 @@ namespace ProjektSklep.Controllers
                                     product.Product.Amount -= product.Count;
                                     product.Product.SoldProducts += product.Count;
 
-                                    //TODO: UJEMNE STOCKI: DODAĆ WIDOK, ŻE NIEDASIEZAMOWIĆ
+                                    //UJEMNE STOCKI: produkty zaklepane przez klienta
 
                                     _context.Update(product.Product);
                                     await _context.SaveChangesAsync();

@@ -116,5 +116,33 @@ namespace ProjektSklep.Controllers
 
             return View();
         }
+
+        public IActionResult Configuration()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var customer = _context.Customers.Include(x => x.PageConfiguration).Include(x => x.Address)
+                .Where(x => x.Id == userId).FirstOrDefault();
+
+            var configurationViewModel = new ConfigurationViewModel();
+            configurationViewModel.SendingNewsletter = customer.PageConfiguration.SendingNewsletter;
+
+            return View(configurationViewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Configuration([Bind("SendingNewsletter")] ConfigurationViewModel configuration)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var customer = _context.Customers.Include(x => x.PageConfiguration).Include(x => x.Address)
+                    .Where(x => x.Id == userId).FirstOrDefault();
+
+                customer.PageConfiguration.SendingNewsletter = configuration.SendingNewsletter;
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Index");
+        }
     }
 }

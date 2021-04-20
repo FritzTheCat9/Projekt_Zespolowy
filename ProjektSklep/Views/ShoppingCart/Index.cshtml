@@ -3,10 +3,14 @@
     ViewData["Title"] = "ShoppingCart";
     Layout = "~/Views/Shared/_Layout.cshtml";
     @model ProjektSklep.Models.ShoppingCart
+    string info = "Zaznaczenie tej opcji spowoduje, że nawet jeśli aktualnie brakuje jakiegoś produktu z Twojego zamówienia, to zamówienie" +
+                  "te zostanie złożone. Będzie ono widoczne dla naszych pracowników i gdy tylko w magazynie pojawi się Twój produkt, " +
+                  "dostaniesz wiadomość email, że zamówienie Twoje jest w trakcie realizacji." as string;
 }
 
 <h1>Koszyk</h1>
-@if (Model.ProductList.Count != 0) {
+@if (Model.ProductList.Count != 0)
+{
     <table class="table">
         <thead>
             <tr>
@@ -65,18 +69,33 @@
                 <input asp-for="DiscountCode" class="form-control" />
                 <span asp-validation-for="DiscountCode" class="text-danger"></span>
             </div>
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="MyBooleanValue" name="makeOrderDespiteDeficit" value="true">
+                <label class="form-check-label" for="MyBooleanValue">
+                    Złóż zamówienie mimo braku produktów w magazynie.
+                    <text style="color:red;" data-toggle="tooltip" data-placement="top" title="@info">
+                        &#128712;
+                    </text>
+                </label>
+                @*<a href="#" class="nav-link text-dark" data-toggle="tooltip" data-placement="bottom" title="@expertMessage">
+                    <strong>Ekspert:</strong>
+                </a>*@
+            </div>
             <h2>Razem do zapłaty: @Model.countCartPrice()</h2>
             @if (User.Identity.IsAuthenticated)
             {
                 <div class="form-group">
                     <input type="submit" value="Zamów produkty" class="btn btn-primary" />
                 </div>
-            } else
+            }
+            else
             {
                 <h4>Zaloguj się by zamówić produkty :)</h4>
             }
         </div>
     </form>
-} else {
+}
+else
+{
     <h4>Koszyk jest pusty, dodaj cos do niego :)</h4>
 }

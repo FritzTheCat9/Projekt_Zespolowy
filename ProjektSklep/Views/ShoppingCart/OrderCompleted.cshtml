@@ -19,7 +19,7 @@
                     Nazwa produktu
                 </th>
                 <th>
-                    
+
                 </th>
                 <th style="text-align: center; vertical-align: middle;">
                     Ilość w koszyku
@@ -50,6 +50,21 @@
             }
         </tbody>
     </table>
+    <br />
+    <div class="container">
+        <div class="border align-self-center" style="padding: 10px">
+            <p>
+                Możesz zamówić te produkty teraz mimo braku asortymentu, lecz zamówienie te będzie w stanie
+                <b>NOWE</b> do czasu pojawienia się brakujących produktów w magazynie. Gdy zostaną zapakowane wszystkie zamówione przez Ciebie
+                produkty otrzymasz powiadomienie na swoją pocztę o stanie Twojego zamówienia. Jeżeli chcesz złożyć zamówienie, to <b>Wróć do koszyka</b> 
+                a następnie zaznacz pole <b>Złóż zamówienie mimo braku produktów w magazynie</b>.
+            </p>
+            <div class="d-flex justify-content-center">
+                <form asp-action="OrderCompletedDespiteDeficit"></form>
+                <a class="btn btn-primary" style="width: 150px; margin: 5px" asp-controller="ShoppingCart" asp-action="Index">Wróć do koszyka</a>
+            </div>
+        </div>
+    </div>
 }
 else if (Model.ProductList.Count == 0)
 {
@@ -102,4 +117,21 @@ else
     <h3>Rabat: @ViewBag.DiscountCode%</h3>
     <h3>Razem do zapłaty (przed rabatem): @ViewBag.CenaBezRabatu</h3>
     <h3>Razem do zapłaty: @Model.CartPrice</h3>
+    bool isDeficit = false;
+    foreach (var item in Model.ProductList)
+    {
+        if (item.Product.Amount < 0)
+        {
+            isDeficit = true;
+        }
+    }
+    if (isDeficit == true)
+    {
+        <h3 style="color: red">
+            <b>
+                Zamówienie zawiera conajmniej jeden produkt, którego aktualnie nie ma na stanie. Realizacja tego zamówienia
+                potrwa dłużej niż zwykle.
+            </b>
+        </h3>
+    }
 }

@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using ProjektSklep.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System.Net.Mail;
+using System.Net;
 
 namespace ProjektSklep.Controllers
 {
@@ -277,6 +279,37 @@ namespace ProjektSklep.Controllers
                             else
                             {
                                 ViewData["DiscountCode"] = 0;
+                            }
+
+                            // Wysłanie mejla z podsumowaniem zamówienia
+                            using (MailMessage mail = new MailMessage())
+                            {
+                                mail.From = new MailAddress("klientklientowski123@gmail.com");
+                                mail.To.Add(customer.Email);
+                                mail.Subject = $"Złożono zamówienie nr. {order.OrderID}";
+
+                                    var body = $"Złożono zamówienie nr. {order.OrderID} <br>" +
+                                    $"Cena zamówienia: {order.Price} <br>" +
+                                    $"Metoda płatności: {order.PaymentMethod.Name} <br>" +
+                                    $"Metoda dostawy: {order.ShippingMethod.Name} <br>" +
+                                    $"Stan zamówienia: {order.OrderStatus} <br>" + 
+                                    $"Zamówione produkty: <br>";
+
+                                var productOrders = context.ProductOrders.Include(x => x.Product).Where(x => x.OrderID == order.OrderID).ToList();
+                                foreach (var p in productOrders)
+                                {
+                                    body += $"Nazwa: {p.Product.Name}, Cena: {p.Product.Price}, Ilość: {p.Quantity} <br>";
+                                }
+
+                                mail.Body = body;
+                                mail.IsBodyHtml = true;
+
+                                using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                                {
+                                    smtp.Credentials = new NetworkCredential("klientklientowski123@gmail.com", "Klient123!");
+                                    smtp.EnableSsl = true;
+                                    smtp.Send(mail);
+                                }
                             }
 
                             // czyszczenie ciasteczka

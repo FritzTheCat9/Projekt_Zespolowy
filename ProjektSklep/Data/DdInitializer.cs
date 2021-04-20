@@ -19,11 +19,11 @@ namespace ProjektSklep.Data
 
         private static void SeedUsers(UserManager<Customer> userManager)
         {
-            if (userManager.FindByNameAsync("bartlomiejuminski1999@gmail.com").Result == null)
+            if (userManager.FindByNameAsync("siemanokolano2137@gmail.com").Result == null)
             {
                 Customer customer = new Customer();
-                customer.UserName = "bartlomiejuminski1999@gmail.com";
-                customer.Email = "bartlomiejuminski1999@gmail.com";
+                customer.UserName = "siemanokolano2137@gmail.com";
+                customer.Email = "siemanokolano2137@gmail.com";
                 customer.EmailConfirmed = true;
                 customer.PhoneNumberConfirmed = false;
                 customer.TwoFactorEnabled = false;
@@ -48,7 +48,7 @@ namespace ProjektSklep.Data
                 customer.AddressID = address.AddressID;
                 customer.PageConfigurationID = pageConfiguration.PageConfigurationID;
 
-                IdentityResult result = userManager.CreateAsync(customer, "Uminski123!").Result;
+                IdentityResult result = userManager.CreateAsync(customer, "Admin123!").Result;
 
                 if (result.Succeeded)
                 {
@@ -180,7 +180,7 @@ namespace ProjektSklep.Data
             }
             var customers = new Customer[]
             {
-                new Customer{ AddressID=1, PageConfigurationID=1, FirstName="Bartłomiej", LastName="Umiński", Email="bartlomiejuminski1999@gmail.com"},
+                new Customer{ AddressID=1, PageConfigurationID=1, FirstName="Bartłomiej", LastName="Umiński", Email="siemanokolano2137@gmail.com"},
                 new Customer{ AddressID=2, PageConfigurationID=2, FirstName="Kacper", LastName="Siegieńczuk", Email="kacpersiegienczuk@gmail.com"},
                 new Customer{ AddressID=3, PageConfigurationID=3, FirstName="Michał", LastName="Kozikowski", Email="michalkozikowski@gmail.com"},
                 new Customer{ AddressID=4, PageConfigurationID=4, FirstName="Jakub", LastName="Kozłowski", Email="jakubkozlowski@gmail.com"},
@@ -234,9 +234,9 @@ namespace ProjektSklep.Data
                 return;
             }
             var orders = new Order[2];
-            if (userManager.FindByNameAsync("bartlomiejuminski1999@gmail.com").Result != null)
+            if (userManager.FindByNameAsync("siemanokolano2137@gmail.com").Result != null)
             {
-                var user = userManager.FindByNameAsync("bartlomiejuminski1999@gmail.com").Result;
+                var user = userManager.FindByNameAsync("siemanokolano2137@gmail.com").Result;
                 orders[0] = new Order { CustomerID = user.Id, ShippingMethodID = 1, PaymentMethodID = 3, OrderStatus = State.InProgress, Price = 23996 };
             }
             if (userManager.FindByNameAsync("klientklientowski123@gmail.com").Result != null)

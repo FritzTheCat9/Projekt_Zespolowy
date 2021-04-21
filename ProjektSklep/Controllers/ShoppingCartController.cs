@@ -172,7 +172,7 @@ namespace ProjektSklep.Controllers
 
         // Dodanie zamowienia z walidacja, ktora sprawdza czy jest wystarczajaco duzo produktow na stanie.
         [HttpPost("ShoppingCart/OrderCompleted")]
-        public async Task<IActionResult> OrderCompleted([Bind("PaymentMethodID,ShippingMethodID,DiscountCode")] ShoppingCart shoppingCart, bool makeOrderDespiteDeficit = false)
+        public async Task<IActionResult> OrderCompleted([Bind("PaymentMethodID,ShippingMethodID,DiscountCode")] ShoppingCart shoppingCart)
         {
             var cart = CreateCart();
             shoppingCart.ProductList = cart.ProductList;
@@ -187,158 +187,157 @@ namespace ProjektSklep.Controllers
                         string LoggedUserEmail = User.Identity.Name;
                         var customer = context.Customers.Where(x => x.Email == LoggedUserEmail).FirstOrDefault();
 
-                        
+
 
                         // Jezeli nie ma produktu na stanie.
-                        List<ShoppingCartElement> missingProducts = new List<ShoppingCartElement>();
-                        shoppingCart.MissingProductList = missingProducts;
+                        //List<ShoppingCartElement> missingProducts = new List<ShoppingCartElement>();
+                        //shoppingCart.MissingProductList = missingProducts;
+                        //foreach (var product in shoppingCart.ProductList)
+                        //{
+                        //    if (product.Product.Amount - product.Count < 0)
+                        //    {
+                        //        missingProducts.Add(product);
+                        //    }
+                        //}
+
+                        //if (missingProducts.Count != 0 && makeOrderDespiteDeficit == false)
+                        //{
+                        //    return View(shoppingCart);
+                        //}
+
+                        // Jezeli klient chce zrealizowac zamowienie, mimo brakow na stanie
+                        //shoppingCart.MissingProductList.Clear();
+
+                        var order = new Order
+                        {
+                            OrderStatus = State.New,
+                            PaymentMethodID = shoppingCart.PaymentMethodID,
+                            ShippingMethodID = shoppingCart.ShippingMethodID,
+                            CustomerID = customer.Id,                                                     // id zalogowanego customera
+                            Price = shoppingCart.CartPrice
+                        };
+                        context.Orders.Add(order);
+                        context.SaveChanges();              // dodanie OrderID przez EFCORE
+
+                        List<Product> addedProducts = new List<Product>();          // zeby dodawac zamowiony produkt do bazy tylko raz (jak jest wieksza jego ilość)
+
+                        // Jezeli wszystkie produkty sa na stanie.
                         foreach (var product in shoppingCart.ProductList)
                         {
-                            if (product.Product.Amount - product.Count < 0)
+
+                            try
                             {
-                                missingProducts.Add(product);
+                                product.Product.Amount -= product.Count;
+                                product.Product.SoldProducts += product.Count;
+
+                                //UJEMNE STOCKI: produkty zaklepane przez klienta
+
+                                _context.Update(product.Product);
+                                await _context.SaveChangesAsync();
+                            }
+                            catch (DbUpdateConcurrencyException)
+                            {
+                                throw;
+                            }
+
+                            /*for (int i = 0; i < product.Count; i++)
+                            {
+                                var productOrder = new ProductOrder { OrderID = order.OrderID, ProductID = product.Product.ProductID };
+
+                                context.ProductOrders.Add(productOrder);
+                            }*/
+
+                            if (!addedProducts.Contains(product.Product))
+                            {
+                                var productOrder = new ProductOrder { OrderID = order.OrderID, ProductID = product.Product.ProductID, Quantity = product.Count };
+                                context.ProductOrders.Add(productOrder);
                             }
                         }
+                        context.SaveChanges();
 
-                        if (missingProducts.Count != 0 && makeOrderDespiteDeficit == false)
+                        var shippingMethod = context.ShippingMethods.Where(x => x.ShippingMethodID == shoppingCart.ShippingMethodID).FirstOrDefault();
+                        var paymentMethod = context.PaymentMethods.Where(x => x.PaymentMethodID == shoppingCart.PaymentMethodID).FirstOrDefault();
+                        var discountCode = context.DiscountCodes.Where(x => x.DiscoundCode == shoppingCart.DiscountCode).FirstOrDefault();
+
+                        ViewData["CenaBezRabatu"] = shoppingCart.CartPrice;
+
+                        if (shippingMethod != null)
+                            ViewData["ShippingMethod"] = shippingMethod.Name;
+                        if (paymentMethod != null)
+                            ViewData["PaymentMethod"] = paymentMethod.Name;
+                        if (discountCode != null)
                         {
-                            return View(shoppingCart);
+                            ViewData["DiscountCode"] = discountCode.Percent;
+                            decimal newPrice = shoppingCart.CartPrice - (shoppingCart.CartPrice * discountCode.Percent / 100);
+                            shoppingCart.CartPrice = newPrice;
+
+                            // zmiana ceny na cene po rabacie
+                            var newOrder = context.Orders.Where(x => x.OrderID == order.OrderID).FirstOrDefault();
+                            if (newOrder != null)
+                            {
+                                newOrder.Price = newPrice;
+                                context.SaveChanges();
+                            }
                         }
                         else
                         {
-                            // Jezeli klient chce zrealizowac zamowienie, mimo brakow na stanie
-                            shoppingCart.MissingProductList.Clear();
-
-                            var order = new Order
-                            {
-                                OrderStatus = State.New,
-                                PaymentMethodID = shoppingCart.PaymentMethodID,
-                                ShippingMethodID = shoppingCart.ShippingMethodID,
-                                CustomerID = customer.Id,                                                     // id zalogowanego customera
-                                Price = shoppingCart.CartPrice
-                            };
-                            context.Orders.Add(order);
-                            context.SaveChanges();              // dodanie OrderID przez EFCORE
-
-                            List<Product> addedProducts = new List<Product>();          // zeby dodawac zamowiony produkt do bazy tylko raz (jak jest wieksza jego ilość)
-
-                            // Jezeli wszystkie produkty sa na stanie.
-                            foreach (var product in shoppingCart.ProductList)
-                            {
-
-                                try
-                                {
-                                    product.Product.Amount -= product.Count;
-                                    product.Product.SoldProducts += product.Count;
-
-                                    //UJEMNE STOCKI: produkty zaklepane przez klienta
-
-                                    _context.Update(product.Product);
-                                    await _context.SaveChangesAsync();
-                                }
-                                catch (DbUpdateConcurrencyException)
-                                {
-                                    throw;
-                                }
-
-                                /*for (int i = 0; i < product.Count; i++)
-                                {
-                                    var productOrder = new ProductOrder { OrderID = order.OrderID, ProductID = product.Product.ProductID };
-
-                                    context.ProductOrders.Add(productOrder);
-                                }*/
-
-                                if (!addedProducts.Contains(product.Product))
-                                {
-                                    var productOrder = new ProductOrder { OrderID = order.OrderID, ProductID = product.Product.ProductID, Quantity = product.Count };
-                                    context.ProductOrders.Add(productOrder);
-                                }
-                            }
-                            context.SaveChanges();
-
-                            var shippingMethod = context.ShippingMethods.Where(x => x.ShippingMethodID == shoppingCart.ShippingMethodID).FirstOrDefault();
-                            var paymentMethod = context.PaymentMethods.Where(x => x.PaymentMethodID == shoppingCart.PaymentMethodID).FirstOrDefault();
-                            var discountCode = context.DiscountCodes.Where(x => x.DiscoundCode == shoppingCart.DiscountCode).FirstOrDefault();
-
-                            ViewData["CenaBezRabatu"] = shoppingCart.CartPrice;
-
-                            if (shippingMethod != null)
-                                ViewData["ShippingMethod"] = shippingMethod.Name;
-                            if (paymentMethod != null)
-                                ViewData["PaymentMethod"] = paymentMethod.Name;
-                            if (discountCode != null)
-                            {
-                                ViewData["DiscountCode"] = discountCode.Percent;
-                                decimal newPrice = shoppingCart.CartPrice - (shoppingCart.CartPrice * discountCode.Percent / 100);
-                                shoppingCart.CartPrice = newPrice;
-
-                                // zmiana ceny na cene po rabacie
-                                var newOrder = context.Orders.Where(x => x.OrderID == order.OrderID).FirstOrDefault();
-                                if (newOrder != null)
-                                {
-                                    newOrder.Price = newPrice;
-                                    context.SaveChanges();
-                                }
-                            }
-                            else
-                            {
-                                ViewData["DiscountCode"] = 0;
-                            }
-
-                            // Wysłanie mejla z podsumowaniem zamówienia
-                            using (MailMessage mail = new MailMessage())
-                            {
-                                mail.From = new MailAddress("klientklientowski123@gmail.com");
-                                mail.To.Add(customer.Email);
-                                mail.Subject = $"Złożono zamówienie nr. {order.OrderID}";
-
-                                    var body = $"Złożono zamówienie nr. {order.OrderID} <br>" +
-                                    $"Cena zamówienia: {order.Price} <br>" +
-                                    $"Metoda płatności: {order.PaymentMethod.Name} <br>" +
-                                    $"Metoda dostawy: {order.ShippingMethod.Name} <br>" +
-                                    $"Stan zamówienia: {order.OrderStatus} <br>" + 
-                                    $"Zamówione produkty: <br>";
-
-                                var productOrders = context.ProductOrders.Include(x => x.Product).Where(x => x.OrderID == order.OrderID).ToList();
-                                foreach (var p in productOrders)
-                                {
-                                    body += $"Nazwa: {p.Product.Name}, Cena: {p.Product.Price}, Ilość: {p.Quantity} <br>";
-                                }
-
-                                mail.Body = body;
-                                mail.IsBodyHtml = true;
-
-                                using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
-                                {
-                                    smtp.Credentials = new NetworkCredential("klientklientowski123@gmail.com", "Klient123!");
-                                    smtp.EnableSsl = true;
-                                    smtp.Send(mail);
-                                }
-                            }
-
-                            // czyszczenie ciasteczka
-                            var cookie = Request.Cookies["ShoppingCart"];
-                            Response.Cookies.Delete("ShoppingCart");
-
-                            // zwiekszanie licznika odwiedzin - odczyt
-                            string path = "Content/Resources/visit_counter.txt";
-                            FileStream fs = System.IO.File.OpenRead(path);
-                            byte[] b = new byte[64];
-                            UTF8Encoding temp = new UTF8Encoding(true);
-                            int result = 0;
-                            while (fs.Read(b, 0, b.Length) > 0)
-                            {
-                                Int32.TryParse(temp.GetString(b), out result);
-                            }
-                            fs.Close();
-                            result++;
-                            // zwiekszanie licznika odwiedzin - zapis
-                            fs = System.IO.File.Create(path);
-                            b = new UTF8Encoding(true).GetBytes(result.ToString());
-                            fs.Write(b, 0, b.Length);
-                            fs.Close();
-                            Statistics.GetInstance().SetVisitors(result);
+                            ViewData["DiscountCode"] = 0;
                         }
+
+                        // Wysłanie mejla z podsumowaniem zamówienia
+                        using (MailMessage mail = new MailMessage())
+                        {
+                            mail.From = new MailAddress("klientklientowski123@gmail.com");
+                            mail.To.Add(customer.Email);
+                            mail.Subject = $"Złożono zamówienie nr. {order.OrderID}";
+
+                            var body = $"Złożono zamówienie nr. {order.OrderID} <br>" +
+                            $"Cena zamówienia: {order.Price} <br>" +
+                            $"Metoda płatności: {order.PaymentMethod.Name} <br>" +
+                            $"Metoda dostawy: {order.ShippingMethod.Name} <br>" +
+                            $"Stan zamówienia: {order.OrderStatus} <br>" +
+                            $"Zamówione produkty: <br>";
+
+                            var productOrders = context.ProductOrders.Include(x => x.Product).Where(x => x.OrderID == order.OrderID).ToList();
+                            foreach (var p in productOrders)
+                            {
+                                body += $"Nazwa: {p.Product.Name}, Cena: {p.Product.Price}, Ilość: {p.Quantity} <br>";
+                            }
+
+                            mail.Body = body;
+                            mail.IsBodyHtml = true;
+
+                            using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                            {
+                                smtp.Credentials = new NetworkCredential("klientklientowski123@gmail.com", "Klient123!");
+                                smtp.EnableSsl = true;
+                                smtp.Send(mail);
+                            }
+                        }
+
+                        // czyszczenie ciasteczka
+                        var cookie = Request.Cookies["ShoppingCart"];
+                        Response.Cookies.Delete("ShoppingCart");
+
+                        // zwiekszanie licznika odwiedzin - odczyt
+                        string path = "Content/Resources/visit_counter.txt";
+                        FileStream fs = System.IO.File.OpenRead(path);
+                        byte[] b = new byte[64];
+                        UTF8Encoding temp = new UTF8Encoding(true);
+                        int result = 0;
+                        while (fs.Read(b, 0, b.Length) > 0)
+                        {
+                            Int32.TryParse(temp.GetString(b), out result);
+                        }
+                        fs.Close();
+                        result++;
+                        // zwiekszanie licznika odwiedzin - zapis
+                        fs = System.IO.File.Create(path);
+                        b = new UTF8Encoding(true).GetBytes(result.ToString());
+                        fs.Write(b, 0, b.Length);
+                        fs.Close();
+                        Statistics.GetInstance().SetVisitors(result);
+
                     }
                 }
             }

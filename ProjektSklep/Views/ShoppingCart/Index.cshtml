@@ -69,24 +69,63 @@
                 <input asp-for="DiscountCode" class="form-control" />
                 <span asp-validation-for="DiscountCode" class="text-danger"></span>
             </div>
-            <div class="form-check">
-                <input type="checkbox" class="form-check-input" id="MyBooleanValue" name="makeOrderDespiteDeficit" value="true">
-                <label class="form-check-label" for="MyBooleanValue">
-                    Złóż zamówienie mimo braku produktów w magazynie.
-                    <text style="color:red;" data-toggle="tooltip" data-placement="top" title="@info">
-                        &#128712;
-                    </text>
-                </label>
-                @*<a href="#" class="nav-link text-dark" data-toggle="tooltip" data-placement="bottom" title="@expertMessage">
-                    <strong>Ekspert:</strong>
-                </a>*@
-            </div>
             <h2>Razem do zapłaty: @Model.countCartPrice()</h2>
             @if (User.Identity.IsAuthenticated)
             {
+                @*<div class="form-group">
+                <input type="submit" value="Zamów produkty" class="btn btn-primary" />
+                </div>*@
                 <div class="form-group">
-                    <input type="submit" value="Zamów produkty" class="btn btn-primary" />
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        Zamów produkty
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5>Zamówienie</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    @{bool isDeficit = false; List<string> missingProducts = new List<string>();}
+                                    @foreach (var item in Model.ProductList)
+                                    {
+                                        if (item.Product.Amount - item.Count < 0)
+                                        {
+                                            isDeficit = true;
+                                            missingProducts.Add(item.Product.Name); 
+                                        }
+                                    }
+                                    @if (isDeficit == true)
+                                    {
+                                        <p>W Twoim koszyku znajdują się produkty, których aktualnie nie mamy na stanie:
+                                            <br />
+                                            @foreach (string name in missingProducts)
+                                            {
+                                                <b>- @name,<br /></b>
+                                            }
+                                        </p>
+                                        <br />
+                                        <p>Czy jesteś pewien, że chcesz złożyć zamówienie mimo to? Jego realizacja zajmie znacznie wiecej czasu.</p>
+                                    }
+                                    else
+                                    {
+                                        <p>Czy chcesz złożyć zamówienie?</p>
+                                    }
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" class="btn btn-primary">Złóż zamówienie</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Anuluj</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
             }
             else
             {
@@ -99,3 +138,4 @@ else
 {
     <h4>Koszyk jest pusty, dodaj cos do niego :)</h4>
 }
+

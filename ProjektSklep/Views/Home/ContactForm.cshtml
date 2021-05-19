@@ -3,6 +3,7 @@
 }
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    @model ProjektSklep.Models.ViewModels.ContactFormViewModel
 }
 
 <!--Section: Contact v.2-->
@@ -25,24 +26,28 @@
 
         <!--Grid column-->
         <div class="col-md-9 mb-md-0 mb-5">
-            <form id="contact-form" name="contact-form" action="mail.php" method="POST">
+            <form asp-action="ContactForm">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                 <!--Grid row-->
                 <div class="row">
 
                     <!--Grid column-->
-                    <div class="col-md-6">
+                    <div class="form-group col-md-6">
                         <div class="md-form mb-0">
-                            <input type="text" id="name" name="name" class="form-control">
-                            <label for="name" class="">Twoje imię</label>
+                            <label asp-for="Name" class="control-label"></label>
+                            <input asp-for="Name" class="form-control" />
+                            <span asp-validation-for="Name" class="text-danger"></span>
                         </div>
                     </div>
+
                     <!--Grid column-->
                     <!--Grid column-->
-                    <div class="col-md-6">
+                    <div class="form-group col-md-6">
                         <div class="md-form mb-0">
-                            <input type="text" id="email" name="email" class="form-control">
-                            <label for="email" class="">Twój email</label>
+                            <label asp-for="Email" class="control-label"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
                         </div>
                     </div>
                     <!--Grid column-->
@@ -51,12 +56,11 @@
                 <hr />
                 <!--Grid row-->
                 <!--Grid row-->
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="md-form mb-0">
-                            <input type="text" id="subject" name="subject" class="form-control">
-                            <label for="subject" class="">Temat zapytania</label>
-                        </div>
+                <div class="form-group col-md-12">
+                    <div class="md-form mb-0">
+                        <label asp-for="Topic" class="control-label"></label>
+                        <input asp-for="Topic" class="form-control" />
+                        <span asp-validation-for="Topic" class="text-danger"></span>
                     </div>
                 </div>
                 <hr />
@@ -65,22 +69,21 @@
                 <div class="row">
 
                     <!--Grid column-->
-                    <div class="col-md-12">
-
-                        <div class="md-form">
-                            <textarea type="text" id="message" name="message" rows="2" class="form-control md-textarea"></textarea>
-                            <label for="message">Twoja wiadomość</label>
+                    <div class="form-group col-md-12">
+                        <div class="md-form mb-0">
+                            <label asp-for="Message" class="control-label"></label>
+                            <input asp-for="Message" class="form-control" />
+                            <span asp-validation-for="Message" class="text-danger"></span>
                         </div>
-
                     </div>
                 </div>
                 <!--Grid row-->
 
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
             </form>
 
-            <div class="text-center text-md-left">
-                <input type="submit" value="Wyślij" class="btn btn-primary"/>
-            </div>
             <div class="status"></div>
         </div>
         <!--Grid column-->

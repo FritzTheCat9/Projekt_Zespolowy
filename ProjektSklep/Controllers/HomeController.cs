@@ -10,6 +10,9 @@ using ProjektSklep.Data;
 using ProjektSklep.Models;
 using ProjektSklep.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using System.Net.Mail;
+using System.Net;
+using Microsoft.Extensions.Configuration;
 
 namespace ProjektSklep.Controllers
 {
@@ -19,15 +22,17 @@ namespace ProjektSklep.Controllers
 
         private readonly ILogger<HomeController> _logger;
         private readonly UserManager<Customer> _userManager;
+        private readonly IConfiguration _config;
 
         //dodanie stringa potrzebnego do wyszukiwania
         public string SearchTerm { get; set; }
 
-        public HomeController(ILogger<HomeController> logger, ShopContext context, UserManager<Customer> userManager)
+        public HomeController(ILogger<HomeController> logger, ShopContext context, UserManager<Customer> userManager, IConfiguration config)
         {
             _logger = logger;
             _context = context;
             _userManager = userManager;
+            _config = config;
         }
 
         // Wyświetlenie wszystkich produktów i kategorii
@@ -61,6 +66,44 @@ namespace ProjektSklep.Controllers
         public IActionResult ContactForm()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult ContactForm([Bind("Name,Email,Topic,Message")] ContactFormViewModel contact)
+        {
+            if (ModelState.IsValid)
+            {
+                if(contact.Name != "" && contact.Email != null && contact.Topic != null && contact.Message != null)
+                {
+                    using (MailMessage mail = new MailMessage())
+                    {
+                        mail.From = new MailAddress("klientklientowski123@gmail.com");
+                        string savedEmail = _config.GetSection("Settings").GetSection("ContactFormEmail").Value;
+                        mail.To.Add(savedEmail);
+                        mail.Subject = $"ContactForm - " + contact.Topic;
+
+                        var body = $"<br><b>ContactForm</b><br>";
+                        body += $"Name: {contact.Name}<br>";
+                        body += $"Email: {contact.Email}<br>";
+                        body += $"Topic: {contact.Topic}<br>";
+                        body += $"Topic: {contact.Message}<br>";
+
+                        mail.Body = body;
+                        mail.IsBodyHtml = true;
+
+                        using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                        {
+                            smtp.Credentials = new NetworkCredential("klientklientowski123@gmail.com", "Klient123!");
+                            smtp.EnableSsl = true;
+                            smtp.Send(mail);
+                        }
+                    }
+
+                    return RedirectToAction("Index");
+                }
+            }
+
+            return RedirectToAction("ContactForm");
         }
 
         [HttpGet("Home/Product/{ProductID:int}")]

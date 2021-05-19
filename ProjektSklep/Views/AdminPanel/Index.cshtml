@@ -3,14 +3,27 @@
 }
 @{
     Layout = "~/Views/Shared/_LayoutAdminPanel.cshtml";
+    @model ProjektSklep.Models.ViewModels.AdminPanelViewModel
 }
 
 <h1>Witamy w panelu admina</h1>
 
 <h3>
     Wyślij newsletter:
-
-    <a href='@Url.Action("SendNewsletters", "AdminPanel")' class="btn btn-info">
-        Wyślij
-    </a>
 </h3>
+
+<a href='@Url.Action("SendNewsletters", "AdminPanel")' class="btn btn-info">
+    Wyślij
+</a>
+
+<form asp-action="ChangeFormEmail">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Email" class="control-label"></label>
+        <input asp-for="Email" value=@ViewBag.savedEmail class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>

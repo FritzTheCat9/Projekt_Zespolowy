@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using ProjektSklep.Data;
 using ProjektSklep.Models.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -17,15 +20,20 @@ namespace ProjektSklep.Models
     {
         private readonly ShopContext _context;
         private readonly ILogger<AdminPanelController> _logger;
-        public AdminPanelController(ILogger<AdminPanelController> logger, ShopContext context)
+        private readonly IConfiguration _config;
+        public AdminPanelController(ILogger<AdminPanelController> logger, ShopContext context, IConfiguration config)
         {
             _logger = logger;
             _context = context;
+            _config = config;
         }
 
         [Authorize(Roles = "Administrator")]
         public IActionResult Index()
         {
+            string savedEmail = _config.GetSection("Settings").GetSection("ContactFormEmail").Value;
+            ViewBag.savedEmail = savedEmail;
+
             return View();
         }
 
@@ -84,5 +92,13 @@ namespace ProjektSklep.Models
 
             return RedirectToAction("Index");
         }
+
+        [Authorize(Roles = "Administrator")]
+        public IActionResult ChangeFormEmail([Bind("Email")] AdminPanelViewModel adminPanel)
+        {
+            _config.GetSection("Settings").GetSection("ContactFormEmail").Value = adminPanel.Email;
+            return RedirectToAction("Index");
+        }
     }
+
 }

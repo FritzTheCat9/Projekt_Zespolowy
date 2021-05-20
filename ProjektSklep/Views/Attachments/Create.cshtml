@@ -10,23 +10,47 @@
 <h4>Attachment</h4>
 <hr />
 <div class="row">
+    Aby dodać załącznik wybierz go z listy plików, a następnie kliknij Upload.<br />
+    Po zauploadowaniu pliku, wypełnij wszystkie pola po prawej stronie i kliknij "Save".
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data" asp-controller="FileUpload" asp-action="Index">
+            <div class="form-group">
+                <div class="col-md-10">
+                    <p>Wybierz plik:</p>
+                    <input type="file" name="files" />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    <input type="submit" value="Upload" /><br />
+                    @ViewData["ExtensionWarning"]
+                </div>
+            </div>
+        </form>
+    </div>
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="ProductID" class="control-label"></label>
-                <select asp-for="ProductID" class ="form-control" asp-items="ViewBag.ProductID"></select>
+                <select asp-for="ProductID" class="form-control" asp-items="ViewBag.ProductID"></select>
             </div>
             <div class="form-group">
-                <label asp-for="Path" class="control-label"></label>
+                <label asp-for="Path" value="Nazwa załącznika" class="control-label"></label>
                 <input asp-for="Path" class="form-control" />
                 <span asp-validation-for="Path" class="text-danger"></span>
+                @{ 
+                    var id = ViewContext.RouteData.Values["id"];
+                }
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
+            </div>         
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

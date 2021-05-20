@@ -97,7 +97,7 @@
 
 </section>
 <hr />
-<h5>Dostępne załączniki: </h5> <br /><br />
+<h5>Dostępne załączniki: </h5> <br />
 <div> 
         @{
             if (Model.Attachments.Count > 0)
@@ -105,10 +105,10 @@
                 <ul>
                     @foreach (Attachment a in Model.Attachments)
                     {
-                        <li>
-                            <b>@a.Path</b> <br />
-                            @a.Description
-                        </li>
+                    <li>
+                        <a href="@Url.Content(a.Path)" download>Pobierz załącznik</a> <br />
+                        @a.Description
+                    </li>
                     }
                 </ul>
             }
@@ -116,11 +116,11 @@
             {
                 <b>Brak załączników</b>
             }
-        }
-
-
-   
+        } 
 </div>
+<br />
+<br />
+<hr />
 <div>
     Kod html produktu do umieszczenia na zewnętrznym serwisie aukcyjnym <br />
     <textarea rows="10" cols="70">

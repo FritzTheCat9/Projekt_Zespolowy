@@ -112,7 +112,7 @@ namespace ProjektSklep.Controllers
             var p = new Product();
             //if (ProductID != null)
             //{ 
-                p = _context.Products.Include(c => c.Category).Include(e => e.Expert).Where(p => p.ProductID == ProductID).FirstOrDefault();
+                p = _context.Products.Include(c => c.Category).Include(e => e.Expert).Include(a => a.Attachments).Where(p => p.ProductID == ProductID).FirstOrDefault();
             //}      
             //p.Visibility = false;
             //tutaj chyba trzeba dodać walidację na wypadek gdyby coś się zepsuło;

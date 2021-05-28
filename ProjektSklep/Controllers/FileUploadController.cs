@@ -42,11 +42,11 @@ namespace ProjektSklep.Controllers
                         /* NIE MA INFORMACJI ZWROTNEJ */ 
                         ViewData["ExtensionWarning"] = "Niedozwolony format pliku - ." + ext;
                         //return View("~/Views/Home/Index.cshtml");
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Create", "Attachments");
                     }
 
                     //...tworzona jest sciezka wg wzorca OBECNY_KATALOG + ATTACHMENTS + NAZWA_PLIKU
-                    var filePath = Path.Combine(Directory.GetCurrentDirectory(), "Attachments", formFile.FileName);
+                    var filePath = Path.Combine( "Content", "Attachments", formFile.FileName);
                     filePaths.Add(filePath);
 
                     //jesli dobrze zrozumialem, to tutaj tworzony jest strumien, do ktorego
@@ -60,7 +60,8 @@ namespace ProjektSklep.Controllers
 
             //na koniec zwracane sa szczegolowe dane na temat uploadowania - przydatne przy sprawdzaniu
             //dokladnych informacji zuploadowanych plikow
-            return Ok(new { files.Count, size, filePaths });
+            //return Ok(new { files.Count, size, filePaths });
+            return RedirectToAction("Create", "Attachments", filePaths.FirstOrDefault());
         }
     }
 }

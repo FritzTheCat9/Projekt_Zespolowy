@@ -14,14 +14,53 @@
     }
 </div>
 
-<div class="d-flex justify-content-center" style="margin-top:5px">
-    <button type="button" class="btn btn-primary" style="margin-right:5px">Poprzednia</button>
-    <button type="button" class="btn btn-primary" style="margin-left:5px">Następna</button>
+<div style="margin-top:20px">
+    <ul class="pagination pagination-lg">
+        <li class="page-item disabled">
+            <a class="page-link" href="#">&laquo;</a>
+        </li>
+        <li class="page-item active">
+            <a class="page-link" href="#">1</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="#">2</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="#">3</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="#">4</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="#">5</a>
+        </li>
+        <li class="page-item">
+            <a class="page-link" href="#">&raquo;</a>
+        </li>
+    </ul>
 </div>
 
+@*<div class="d-flex justify-content-center" style="margin-top:5px">
+    <button type="button" class="btn btn-primary" style="margin-right:5px">Poprzednia</button>
+    <button type="button" class="btn btn-primary" style="margin-left:5px">Następna</button>
+</div>*@
 
 @section Categories {
-    <div class="sidebar-header hidden-sm-down">
+    <div class="card border-primary mb-3">
+        <div class="card-header">Kategorie</div>
+        <div class="card-body">
+            <div class="list-group">
+                @foreach (Category c in Model.Categories)
+                {
+                    if (c.Visibility == true)
+                    {
+                        <a class="list-group-item list-group-item-action" asp-action="Index" asp-route-CategoryId="@c.CategoryID">@c.Name</a>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+    @*<div class="sidebar-header hidden-sm-down">
         <h2>Kategorie</h2>
         <hr />
     </div>
@@ -37,11 +76,22 @@
                 }
             }
         </ul>
-    </div>
+    </div>*@
 }
 
 @section Menu {
-    <div class="sidebar-header hidden-sm-down">
+    <div class="card border-primary mb-3">
+        <div class="card-header">Menu</div>
+        <div class="card-body">
+            <div class="list-group">
+                <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Home" asp-action="Promotion">Promocje</a>
+                <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Home" asp-action="NewProducts">Nowe produkty</a>
+                <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Home" asp-action="Bestsellers">Bestsellery</a>
+            </div>
+        </div>
+    </div>
+
+    @*<div class="sidebar-header hidden-sm-down">
         <h2>Menu</h2>
         <hr />
     </div>
@@ -49,6 +99,6 @@
         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Promotion">Promocje</a>
         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="NewProducts">Nowe produkty</a>
         <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Bestsellers">Bestsellery</a>
-    </div>
+    </div>*@
 }
 

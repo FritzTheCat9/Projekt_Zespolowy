@@ -5,7 +5,7 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <form class="d-flex" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-        <button type="button" class="btn btn-primary disabled">Witaj @User.Identity.Name!</button>
+        <button type="button" class="btn btn-primary disabled" style="font-size:8px">@User.Identity.Name</button>
         <button type="submit" class="btn btn-outline-light">Wyloguj</button>
     </form>
 

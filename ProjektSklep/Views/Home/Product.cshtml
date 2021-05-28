@@ -83,7 +83,7 @@
                                         <input type="hidden" asp-for="ProductID" />
                                         <div class="form-group">
                                             <input type="number" id="Quantity" name="Quantity" min="0" value="1" /> &#8192;
-                                            <input type="submit" value="Dodaj do koszyka" class="btn btn-primary" />
+                                            <input type="submit" value="Dodaj do koszyka" class="btn btn-outline-primary" />
                                         </div>
                                     </form>
                                 </div>
@@ -122,7 +122,8 @@
 <br />
 <hr />
 <div>
-    Kod html produktu do umieszczenia na zewnętrznym serwisie aukcyjnym <br />
+    <h5>Kod html produktu do umieszczenia na zewnętrznym serwisie aukcyjnym:</h5>
+    <br />
     <textarea rows="10" cols="70">
     <div class="mb-5 border border-secondary rounded" style="width: 800px; height: 350px;">       
         <div class="row">
@@ -154,33 +155,31 @@
 <!--Section: Block Content-->
 
 @section Categories {
-    <div class="sidebar-header hidden-sm-down">
-        <h2>Kategorie</h2>
-        <hr />
-    </div>
-    <div class="sidebar-content hidden-sm-down">
-        <ul>
-            @foreach (Category c in categories)
-            {
-                if (c.Visibility == true)
+    <div class="card border-primary mb-3">
+        <div class="card-header">Kategorie</div>
+        <div class="card-body">
+            <div class="list-group">
+                @foreach (Category c in categories)
                 {
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-action="Index" asp-route-CategoryId="@c.CategoryID">@c.Name</a>
-                    </li>
+                    if (c.Visibility == true)
+                    {
+                        <a class="list-group-item list-group-item-action" asp-action="Index" asp-route-CategoryId="@c.CategoryID">@c.Name</a>
+                    }
                 }
-            }
-        </ul>
+            </div>
+        </div>
     </div>
 }
 
 @section Menu {
-    <div class="sidebar-header hidden-sm-down">
-        <h2>Menu</h2>
-        <hr />
-    </div>
-    <div class="sidebar-content hidden-sm-down">
-        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Promotion">Promocje</a>
-        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="NewProducts">Nowe produkty</a>
-        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Bestsellers">Bestsellery</a>
+    <div class="card border-primary mb-3">
+        <div class="card-header">Menu</div>
+        <div class="card-body">
+            <div class="list-group">
+                <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Home" asp-action="Promotion">Promocje</a>
+                <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Home" asp-action="NewProducts">Nowe produkty</a>
+                <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Home" asp-action="Bestsellers">Bestsellery</a>
+            </div>
+        </div>
     </div>
 }

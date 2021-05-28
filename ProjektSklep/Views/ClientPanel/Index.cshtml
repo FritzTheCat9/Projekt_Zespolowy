@@ -5,41 +5,45 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Witamy w panelu klienta</h1>
-
 @section ClientPanel {
     <div class="sidebar-header hidden-sm-down">
         <h2>Panel Klienta</h2>
         <hr />
     </div>
     <div class="sidebar-content hidden-sm-down">
-        <a class="nav-link text-dark" asp-area="" asp-controller="ClientPanel" asp-action="Index">Historia zamówień</a>
-        <a class="nav-link text-dark" asp-area="" asp-controller="ClientPanel" asp-action="Configuration">Konfiguracja</a>
+        <ul>
+            <li>
+                <a class="nav-link text-dark" asp-area="" asp-controller="ClientPanel" asp-action="Index">Historia zamówień</a>
+            </li>
+            <li>
+                <a class="nav-link text-dark" asp-area="" asp-controller="ClientPanel" asp-action="Configuration">Konfiguracja</a>
+            </li>
+        </ul>
     </div>
 }
 
 <table class="table">
     <thead>
-        <tr>
-            <th>
+        <tr class="table-primary">
+            <th style="text-align: center; vertical-align: middle;">
                 @Html.DisplayNameFor(model => model.OrderID)
             </th>
-            <th>
+            <th style="text-align: center; vertical-align: middle;">
                 @Html.DisplayNameFor(model => model.OrderStatus)
             </th>
-            <th>
+            <th style="text-align: center; vertical-align: middle;">
                 @Html.DisplayNameFor(model => model.Customer)
             </th>
-            <th>
+            <th style="text-align: center; vertical-align: middle;">
                 @Html.DisplayNameFor(model => model.ShippingMethod)
             </th>
-            <th>
+            <th style="text-align: center; vertical-align: middle;">
                 @Html.DisplayNameFor(model => model.PaymentMethod)
             </th>
-            <th>
+            <th style="text-align: center; vertical-align: middle;">
                 @Html.DisplayNameFor(model => model.Price)
             </th>
-            <th>
+            <th style="text-align: center; vertical-align: middle;">
                 Zamów ponownie
             </th>
             <th></th>
@@ -49,28 +53,28 @@
         @foreach (var item in Model)
         {
         <tr>
-            <td>
+            <td style="text-align: center; vertical-align: middle;">
                 @Html.DisplayFor(modelItem => item.OrderID)
             </td>
-            <td>
+            <td style="text-align: center; vertical-align: middle;">
                 @Html.DisplayFor(modelItem => item.OrderStatus)
             </td>
-            <td>
+            <td style="text-align: center; vertical-align: middle;">
                 @Html.DisplayFor(modelItem => item.Customer.Email)
             </td>
-            <td>
+            <td style="text-align: center; vertical-align: middle;">
                 @Html.DisplayFor(modelItem => item.ShippingMethod.Name)
             </td>
-            <td>
+            <td style="text-align: center; vertical-align: middle;">
                 @Html.DisplayFor(modelItem => item.PaymentMethod.Name)
             </td>
-            <td>
+            <td style="text-align: center; vertical-align: middle;">
                 @Html.DisplayFor(modelItem => item.Price)
             </td>
-            <td>
+            <td style="text-align: center; vertical-align: middle;">
                 <a asp-action="Reorder" asp-route-id="@item.OrderID">Reorder</a>
             </td>
-            <td>
+            <td style="text-align: center; vertical-align: middle;">
                 <a asp-action="Details" asp-route-id="@item.OrderID">Details</a>
             </td>
         </tr>

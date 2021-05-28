@@ -4,51 +4,114 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - ProjektSklep</title>
-    <link rel="stylesheet" type="text/css" href=@Url.Content("~/lib/bootstrap/dist/css/bootstrap.min.css") />
-    @*<link rel="stylesheet" type="text/css" href=@Url.Content("~/lib/bootstrap/dist/css/bootstrap-superhero.css") />*@
+    <link rel="stylesheet" type="text/css" href=@Url.Content("~/lib/bootstrap/dist/css/bootstrap-lux.css") />
     <link rel="stylesheet" type="text/css" href=@Url.Content("~/css/site.css") />
 </head>
 <body>
-    <div class="page-header">
-        <nav class="navbar navbar-light bg-light">
-            <div class="float_left">
-                <a asp-controller="Home" asp-action="Index">
-                    <img src="@Url.Content("~/Content/Images/Logo/shop-logo.png")" style="height: 100px; width: 100px;" />
-                </a>
-            </div>
 
-            <div>
-                <form asp-controller="Home" asp-action="Index">
-                    <div class="input-group md-form form-sm form-2 pl-0">
-                        <input class="form-control my-0 py-1 red-border" type="text" name="productSearch" />
-                        <div class="input-group-append">
-                            <input type="submit" value="Szukaj" class="btn btn-secondary" />
-                        </div>
-                    </div>
-                </form>
-            </div>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+            <div class="container" style="max-width:85%">
+                <a class="navbar-brand" href="/Home/Index">Sklep</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
 
-            <div>
-                <nav class="navbar navbar-light bg-light">
-                    <partial name="_LoginPartial" />
-                    <a class="btn btn-secondary" asp-controller="ShoppingCart" asp-action="Index">Koszyk</a> &nbsp;
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        if (User.IsInRole("Administrator"))
+                <div class="collapse navbar-collapse" id="navbarColor01">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="ShoppingCart" asp-action="Index">Koszyk</a>
+                        </li>
+                        @if (User.Identity.IsAuthenticated)
                         {
-                            <span>
-                                <a class="btn btn-secondary" asp-controller="AdminPanel" asp-action="Index">Panel Admina</a> &nbsp;
-                            </span>
+                            if (User.IsInRole("Administrator"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="AdminPanel" asp-action="Index">Panel Admina</a>
+                                </li>
+                            }
+                            <li class="nav-item">
+                                <a class="nav-link" asp-controller="ClientPanel" asp-action="Index">Panel Klienta</a>
+                            </li>
                         }
-                    }
-                    <a class="btn btn-secondary" asp-controller="ClientPanel" asp-action="Index">Panel Klienta</a> &nbsp;
-                    <a class="btn btn-secondary" asp-controller="Home" asp-action="Configuration">Ustawienia</a> &nbsp;
-                    <a class="btn btn-secondary" asp-controller="RecycleBin" asp-action="Index">Kosz</a> &nbsp;
-                </nav>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Configuration">Ustawienia</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="RecycleBin" asp-action="Index">Kosz</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex" style="margin-right:50px" asp-controller="Home" asp-action="Index">
+                        <input class="form-control me-sm-2" type="text" name="productSearch" placeholder="Czego szukasz?">
+                        <input class="btn btn-secondary my-2 my-sm-0" type="submit" value="Wyszukaj" />
+                    </form>
+                    <partial name="_LoginPartial" />
+                </div>
             </div>
         </nav>
+    </header>
+
+    @*<div class="page-header">
+            <nav class="navbar navbar-light bg-light">
+                <div class="float_left">
+                    <a asp-controller="Home" asp-action="Index">
+                        <img src="@Url.Content("~/Content/Images/Logo/shop-logo.png")" style="height: 100px; width: 100px;" />
+                    </a>
+                </div>
+
+                <div>
+                    <form asp-controller="Home" asp-action="Index">
+                        <div class="input-group md-form form-sm form-2 pl-0">
+                            <input class="form-control my-0 py-1 red-border" type="text" name="productSearch" />
+                            <div class="input-group-append">
+                                <input type="submit" value="Szukaj" class="btn btn-secondary" />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div>
+                    <nav class="navbar navbar-light bg-light">
+                        <partial name="_LoginPartial" />
+                        <a class="btn btn-secondary" asp-controller="ShoppingCart" asp-action="Index">Koszyk</a> &nbsp;
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            if (User.IsInRole("Administrator"))
+                            {
+                                <span>
+                                    <a class="btn btn-secondary" asp-controller="AdminPanel" asp-action="Index">Panel Admina</a> &nbsp;
+                                </span>
+                            }
+                        }
+                        <a class="btn btn-secondary" asp-controller="ClientPanel" asp-action="Index">Panel Klienta</a> &nbsp;
+                        <a class="btn btn-secondary" asp-controller="Home" asp-action="Configuration">Ustawienia</a> &nbsp;
+                        <a class="btn btn-secondary" asp-controller="RecycleBin" asp-action="Index">Kosz</a> &nbsp;
+                    </nav>
+                </div>
+            </nav>
+        </div>*@
+
+
+    <div class="container" style="margin-top:20px">
+        <div class="row">
+            <div class="col-3">
+                <div class="sidebar-header hidden-sm-down">
+                    <h2>Panel Admina</h2>
+                    <hr />
+                    @await Html.PartialAsync("_AdminPanel")
+                </div>
+            </div>
+            <div class="col-9">
+                <main role="main" class="pb-3">
+                    @RenderBody()
+                </main>
+            </div>
+        </div>
     </div>
-    <div class="container-fluid">
+
+
+
+    @*<div class="container-fluid">
         <div class="row">
             <nav id="nav-sidebar" class="bg-faded">
                 <div class="sidebar-header hidden-sm-down">
@@ -58,58 +121,56 @@
                 <div class="sidebar-content hidden-sm-down">
                     <ul>
                         @await Html.PartialAsync("_AdminPanel")
-                    </ul>
-
-                    <!--Kod do obslugi zalacznikow-->
-                    <!--<h2>File uploader</h2>
-        <form method="post" enctype="multipart/form-data" asp-controller="FileUpload" asp-action="Index">
-            <div class="form-group">
-                <div class="col-md-10">
-                    <p>Wybierz 1 lub wiecej plikow:</p>
-                    <input type="file" name="files" multiple />
-                </div>
+                    </ul>*@
+    <!--Kod do obslugi zalacznikow-->
+    <!--<h2>File uploader</h2>
+    <form method="post" enctype="multipart/form-data" asp-controller="FileUpload" asp-action="Index">
+        <div class="form-group">
+            <div class="col-md-10">
+                <p>Wybierz 1 lub wiecej plikow:</p>
+                <input type="file" name="files" multiple />
             </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    <input type="submit" value="Upload" /><br />
-                    @ViewData["ExtensionWarning"]
-                </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                <input type="submit" value="Upload" /><br />
+                @ViewData["ExtensionWarning"]
             </div>
-        </form>-->
-
-                </div>
+        </div>
+    </form>-->
+    @*</div>
             </nav>
             <div class="container" style="margin: 0px 0px; margin-left: 10px;">
                 <main role="main" class="pb-3">
                     @RenderBody()
                 </main>
             </div>
-        </div>
+        </div>*@
 
-        <footer class="border-top footer text-muted">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md">
-                        &copy; 2020 - ProjektSklep - <a asp-area="" asp-controller="Home" asp-action="ContactForm">Kontakt</a>
-                    </div>
-                    <div class="col-md-auto">
-                        @{
-                            string path = "Content/Resources/visit_counter.txt";
-                            System.IO.FileStream fs = System.IO.File.OpenRead(path);
-                            byte[] b = new byte[64];
-                            System.Text.UTF8Encoding temp = new System.Text.UTF8Encoding(true);
-                            int result = 0;
-                            while (fs.Read(b, 0, b.Length) > 0)
-                            {
-                                Int32.TryParse(temp.GetString(b), out result);
-                            }
-                            fs.Close();
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            <div class="row">
+                <div class="col-md">
+                    &copy; 2020 - ProjektSklep - <a asp-area="" asp-controller="Home" asp-action="ContactForm">Kontakt</a>
+                </div>
+                <div class="col-md-auto">
+                    @{
+                        string path = "Content/Resources/visit_counter.txt";
+                        System.IO.FileStream fs = System.IO.File.OpenRead(path);
+                        byte[] b = new byte[64];
+                        System.Text.UTF8Encoding temp = new System.Text.UTF8Encoding(true);
+                        int result = 0;
+                        while (fs.Read(b, 0, b.Length) > 0)
+                        {
+                            Int32.TryParse(temp.GetString(b), out result);
                         }
-                        Licznik odwiedzin: <b>@result</b>
-                    </div>
+                        fs.Close();
+                    }
+                    Licznik odwiedzin: <b>@result</b>
                 </div>
             </div>
-        </footer>
+        </div>
+    </footer>
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

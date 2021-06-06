@@ -44,6 +44,7 @@ namespace ProjektSklep
             services.AddRazorPages();
 
             services.AddTransient<IEmailService, EmailService>();
+            services.AddTransient<IFileService, FileService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

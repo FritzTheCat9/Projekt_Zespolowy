@@ -8,16 +8,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjektSklep.Data;
 using ProjektSklep.Models;
+using ProjektSklep.Services;
 
 namespace ProjektSklep
 {
     public class ProductsController : Controller
     {
         private readonly ShopContext _context;
+        private readonly IFileService _fileService;
 
-        public ProductsController(ShopContext context)
+        public ProductsController(ShopContext context, IFileService fileService)
         {
             _context = context;
+            _fileService = fileService;
         }
 
         // GET: Products

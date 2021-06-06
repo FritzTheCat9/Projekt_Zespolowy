@@ -208,8 +208,28 @@ namespace ProjektSklep.Controllers
             }
 
             var homeViewModel = new HomeViewModel();
-            homeViewModel.Products = _context.Products.Include(p => p.Category).Include(p => p.Expert).Where(p => p.Category.CategoryID == CategoryID);
+            List<Category> AllCategories = new List<Category>();
             homeViewModel.Categories = _context.Categories.Include(c => c.Parent);
+            foreach (var category in homeViewModel.Categories)
+            {
+                if(category.CategoryID == CategoryID || category?.ParentCategoryID == CategoryID)
+                {
+                    AllCategories.Add(category);
+                }
+            }
+            var products = _context.Products.Include(p => p.Category).Include(p => p.Expert);
+            List<Product> ProductsToDisplay = new List<Product>();
+            foreach (var p in products)
+            {
+                foreach (var c in AllCategories)
+                {
+                    if(p.CategoryID == c.CategoryID)
+                    {
+                        ProductsToDisplay.Add(p);
+                    }
+                }
+            }
+            homeViewModel.Products = ProductsToDisplay;
 
             if (homeViewModel == null)
             {

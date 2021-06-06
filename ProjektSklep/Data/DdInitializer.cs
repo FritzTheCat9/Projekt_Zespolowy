@@ -275,9 +275,9 @@ namespace ProjektSklep.Data
             var categories = new Category[]
             {
                 new Category{ Name="Elektronika", Visibility=true },
-                new Category{ ParentCategoryID=1, Name="Smartfony", Visibility=true },
-                new Category{ ParentCategoryID=1, Name="Laptopy", Visibility=true },
-                new Category{ ParentCategoryID=1, Name="Komputery", Visibility=false}
+                new Category{ ParentCategoryID=4, Name="Smartfony", Visibility=true },
+                new Category{ ParentCategoryID=4, Name="Laptopy", Visibility=true },
+                new Category{ ParentCategoryID=4, Name="Komputery", Visibility=false}
             };
             foreach (Category category in categories)
             {

@@ -125,12 +125,13 @@ namespace ProjektSklep.Controllers
 
             var configurationViewModel = new ConfigurationViewModel();
             configurationViewModel.SendingNewsletter = customer.PageConfiguration.SendingNewsletter;
+            configurationViewModel.ProductsPerPage = customer.PageConfiguration.ProductsPerPage;
 
             return View(configurationViewModel);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Configuration([Bind("SendingNewsletter")] ConfigurationViewModel configuration)
+        public async Task<IActionResult> Configuration([Bind("SendingNewsletter,ProductsPerPage")] ConfigurationViewModel configuration)
         {
             if (ModelState.IsValid)
             {
@@ -139,6 +140,12 @@ namespace ProjektSklep.Controllers
                     .Where(x => x.Id == userId).FirstOrDefault();
 
                 customer.PageConfiguration.SendingNewsletter = configuration.SendingNewsletter;
+
+                if(configuration.ProductsPerPage > 0 && configuration.ProductsPerPage <= 30)
+                {
+                    customer.PageConfiguration.ProductsPerPage = configuration.ProductsPerPage;
+                }
+
                 await _context.SaveChangesAsync();
             }
 

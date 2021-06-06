@@ -8,5 +8,6 @@ namespace ProjektSklep.Models.ViewModels
     public class ConfigurationViewModel
     {
         public bool SendingNewsletter { get; set; }
+        public int ProductsPerPage { get; set; }
     }
 }

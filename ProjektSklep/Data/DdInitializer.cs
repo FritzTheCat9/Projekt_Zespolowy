@@ -39,7 +39,7 @@ namespace ProjektSklep.Data
                 using (var context = new ShopContext())
                 {
                     address = new Address { CustomerID = customer.Id, Country = "Polska", Town = "Białystok", PostCode = "12-123", Street = "Wesoła", HouseNumber = 123, ApartmentNumber = 1 };
-                    pageConfiguration = new PageConfiguration { CustomerID = customer.Id, SendingNewsletter = false, ShowNetPrices = true, ProductsPerPage = 20, InterfaceSkin = 0, Language = 0, Currency = 1 };
+                    pageConfiguration = new PageConfiguration { CustomerID = customer.Id, SendingNewsletter = false, ShowNetPrices = true, ProductsPerPage = 4, InterfaceSkin = 0, Language = 0, Currency = 1 };
                     context.Addresses.Add(address);
                     context.PageConfigurations.Add(pageConfiguration);
                     context.SaveChanges();
@@ -76,7 +76,7 @@ namespace ProjektSklep.Data
                 using (var context = new ShopContext())
                 {
                     address = new Address { CustomerID = customer.Id, Country = "Polska", Town = "Warszawa", PostCode = "23-456", Street = "Piękna", HouseNumber = 12, ApartmentNumber = 47 };
-                    pageConfiguration = new PageConfiguration { CustomerID = customer.Id, SendingNewsletter = true, ShowNetPrices = false, ProductsPerPage = 30, InterfaceSkin = 1, Language = 1, Currency = 0 };
+                    pageConfiguration = new PageConfiguration { CustomerID = customer.Id, SendingNewsletter = true, ShowNetPrices = false, ProductsPerPage = 3, InterfaceSkin = 1, Language = 1, Currency = 0 };
                     context.Addresses.Add(address);
                     context.PageConfigurations.Add(pageConfiguration);
                     context.SaveChanges();

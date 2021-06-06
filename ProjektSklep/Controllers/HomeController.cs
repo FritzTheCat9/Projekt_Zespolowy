@@ -48,7 +48,7 @@ namespace ProjektSklep.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(string? productSearch)
+        public IActionResult Index(string productSearch)
         {
             var homeViewModel = new HomeViewModel();
             if (!String.IsNullOrEmpty(productSearch))
@@ -62,6 +62,24 @@ namespace ProjektSklep.Controllers
             homeViewModel.Categories = _context.Categories.Include(c => c.Parent);
             return View(homeViewModel);
         }
+
+        /*[HttpGet("")]
+        [HttpGet("Home/Index")]
+        public IActionResult Index(string searchString)
+        {
+            ViewData["CurrentFilter"] = searchString;
+
+            var homeViewModel = new HomeViewModel();
+            homeViewModel.Products = _context.Products.Include(p => p.Category).Include(p => p.Expert);
+            homeViewModel.Categories = _context.Categories.Include(c => c.Parent);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                homeViewModel.Products = homeViewModel.Products.Where(p => p.Name.Contains(searchString));
+            }
+
+            return View(homeViewModel);
+        }*/
 
         public IActionResult ContactForm()
         {

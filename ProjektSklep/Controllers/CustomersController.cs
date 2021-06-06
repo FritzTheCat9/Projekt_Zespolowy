@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ProjektSklep.Data;
 using ProjektSklep.Models;
+using ProjektSklep.Models.ViewModels;
 
 namespace ProjektSklep
 {
@@ -56,8 +59,65 @@ namespace ProjektSklep
                 return NotFound();
             }
 
-            return View(customer);
+            CustomerDetailsViewModel viewModel = new CustomerDetailsViewModel();
+            viewModel.Customer = customer;
+
+            ViewData["DiscountCodes"] = new SelectList(_context.DiscountCodes, "DiscountCodeID", "Percent");
+
+
+            /*var codes = _context.DiscountCodes;
+            ViewBag.Discounts = codes;*/
+
+            return View(viewModel);
         }
+
+        [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> SendDiscount([Bind("DiscountCodeID,Customer")] CustomerDetailsViewModel viewModel)
+        {
+            if (viewModel.Customer.Id == null)
+            {
+                return NotFound();
+            }
+
+            var customer = await _context.Customers
+                .Include(c => c.Address)
+                .Include(c => c.PageConfiguration)
+                .FirstOrDefaultAsync(m => m.Id == viewModel.Customer.Id);
+
+            var discountCode = _context.DiscountCodes.Find(viewModel.DiscountCodeID);
+
+            if (viewModel.Customer == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                // wysłanie kodu rabatowego na mejla klienta
+                using (MailMessage mail = new MailMessage())
+                {
+                    mail.From = new MailAddress("klientklientowski123@gmail.com");
+                    mail.To.Add(customer.Email);
+                    mail.Subject = $"Kod rabatowy - Otrzymałeś kod rabatowy na całe zamówienie!";
+
+                    var body = $"Kod rabatowy - Do wykorzystania przy następnym zamówieniu! <br>";
+                    body += $"Kod rabatowy: {discountCode.DiscoundCode}<br>";
+                    body += $"Procent rabatu: {discountCode.Percent}<br>";
+
+                    mail.Body = body;
+                    mail.IsBodyHtml = true;
+
+                    using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                    {
+                        smtp.Credentials = new NetworkCredential("klientklientowski123@gmail.com", "Klient123!");
+                        smtp.EnableSsl = true;
+                        smtp.Send(mail);
+                    }
+                }
+            }
+
+            return RedirectToAction("Index", "Customers"); ;
+        }
+
         /*
         // GET: Customers/Create
         [Authorize(Roles = "Administrator")]

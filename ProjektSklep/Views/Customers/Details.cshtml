@@ -1,4 +1,4 @@
-﻿@model ProjektSklep.Models.Customer
+﻿@model ProjektSklep.Models.ViewModels.CustomerDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -11,39 +11,52 @@
     <h4>Customer</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Customer.FirstName)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Customer.FirstName)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Customer.LastName)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Customer.LastName)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Customer.Email)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Customer.Email)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Customer.Address)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Address.AddressID)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Customer.Address.AddressID)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PageConfiguration)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Customer.PageConfiguration)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PageConfiguration.PageConfigurationID)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Customer.PageConfiguration.PageConfigurationID)
         </dd>
     </dl>
 </div>
+
+<form asp-action="SendDiscount">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label>Discount percent: </label>
+        <select asp-for="DiscountCodeID" class="form-control" asp-items="ViewBag.DiscountCodes"></select>
+    </div>
+        <input asp-for="Customer.Id" value="@Model.Customer.Id" type="hidden" />
+        <div class="form-group">
+            <input type="submit" value="Send Discount" class="btn btn-primary" />
+        </div>
+</form>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Customer.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>

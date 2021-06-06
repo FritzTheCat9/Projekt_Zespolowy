@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace ProjektSklep.Models.ViewModels
 {
-    public class ContactFormViewModel
+    public class AskExpertFormViewModel
     {
+        [Key]
+        public int ExpertId { get; set; }
+        public int ProductId { get; set; }
+
         [Required]
         public string Name { get; set; }
 

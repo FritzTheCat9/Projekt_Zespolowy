@@ -81,6 +81,64 @@ namespace ProjektSklep.Controllers
             return View(homeViewModel);
         }*/
 
+        public IActionResult AskExpert(int ExpertId, int ProductId)
+        {
+            AskExpertFormViewModel askExpertFormViewModel = new AskExpertFormViewModel();
+            askExpertFormViewModel.ExpertId = ExpertId;
+            askExpertFormViewModel.ProductId = ProductId;
+
+            return View(askExpertFormViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult AskExpert([Bind("ExpertId,ProductId,Name,Email,Topic,Message")] AskExpertFormViewModel contact)
+        {
+            if (ModelState.IsValid)
+            {
+                if (contact.Name != "" && contact.Email != null && contact.Topic != null && contact.Message != null)
+                {
+                    using (MailMessage mail = new MailMessage())
+                    {
+                        var ekspert = _context.Experts.Where(x => x.ExpertID == contact.ExpertId).FirstOrDefault();
+                        var product = _context.Products.Where(x => x.ProductID == contact.ProductId).FirstOrDefault();
+
+                        if (ekspert != null && product != null)
+                        {
+                            string savedEmail = _config.GetSection("Settings").GetSection("ContactFormEmail").Value;
+                            mail.From = new MailAddress(savedEmail);
+                            mail.To.Add(ekspert.Email);
+                            mail.Subject = $"Zapytaj Experta - " + contact.Topic;
+
+                            var body = $"<br><b>Zapytaj Experta</b><br>";
+                            body += $"Name: {contact.Name}<br>";
+                            body += $"Email: {contact.Email}<br>";
+                            body += $"Topic: {contact.Topic}<br>";
+                            body += $"Message: {contact.Message}<br>";
+
+
+                            body += $"<br><b>Product ID: {product.ProductID}</b><br>";
+                            body += $"Product Name: {product.Name}<br>";
+                            body += $"Product Price: {product.Price}<br>";
+
+                            mail.Body = body;
+                            mail.IsBodyHtml = true;
+
+                            using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                            {
+                                smtp.Credentials = new NetworkCredential("klientklientowski123@gmail.com", "Klient123!");
+                                smtp.EnableSsl = true;
+                                smtp.Send(mail);
+                            }
+                        }
+                    }
+
+                    return RedirectToAction("Index");
+                }
+            }
+
+            return RedirectToAction("Index");
+        }
+
         public IActionResult ContactForm()
         {
             return View();
@@ -104,7 +162,7 @@ namespace ProjektSklep.Controllers
                         body += $"Name: {contact.Name}<br>";
                         body += $"Email: {contact.Email}<br>";
                         body += $"Topic: {contact.Topic}<br>";
-                        body += $"Topic: {contact.Message}<br>";
+                        body += $"Message: {contact.Message}<br>";
 
                         mail.Body = body;
                         mail.IsBodyHtml = true;

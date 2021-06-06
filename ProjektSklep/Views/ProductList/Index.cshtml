@@ -10,15 +10,15 @@
 <form asp-action="Index" method="get">
     <div class="form-actions no-color">
         <p>
-            Wyszukaj po nazwie: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            Wyszukaj po nazwie: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" class="mt-1"/>
             <br />
-            Wyszukaj po nazwie w opisie: <input type="text" name="SearchString_Description" value="@ViewData["CurrentFilter2"]" />
+            Wyszukaj po nazwie w opisie: <input type="text" name="SearchString_Description" value="@ViewData["CurrentFilter2"]" class="mt-1"/>
             <br />
-            Cena od: <input type="text" name="SearchString_PriceFrom" value="@ViewData["CurrentFilter3"]" />
+            Cena od: <input type="text" name="SearchString_PriceFrom" value="@ViewData["CurrentFilter3"]" class="mt-1"/>
             <br />
-            Cena do: <input type="text" name="SearchString_PriceTo" value="@ViewData["CurrentFilter4"]" />
+            Cena do: <input type="text" name="SearchString_PriceTo" value="@ViewData["CurrentFilter4"]" class="mt-1"/>
             <br />
-            W promocji: <input type="checkbox" name="SearchString_Promotion" checked="@ViewData["CurrentFilter5"]" />
+            W promocji: <input type="checkbox" name="SearchString_Promotion" checked="@ViewData["CurrentFilter5"]" class="mt-1"/>
             <input type="submit" value="Wyszukaj" class="btn btn-default" /> |
             <a asp-action="Index">Powrót do całej listy</a>
         </p>

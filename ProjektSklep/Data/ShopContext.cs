@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ProjektSklep.Models;
+using ProjektSklep.Models.ViewModels;
 
 namespace ProjektSklep.Data
 {
@@ -51,5 +52,6 @@ namespace ProjektSklep.Data
             modelBuilder.Entity<Expert>().ToTable("Expert");
             modelBuilder.Entity<ProductOrder>().ToTable("ProductOrder");
         }
+        public DbSet<ProjektSklep.Models.ViewModels.AskExpertFormViewModel> AskExpertFormViewModel { get; set; }
     }
 }

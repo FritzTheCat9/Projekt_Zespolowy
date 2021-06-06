@@ -257,9 +257,9 @@ namespace ProjektSklep.Data
             }
             var experts = new Expert[]
             {
-                new Expert{ FirstName="Ekspert", LastName="Ekspertowicz", Email="ekspercik@gmail.com"},
-                new Expert{ FirstName="Ekspert2", LastName="Ekspertowicz2", Email="ekspercik2@gmail.com"},
-                new Expert{ FirstName="Ekspert3", LastName="Ekspertowicz3", Email="ekspercik3@gmail.com"}
+                new Expert{ FirstName="Ekspert", LastName="EkspertowiczK", Email="klientklientowski123@gmail.com"},
+                new Expert{ FirstName="Ekspert2", LastName="Ekspertowicz2A", Email="siemanokolano2137@gmail.com"},
+                new Expert{ FirstName="Ekspert3", LastName="Ekspertowicz3K", Email="klientklientowski123@gmail.com"}
             };
             foreach (Expert expert in experts)
             {
@@ -293,16 +293,16 @@ namespace ProjektSklep.Data
             var products = new Product[]
             {
                 new Product{ CategoryID=2, ExpertID=1, Name="Laptop LENOVO", ProductDescription="Dobry laptop", Image="~/Content/Images/Products/Laptop LENOVO.jpg", DateAdded=new DateTime(2018, 3, 20), Promotion=false, VAT=23, Price=4300, Amount=20, Visibility=true, SoldProducts=101 },
-                new Product{ CategoryID=3, ExpertID=1, Name="Smartfon HUAWEI P30", ProductDescription="Dobry smartfon", Image="~/Content/Images/Products/Smartfon HUAWEI P30.jpg", DateAdded=new DateTime(2019, 10, 2), Promotion=true, VAT=23, Price=2999, Amount=10, Visibility=true, SoldProducts=290 },
-                new Product{ CategoryID=2, ExpertID=1, Name="Laptop HUAWEI", ProductDescription="Dobry laptop", Image="~/Content/Images/Products/Laptop HUAWEI.png", DateAdded=DateTime.Now, Promotion=true, VAT=23, Price=5000, Amount=34, Visibility=true, SoldProducts=57 },
+                new Product{ CategoryID=3, ExpertID=2, Name="Smartfon HUAWEI P30", ProductDescription="Dobry smartfon", Image="~/Content/Images/Products/Smartfon HUAWEI P30.jpg", DateAdded=new DateTime(2019, 10, 2), Promotion=true, VAT=23, Price=2999, Amount=10, Visibility=true, SoldProducts=290 },
+                new Product{ CategoryID=2, ExpertID=3, Name="Laptop HUAWEI", ProductDescription="Dobry laptop", Image="~/Content/Images/Products/Laptop HUAWEI.png", DateAdded=DateTime.Now, Promotion=true, VAT=23, Price=5000, Amount=34, Visibility=true, SoldProducts=57 },
                 new Product{ CategoryID=2, ExpertID=1, Name="Laptop APPLE", ProductDescription="Dobry laptop", Image="~/Content/Images/Products/Laptop APPLE.jpg", DateAdded=DateTime.Now.AddDays(-10), Promotion=false, VAT=23, Price=4000, Amount=56, Visibility=true, SoldProducts=1080 },
-                new Product{ CategoryID=2, ExpertID=1, Name="Laptop Acer Aspire", ProductDescription="Superowy laptopik", Image="~/Content/Images/Products/Laptop_AcerAspire.jpg", DateAdded=DateTime.Now, Promotion=false, VAT=23, Price=2000, Amount=250, Visibility=true, SoldProducts=0 },
-                new Product{ CategoryID=2, ExpertID=1, Name="Laptop Lenovo Y540", ProductDescription="Superowy laptopik", Image="~/Content/Images/Products/Laptop_LenovoY540.jpg", DateAdded=DateTime.Now, Promotion=false, VAT=23, Price=5000, Amount=250, Visibility=true, SoldProducts=0 },
+                new Product{ CategoryID=2, ExpertID=2, Name="Laptop Acer Aspire", ProductDescription="Superowy laptopik", Image="~/Content/Images/Products/Laptop_AcerAspire.jpg", DateAdded=DateTime.Now, Promotion=false, VAT=23, Price=2000, Amount=250, Visibility=true, SoldProducts=0 },
+                new Product{ CategoryID=2, ExpertID=3, Name="Laptop Lenovo Y540", ProductDescription="Superowy laptopik", Image="~/Content/Images/Products/Laptop_LenovoY540.jpg", DateAdded=DateTime.Now, Promotion=false, VAT=23, Price=5000, Amount=250, Visibility=true, SoldProducts=0 },
                 new Product{ CategoryID=2, ExpertID=1, Name="Laptop Acer Nitro", ProductDescription="Superowy laptopik", Image="~/Content/Images/Products/Laptop_AcerNitro.jpg", DateAdded=DateTime.Now, Promotion=false, VAT=23, Price=2500, Amount=250, Visibility=true, SoldProducts=0 },
-                new Product{ CategoryID=2, ExpertID=1, Name="Laptop ASUS E410", ProductDescription="Superowy laptopik", Image="~/Content/Images/Products/Laptop_ASUSE410.jpg", DateAdded=DateTime.Now, Promotion=false, VAT=23, Price=3000, Amount=250, Visibility=true, SoldProducts=0 },
-                new Product{ CategoryID=2, ExpertID=1, Name="Laptop ASUS TUF", ProductDescription="Superowy laptopik", Image="~/Content/Images/Products/Laptop_ASUSTUF.jpg", DateAdded=DateTime.Now, Promotion=false, VAT=23, Price=3500, Amount=250, Visibility=true, SoldProducts=0 },
+                new Product{ CategoryID=2, ExpertID=2, Name="Laptop ASUS E410", ProductDescription="Superowy laptopik", Image="~/Content/Images/Products/Laptop_ASUSE410.jpg", DateAdded=DateTime.Now, Promotion=false, VAT=23, Price=3000, Amount=250, Visibility=true, SoldProducts=0 },
+                new Product{ CategoryID=2, ExpertID=3, Name="Laptop ASUS TUF", ProductDescription="Superowy laptopik", Image="~/Content/Images/Products/Laptop_ASUSTUF.jpg", DateAdded=DateTime.Now, Promotion=false, VAT=23, Price=3500, Amount=250, Visibility=true, SoldProducts=0 },
                 new Product{ CategoryID=2, ExpertID=1, Name="Laptop ASUS X543", ProductDescription="Superowy laptopik", Image="~/Content/Images/Products/Laptop_ASUSX543.jpg", DateAdded=DateTime.Now, Promotion=false, VAT=23, Price=4000, Amount=250, Visibility=true, SoldProducts=0 },
-                new Product{ CategoryID=2, ExpertID=1, Name="Laptop HP15-ec", ProductDescription="Superowy laptopik", Image="~/Content/Images/Products/Laptop_HP15-ec.jpg", DateAdded=DateTime.Now, Promotion=false, VAT=23, Price=4500, Amount=250, Visibility=true, SoldProducts=0 },
+                new Product{ CategoryID=2, ExpertID=2, Name="Laptop HP15-ec", ProductDescription="Superowy laptopik", Image="~/Content/Images/Products/Laptop_HP15-ec.jpg", DateAdded=DateTime.Now, Promotion=false, VAT=23, Price=4500, Amount=250, Visibility=true, SoldProducts=0 },
             };
             foreach (Product product in products)
             {

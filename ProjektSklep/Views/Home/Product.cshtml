@@ -64,7 +64,11 @@
                                     <strong>Ekspert:</strong>
                                 </a>
                             </th>
-                            <td><br />@Model.Expert.FirstName @Model.Expert.LastName <br /> @Model.Expert.Email</td>
+                            <td>
+                                <br />@Model.Expert.FirstName @Model.Expert.LastName <br /> @Model.Expert.Email
+                                <a class="btn btn-info" asp-controller="Home" asp-action="AskExpert" asp-route-ExpertID="@Model.Expert.ExpertID"
+                                   asp-route-ProductID="@Model.ProductID">Zapytaj eksperta</a>
+                            </td>
                         </tr>
                     </tbody>
                 </table>

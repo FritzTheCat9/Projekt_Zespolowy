@@ -4,13 +4,19 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
+    @*<form class="d-flex" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <button type="button" class="btn btn-primary disabled" asp-area="Identity" asp-page="/Account/Manage/Index" style="font-size:8px">@User.Identity.Name</button>
+        <button type="submit" class="btn btn-outline-light">Wyloguj</button>
+    </form>*@
+
     <form class="d-flex" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-        <button type="button" class="btn btn-primary disabled" style="font-size:8px">@User.Identity.Name</button>
+        <a class="nav-link btn btn-outline-light" style="color: white; font-size: 8px;" 
+           asp-area="Identity" asp-page="/Account/Manage/Index">@User.Identity.Name</a>
         <button type="submit" class="btn btn-outline-light">Wyloguj</button>
     </form>
 
     @*<form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                &nbsp;
+            &nbsp;
             <a class="btn btn-secondary" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Witaj @User.Identity.Name!</a> &nbsp;
             <button type="submit" class="btn btn-secondary">Wyloguj</button> &nbsp;
         </form>*@

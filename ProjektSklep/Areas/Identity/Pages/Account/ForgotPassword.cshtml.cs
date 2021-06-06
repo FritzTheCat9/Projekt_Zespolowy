@@ -11,19 +11,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using ProjektSklep.Models;
+using ProjektSklep.Services;
 
 namespace ProjektSklep.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class ForgotPasswordModel : PageModel
     {
-        private readonly UserManager<Customer> _userManager;
-        private readonly IEmailSender _emailSender;
+        private readonly UserManager<Customer> _userManager; 
+        private readonly IEmailService _emailService;
 
-        public ForgotPasswordModel(UserManager<Customer> userManager, IEmailSender emailSender)
+
+        public ForgotPasswordModel(UserManager<Customer> userManager, IEmailService emailService)
         {
             _userManager = userManager;
-            _emailSender = emailSender;
+            _emailService = emailService;
         }
 
         [BindProperty]
@@ -57,8 +59,7 @@ namespace ProjektSklep.Areas.Identity.Pages.Account
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
 
-                await _emailSender.SendEmailAsync(
-                    Input.Email,
+                _emailService.SendEmail(Input.Email,
                     "Reset Password",
                     $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 

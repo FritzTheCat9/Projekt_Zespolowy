@@ -110,6 +110,7 @@ namespace ProjektSklep.Areas.Identity.Pages.Account
 
                 user.AddressID = address.AddressID;
                 user.PageConfigurationID = pageConfiguration.PageConfigurationID;
+                user.EmailConfirmed = true;
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 

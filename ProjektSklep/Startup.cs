@@ -10,6 +10,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using ProjektSklep.Data;
 using ProjektSklep.Models;
+using ProjektSklep.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -41,6 +42,8 @@ namespace ProjektSklep
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddTransient<IEmailService, EmailService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

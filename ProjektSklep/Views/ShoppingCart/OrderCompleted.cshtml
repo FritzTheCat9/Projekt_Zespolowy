@@ -5,16 +5,25 @@
     @model ProjektSklep.Models.ShoppingCart
 }
 
+@section ClientPanel {
+    <div class="sidebar-header hidden-sm-down">
+        <h2>Podsumowanie</h2>
+        <hr />
+    </div>
+    <div class="sidebar-content hidden-sm-down">
+        <p>Oto podsumowanie Twojego zamówienia.</p>
+    </div>
+}
+
 @if (Model.ProductList.Count == 0)
 {
     <h2>Koszyk pusty, nie można wykonać zamówienia</h2>
 }
 else
 {
-    <h2>Zamówiono następujące produkty:</h2>
     <table class="table">
         <thead>
-            <tr>
+            <tr class="table-primary">
                 <th>
                     @Html.DisplayNameFor(model => model.ProductList.ElementAt(0).Product)
                 </th>
@@ -51,9 +60,38 @@ else
         </tbody>
     </table>
 
-    <h3>Sposób wysyłki: @ViewBag.ShippingMethod</h3>
+    <div class="card border-secondary mb-3">
+        <div class="card-header">Szczegóły zamówienia</div>
+        <div class="card-body">
+            <div class="col">
+                <div class="row">
+                    <h4 class="card-title">Sposób wysyłki:</h4>
+                    <p class="card-text">@ViewBag.ShippingMethod</p>
+                </div>
+                <div class="row">
+                    <h4 class="card-title">Sposób płatności:</h4>
+                    <p class="card-text">@ViewBag.PaymentMethod</p>
+                </div>
+                <div class="row">
+                    <h4 class="card-title">Rabat:</h4>
+                    <p class="card-text">@ViewBag.DiscountCode%</p>
+                </div>
+                <div class="row">
+                    <h4 class="card-title">Razem do zapłaty (przed rabatem):</h4>
+                    <p class="card-text">@ViewBag.CenaBezRabatu</p>
+                </div>
+                <div class="row">
+                    <h4 class="card-title">Razem do zapłaty:</h4>
+                    <p class="card-text">@Model.CartPrice</p>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    @*<h3>Sposób wysyłki: @ViewBag.ShippingMethod</h3>
     <h3>Sposób płatności: @ViewBag.PaymentMethod</h3>
     <h3>Rabat: @ViewBag.DiscountCode%</h3>
     <h3>Razem do zapłaty (przed rabatem): @ViewBag.CenaBezRabatu</h3>
-    <h3>Razem do zapłaty: @Model.CartPrice</h3>
+    <h3>Razem do zapłaty: @Model.CartPrice</h3>*@
 }

@@ -5,10 +5,20 @@
     ViewData["Title"] = "Rejestracja";
 }
 
-<h1>@ViewData["Title"]</h1>
+@*<h1>@ViewData["Title"]</h1>*@
+
+@section ClientPanel {
+    <div class="sidebar-header hidden-sm-down">
+        <h2>Rejestracja</h2>
+        <hr />
+    </div>
+    <div class="sidebar-content hidden-sm-down">
+        <p>Uzupełnij wszystkie pola aby utworzyć konto użytkownika.</p>
+    </div>
+}
 
 <div class="row">
-    <div class="col-md-4">
+    <div class="col">
         <form asp-route-returnUrl="@Model.ReturnUrl" method="post">
             @*<h4>Create a new account.</h4>*@
             <h4>Utwórz nowe konto</h4>
@@ -31,6 +41,7 @@
             </div>
 
             @*<h4>Insert your name and surname</h4>*@
+            <br />
             <h4>Wprowadź swoje imię i nazwisko</h4>
             <div class="form-group">
                 <label asp-for="Input.FirstName" class="control-label">Imię:</label>
@@ -44,6 +55,7 @@
             </div>
 
             @*<h4>Insert your adress data</h4>*@
+            <br />
             <h4>Wprowadź swój adres zamieszkania</h4>
             <div class="form-group">
                 <label asp-for="Input.Country" class="control-label">Kraj</label>
@@ -75,39 +87,40 @@
                 <input asp-for="Input.ApartmentNumber" class="form-control" />
                 <span asp-validation-for="Input.ApartmentNumber" class="text-danger"></span>
             </div>
-            <button type="submit" class="btn btn-primary">Register</button>
+            <br />
+            <button type="submit" class="btn btn-outline-primary">Utwórz konto</button>
         </form>
     </div>
     @*<div class="col-md-6 col-md-offset-2">
-        <section>
-            <h4>Use another service to register.</h4>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
-                            for details on setting up this ASP.NET application to support logging in via external services.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+            <section>
+                <h4>Use another service to register.</h4>
+                <hr />
+                @{
+                    if ((Model.ExternalLogins?.Count ?? 0) == 0)
+                    {
                         <div>
                             <p>
-                                @foreach (var provider in Model.ExternalLogins)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
+                                There are no external authentication services configured. See <a href="https://go.microsoft.com/fwlink/?LinkID=532715">this article</a>
+                                for details on setting up this ASP.NET application to support logging in via external services.
                             </p>
                         </div>
-                    </form>
+                    }
+                    else
+                    {
+                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                            <div>
+                                <p>
+                                    @foreach (var provider in Model.ExternalLogins)
+                                    {
+                                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                    }
+                                </p>
+                            </div>
+                        </form>
+                    }
                 }
-            }
-        </section>
-    </div>*@
+            </section>
+        </div>*@
 </div>
 
 @section Scripts {

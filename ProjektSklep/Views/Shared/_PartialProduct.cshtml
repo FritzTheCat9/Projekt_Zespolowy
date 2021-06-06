@@ -4,11 +4,10 @@
 
 @if (Model.Visibility == true && Model.Category.Visibility == true)
 {
-   
-    <div class="list-group-item list-group-item-action flex-column align-items-start">
+    @*<div class="list-group-item list-group-item-action">
         <a asp-controller="Home" asp-action="Product" asp-route-ProductID="@Model.ProductID">
             <img src="@Url.Content(@Model.Image)" style="height: 100px; width: 150px;" />
-        </a> 
+        </a>
 
         <div style="float:right; width:80%;">
             <div class="d-flex w-100 justify-content-between">
@@ -16,10 +15,45 @@
                     <h5 class="mb-1">@Model.Name</h5>
                 </a>
                 <small>@Model.Price PLN</small>
-            </div>     
+            </div>
             <small>Kategoria: @Model.Category.Name</small>
         </div>
         <div style="clear:both; font-size:1px;"></div>
-    </div>
-    
+    </div>*@
+
+    <a class="list-group-item list-group-item-action flex-column align-items-start" asp-controller="Home" asp-action="Product" asp-route-ProductID="@Model.ProductID">
+        <div class="row">
+            <div class="col-2">
+                <img src="@Url.Content(@Model.Image)" style="height: 100px; width: 150px;" />
+            </div>
+            <div class="col-10">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">@Model.Name</h5>
+                    <small class="text-muted">@Model.Price PLN</small>
+                </div>
+                <p class="mb-1">Krótki opis produktu.</p>
+                <small class="text-muted">Kategoria: @Model.Category.Name</small>
+            </div>
+        </div>
+        
+        
+    </a>
+
+    @*<div class="list-group-item list-group-item-action flex-column align-items-start">
+            <a asp-controller="Home" asp-action="Product" asp-route-ProductID="@Model.ProductID">
+                <img src="@Url.Content(@Model.Image)" style="height: 100px; width: 150px;" />
+            </a>
+
+            <div style="float:right; width:80%;">
+                <div class="d-flex w-100 justify-content-between">
+                    <a class="nav-link text-dark" asp-controller="Home" asp-action="Product" asp-route-ProductID="@Model.ProductID">
+                        <h5 class="mb-1">@Model.Name</h5>
+                    </a>
+                    <small>@Model.Price PLN</small>
+                </div>
+                <small>Kategoria: @Model.Category.Name</small>
+            </div>
+            <div style="clear:both; font-size:1px;"></div>
+        </div>*@
+
 }

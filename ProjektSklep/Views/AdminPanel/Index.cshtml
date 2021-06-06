@@ -8,15 +8,37 @@
 
 <h1>Witamy w panelu admina</h1>
 
-<h3>
-    Wyślij newsletter:
-</h3>
+<div class="card border-secondary mb-3">
+    <div class="card-header">Wysyłanie Newslettera</div>
+    <div class="card-body">
+        <form asp-action="ChangeFormEmail">
+            <div class="row">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" value=@ViewBag.savedEmail class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row" style="margin-top:20px">
+                <div class="col">
+                    <div class="form-group">
+                        <input type="submit" value="Zapisz" class="btn btn-outline-primary" />
+                        <a href='@Url.Action("SendNewsletters", "AdminPanel")' class="btn btn-outline-success">
+                            Wyślij
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
-<a href='@Url.Action("SendNewsletters", "AdminPanel")' class="btn btn-info">
+@*<a href='@Url.Action("SendNewsletters", "AdminPanel")' class="btn btn-outline-success">
     Wyślij
-</a>
+</a>*@
 
-<form asp-action="ChangeFormEmail">
+@*<form asp-action="ChangeFormEmail">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
         <label asp-for="Email" class="control-label"></label>
@@ -24,6 +46,6 @@
         <span asp-validation-for="Email" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <input type="submit" value="Save" class="btn btn-primary" />
+        <input type="submit" value="Zapisz" class="btn btn-outline-primary" />
     </div>
-</form>
+</form>*@

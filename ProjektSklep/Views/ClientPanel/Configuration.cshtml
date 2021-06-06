@@ -5,7 +5,16 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Configuration</h1>
+@section ClientPanel {
+    <div class="sidebar-header hidden-sm-down">
+        <h2>Panel Klienta</h2>
+        <hr />
+    </div>
+    <div class="sidebar-content hidden-sm-down">
+        <a class="nav-link text-dark" asp-area="" asp-controller="ClientPanel" asp-action="Index">Historia zamówień</a>
+        <a class="nav-link text-dark" asp-area="" asp-controller="ClientPanel" asp-action="Configuration">Konfiguracja</a>
+    </div>
+}
 
 <div class="row">
     <div class="col-md-4">
@@ -13,11 +22,12 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="SendingNewsletter" class="control-label"></label>
-                <input asp-for="SendingNewsletter" class="form-control" />
+                @*<input asp-for="SendingNewsletter" class="form-control" />*@
+                <input asp-for="SendingNewsletter" class="form-check-input" />
                 <span asp-validation-for="SendingNewsletter" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Zapisz" class="btn btn-outline-primary" />
             </div>
         </form>
     </div>

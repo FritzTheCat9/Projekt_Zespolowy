@@ -6,7 +6,7 @@
 }
 
 <h1>Bestsellery</h1>
-<h5>(Poniżej zaprezentowano listę 10 najlepiej sprzedających się produktów.)</h5>
+<h5>(10 najlepiej sprzedających się produktów)</h5>
 
 <div class="list-group">
     @foreach (Product p in Model.Products)
@@ -16,33 +16,31 @@
 </div>
 
 @section Categories {
-    <div class="sidebar-header hidden-sm-down">
-        <h2>Kategorie</h2>
-        <hr />
-    </div>
-    <div class="sidebar-content hidden-sm-down">
-        <ul>
-            @foreach (Category c in Model.Categories)
-            {
-                if (c.Visibility == true)
+    <div class="card border-primary mb-3">
+        <div class="card-header">Kategorie</div>
+        <div class="card-body">
+            <div class="list-group">
+                @foreach (Category c in Model.Categories)
                 {
-                    <li class="nav-item">
-                        <a class="nav-link text-dark" asp-action="Index" asp-route-CategoryId="@c.CategoryID">@c.Name</a>
-                    </li>
+                    if (c.Visibility == true)
+                    {
+                        <a class="list-group-item list-group-item-action" asp-action="Index" asp-route-CategoryId="@c.CategoryID">@c.Name</a>
+                    }
                 }
-            }
-        </ul>
+            </div>
+        </div>
     </div>
 }
 
 @section Menu {
-    <div class="sidebar-header hidden-sm-down">
-        <h2>Menu</h2>
-        <hr />
-    </div>
-    <div class="sidebar-content hidden-sm-down">
-        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Promotion">Promocje</a>
-        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="NewProducts">Nowe produkty</a>
-        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Bestsellers">Bestsellery</a>
+    <div class="card border-primary mb-3">
+        <div class="card-header">Menu</div>
+        <div class="card-body">
+            <div class="list-group">
+                <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Home" asp-action="Promotion">Promocje</a>
+                <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Home" asp-action="NewProducts">Nowe produkty</a>
+                <a class="list-group-item list-group-item-action" asp-area="" asp-controller="Home" asp-action="Bestsellers">Bestsellery</a>
+            </div>
+        </div>
     </div>
 }

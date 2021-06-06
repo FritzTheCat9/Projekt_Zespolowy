@@ -3,7 +3,6 @@
 @inject UserManager<Customer> UserManager
 
 @model ProjektSklep.Models.ViewModels.HomeViewModel;
-
 <!-- Ten model chyba sie tutaj nie przyda, ale troche nie orientuje sie
      co robie, wiec go tu wsadzilem -->
 @{
@@ -11,9 +10,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Konfiguracja</h1>
-<br />
-<br />
+@section ClientPanel {
+    <div class="sidebar-header hidden-sm-down">
+        <h2>Ustawienia</h2>
+        <hr />
+    </div>
+    <div class="sidebar-content hidden-sm-down">
+        <p>Tutaj możesz skonfigurować stronę wg własnych preferencji. Niestety strona ta posiada tylko warstwę prezentacyjną.</p>
+    </div>
+}
 
 <!-- Motyw strony -->
 <div class="card">

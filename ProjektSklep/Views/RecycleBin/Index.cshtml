@@ -5,13 +5,22 @@
     @model ProjektSklep.Models.RecycleBin
 }
 
-<h1>Kosz</h1>
-<h2>Poniżej znajdują się usunięte przedmioty z Twojego koszyka.</h2>
+@section ClientPanel {
+    <div class="sidebar-header hidden-sm-down">
+        <h2>Kosz</h2>
+        <hr />
+    </div>
+    <div class="sidebar-content hidden-sm-down">
+        <p>Tutaj znajdują się przedmioty usunięte z Twojego koszyka. Możesz je dodać z powrotem do koszyka, przejść na stronę produktu lub usunąć go
+        z tej listy.</p>
+    </div>
+}
+
 @if (Model.ShoppingCartElementList.Count != 0)
 {
     <table class="table" style="margin-top:20px">
         <thead>
-            <tr>
+            <tr class="table-primary">
                 <th style="text-align: center; vertical-align: middle;">
                     Nazwa
                 </th>
@@ -36,9 +45,20 @@
                         @item.Sum
                     </td>
                     <td style="text-align: center; vertical-align: middle;">
-                        <a class="btn btn-success" asp-action="RestoreProduct" asp-route-ProductID="@item.Product.ProductID">Do koszyka</a>
-                        <a class="btn btn-info" asp-action="RedirectToProduct" asp-route-ProductID="@item.Product.ProductID">Zobacz produkt</a>
-                        <a class="btn btn-danger" asp-action="Index" asp-route-ProductID="@item.Product.ProductID">Usuń z kosza</a>
+                        <div class="col">
+                            <div class="row">
+                                <a class="btn btn-outline-success" asp-action="RestoreProduct" asp-route-ProductID="@item.Product.ProductID">Do koszyka</a>
+                            </div>
+                            <div class="row">
+                                <a class="btn btn-outline-info" asp-action="RedirectToProduct" asp-route-ProductID="@item.Product.ProductID">Zobacz produkt</a>
+                            </div>
+                            <div class="row">
+                                <a class="btn btn-outline-danger" asp-action="Index" asp-route-ProductID="@item.Product.ProductID">Usuń z kosza</a>
+                            </div>
+                        </div>
+                        
+                        
+                        
                     </td>
                 </tr>
             }

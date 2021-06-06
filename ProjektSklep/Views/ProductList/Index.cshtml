@@ -11,6 +11,14 @@
     <div class="form-actions no-color">
         <p>
             Wyszukaj po nazwie: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <br />
+            Wyszukaj po nazwie w opisie: <input type="text" name="SearchString_Description" value="@ViewData["CurrentFilter2"]" />
+            <br />
+            Cena od: <input type="text" name="SearchString_PriceFrom" value="@ViewData["CurrentFilter3"]" />
+            <br />
+            Cena do: <input type="text" name="SearchString_PriceTo" value="@ViewData["CurrentFilter4"]" />
+            <br />
+            W promocji: <input type="checkbox" name="SearchString_Promotion" checked="@ViewData["CurrentFilter5"]" />
             <input type="submit" value="Wyszukaj" class="btn btn-default" /> |
             <a asp-action="Index">Powrót do całej listy</a>
         </p>
@@ -64,6 +72,10 @@
    asp-route-sortOrder="@ViewData["CurrentSort"]"
    asp-route-pageNumber="@(Model.PageIndex - 1)"
    asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   asp-route-currentFilter2="@ViewData["CurrentFilter2"]"
+   asp-route-currentFilter3="@ViewData["CurrentFilter3"]"
+   asp-route-currentFilter4="@ViewData["CurrentFilter4"]"
+   asp-route-currentFilter5="@ViewData["CurrentFilter5"]"
    class="btn btn-default @prevDisabled">
     Previous
 </a>
@@ -71,6 +83,10 @@
    asp-route-sortOrder="@ViewData["CurrentSort"]"
    asp-route-pageNumber="@(Model.PageIndex + 1)"
    asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   asp-route-currentFilter2="@ViewData["CurrentFilter2"]"
+   asp-route-currentFilter3="@ViewData["CurrentFilter3"]"
+   asp-route-currentFilter4="@ViewData["CurrentFilter4"]"
+   asp-route-currentFilter5="@ViewData["CurrentFilter5"]"
    class="btn btn-default @nextDisabled">
     Next
 </a>

@@ -19,7 +19,8 @@ namespace ProjektSklep.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber)
+        public async Task<IActionResult> Index(string sortOrder, string currentFilter, string searchString, int? pageNumber, 
+            string SearchString_Description, int? SearchString_PriceFrom, int? SearchString_PriceTo, string SearchString_Promotion)
         {
             ViewData["CurrentSort"] = sortOrder;
             ViewData["NameSortParm"] = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
@@ -35,6 +36,10 @@ namespace ProjektSklep.Controllers
             }
 
             ViewData["CurrentFilter"] = searchString;
+            ViewData["CurrentFilter2"] = SearchString_Description;
+            ViewData["CurrentFilter3"] = SearchString_PriceFrom;
+            ViewData["CurrentFilter4"] = SearchString_PriceTo;
+            ViewData["CurrentFilter5"] = SearchString_Promotion;
 
             var products = from p in _context.Products
                            select p;
@@ -42,6 +47,27 @@ namespace ProjektSklep.Controllers
             if (!string.IsNullOrEmpty(searchString))
             {
                 products = products.Where(p => p.Name.Contains(searchString));
+            }
+
+            if (!string.IsNullOrEmpty(SearchString_Description))
+            {
+                products = products.Where(p => p.ProductDescription.Contains(SearchString_Description));
+            }
+
+            if(SearchString_PriceFrom.HasValue)
+            {
+                products = products.Where(p => p.Price >= SearchString_PriceFrom.Value);
+            }
+
+            if (SearchString_PriceTo.HasValue)
+            {
+                products = products.Where(p => p.Price <= SearchString_PriceTo.Value);
+            }
+
+            if (!string.IsNullOrEmpty(SearchString_Promotion))
+            {
+                if (SearchString_Promotion == "on")
+                    products = products.Where(p => p.Promotion == true);
             }
 
             switch (sortOrder)

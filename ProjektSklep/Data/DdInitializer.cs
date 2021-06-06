@@ -317,10 +317,10 @@ namespace ProjektSklep.Data
             }
             var attachments = new Attachment[]
             {
-                new Attachment{ ProductID=1, Path="sciezka do pliku", Description="Instrukcja obsługi laptopa" },
-                new Attachment{ ProductID=2, Path="sciezka do pliku", Description="Instrukcja obsługi smartfona" },
-                new Attachment{ ProductID=3, Path="sciezka do pliku", Description="Instrukcja obsługi laptopa" },
-                new Attachment{ ProductID=4, Path="sciezka do pliku", Description="Instrukcja obsługi laptopa" }
+                new Attachment{ ProductID=1, Path="~/Content/Attachments/Dokumentacja projektu - PS2 - Grupa2.pdf", Description="Instrukcja obsługi laptopa" },
+                new Attachment{ ProductID=2, Path="~/Content/Attachments/analiza_wariantow.pdf", Description="Instrukcja obsługi smartfona" },
+                new Attachment{ ProductID=3, Path="~/Content/Attachments/Dokumentacja projektu - PS2 - Grupa2.pdf", Description="Instrukcja obsługi laptopa" },
+                new Attachment{ ProductID=4, Path="~/Content/Attachments/analiza_wariantow.pdf", Description="Instrukcja obsługi laptopa" }
             };
             foreach (Attachment attachment in attachments)
             {
